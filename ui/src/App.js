@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import axios from 'axios';
 import './App.css';
+import Button from '@material-ui/core/Button';
+import SignIn from "./SignIn";
 
 const apiUrl = 'http://localhost:8080';
 
@@ -42,6 +44,12 @@ class App extends React.Component {
         >
           Learn React
         </a>
+
+          <Button variant="contained" color="primary">
+              Hello World
+          </Button>
+
+          <SignIn />
 
           <button onClick={() => this.createUser()}>Create User</button>
         <p>Users list:</p>
