@@ -1,0 +1,39 @@
+version: "2"
+
+services:
+  ui:
+    build: ./ui
+    image: ui
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - network
+  
+  api:
+    build: ./api
+    image: api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api:/api
+    depends_on:
+      - mongo
+    networks:
+      - network
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    volumes:
+      - ./data-node:/data/db
+    ports:
+      - "27017:27017"
+    command: mongod --noauth
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
