@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import logo from './logo.svg';
 import SignIn from './compontents/SignIn';
 
-const apiUrl = 'http://localhost:8080';
+const apiUrl = '';
 
 class App extends React.Component {
   state = {
