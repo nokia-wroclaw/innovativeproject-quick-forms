@@ -12,6 +12,10 @@ class App extends React.Component {
     users: [],
   };
 
+  componentDidMount() {
+    this.loadUsers();
+  }
+
   async createUser() {
     await axios.get(`${apiUrl}/user-create`);
     this.loadUsers();
@@ -24,21 +28,13 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount() {
-    this.loadUsers();
-  }
-
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Edit
-            {' '}
-            <code>src/App.js</code>
-            {' '}
-and save to reload.
+            Edit <code>src/App.js</code> and save to reload.
           </p>
           <a
             className="App-link"
@@ -55,12 +51,14 @@ and save to reload.
 
           <SignIn />
 
-          <button onClick={() => this.createUser()}>Create User</button>
+          <button type="button" onClick={() => this.createUser()}>
+            Create User
+          </button>
           <p>Users list:</p>
           <ul>
             {this.state.users.map((user) => (
               <li key={user._id}>
-id:
+                id:
                 {user._id}
               </li>
             ))}
