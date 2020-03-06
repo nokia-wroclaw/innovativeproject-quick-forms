@@ -1,8 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import axios from 'axios';
 import './App.css';
 import Button from '@material-ui/core/Button';
+import logo from './logo.svg';
 import SignIn from './compontents/SignIn';
 
 const apiUrl = 'http://localhost:8080';
@@ -13,12 +13,12 @@ class App extends React.Component {
   };
 
   async createUser() {
-    await axios.get(apiUrl + '/user-create');
+    await axios.get(`${apiUrl}/user-create`);
     this.loadUsers();
   }
 
   async loadUsers() {
-    const res = await axios.get(apiUrl + '/users');
+    const res = await axios.get(`${apiUrl}/users`);
     this.setState({
       users: res.data,
     });
@@ -34,7 +34,11 @@ class App extends React.Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Edit <code>src/App.js</code> and save to reload.
+            Edit
+            {' '}
+            <code>src/App.js</code>
+            {' '}
+and save to reload.
           </p>
           <a
             className="App-link"
@@ -54,8 +58,11 @@ class App extends React.Component {
           <button onClick={() => this.createUser()}>Create User</button>
           <p>Users list:</p>
           <ul>
-            {this.state.users.map(user => (
-              <li key={user._id}>id: {user._id}</li>
+            {this.state.users.map((user) => (
+              <li key={user._id}>
+id:
+                {user._id}
+              </li>
             ))}
           </ul>
         </header>
