@@ -13,5 +13,11 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.9.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "prettier": "1.19.1"
   }
 }
