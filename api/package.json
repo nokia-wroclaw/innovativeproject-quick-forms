@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "test": "./node_modules/.bin/mocha",
+      "lint": "./node_modules/.bin/eslint --fix --ignore-path .gitignore .",
+      "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --print-width 80 --write --no-bracket-spacing **/*.js"
   },
   "keywords": [],
   "author": "",
@@ -15,9 +17,12 @@
     "mongoose": "^5.9.3"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
-    "prettier": "1.19.1"
+    "mocha": "^7.1.0",
+    "prettier": "1.19.1",
+    "request": "^2.88.2"
   }
 }
