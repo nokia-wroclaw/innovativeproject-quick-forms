@@ -7,7 +7,7 @@ const User = require('./src/User.model');
 
 app.use(cors());
 
-const PORT = 8080;
+const PORT = 80;
 
 app.get('/users', async (req, res) => {
   const users = await User.find();
