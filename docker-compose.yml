@@ -15,7 +15,7 @@ services:
     build: ./api
     image: api
     ports:
-      - "8080:8080"
+      - "80:80"
     volumes:
       - ./api:/api
     depends_on:
