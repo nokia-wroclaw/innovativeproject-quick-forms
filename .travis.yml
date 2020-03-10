@@ -11,8 +11,7 @@ before_install:
   - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
 
 script:
-  - cd api && npm run test && npm run lint && cd ..
-  - cd ui && npm run test && npm run lint && cd ..
+  - ls
   - docker build -t $DOCKER_USERNAME/docker_client ./ui;
   - docker tag $DOCKER_USERNAME/docker_client registry.heroku.com/$HEROKU_APP_CLIENT/web;
   - docker build -t $DOCKER_USERNAME/docker_backend ./api;
