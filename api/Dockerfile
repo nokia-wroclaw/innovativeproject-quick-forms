@@ -1,19 +1,13 @@
 FROM node:12.16.1
 
-# Set the working directory to /api
-WORKDIR /api
+WORKDIR "/app"
 
-# copy package.json into the container at /api
-COPY package*.json /api/
+COPY ./package*.json ./
 
-# install dependencies
 RUN npm install
 
-# Copy the current directory contents into the container at /api
-COPY . /api/
+COPY . .
 
-# Make port 80 available to the world outside this container
 EXPOSE 80
 
-# Run the app when the container launches
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

@@ -1,6 +1,12 @@
 version: "2"
 
 services:
+  nginx:
+    restart: always
+    build: ./nginx
+    image: nginx
+    ports:
+      - '8010:8010'
   ui:
     build: ./ui
     image: ui
@@ -18,17 +24,6 @@ services:
       - "80:80"
     volumes:
       - ./api:/api
-    depends_on:
-      - mongo
-    networks:
-      - network
-
-  mongo:
-    image: mongo
-    container_name: mongo
-    ports:
-      - "27017:27017"
-    command: mongod --noauth
     networks:
       - network
 
