@@ -32,5 +32,6 @@ deploy:
     docker push $DOCKER_USERNAME/docker_nginx;
     docker push registry.heroku.com/$HEROKU_APP_NGINX/web;
     heroku container:release web --app $HEROKU_APP_NGINX;
+    heroku ps:scale web=1 -a $HEROKU_APP_CLIENT
   on: 
     branch: master
