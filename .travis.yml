@@ -11,7 +11,6 @@ before_install:
   - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
 
 script:
-  - ls
   - docker build -t $DOCKER_USERNAME/docker_client ./ui;
   - docker tag $DOCKER_USERNAME/docker_client registry.heroku.com/$HEROKU_APP_CLIENT/web;
   - docker build -t $DOCKER_USERNAME/docker_backend ./api;
@@ -20,6 +19,7 @@ script:
   - docker tag $DOCKER_USERNAME/docker_nginx registry.heroku.com/$HEROKU_APP_NGINX/web;
 
 deploy:
+  skip_cleanup: true
   provider: script
   script:
     # push to dockerhub & heroku 
