@@ -1,21 +1,36 @@
 const express = require('express');
+const Form = require('./form.model');
 const router = express.Router();
-const form = require('../src/User.model')
 
-router.get('/', (req, res) => {
-   res.json(form);
+
+router.use(express.json());
+router.use(express.urlencoded({extended: true}));
+
+router.get('/', async (req, res) => {
+   try{
+      const forms = await Form.find();
+      res.json(forms);
+   }catch(err){
+      res.json({message:err})
+   }
 });
 
-// router.get('/:id', (req, res) =>{
-//    const found = form.some(form => form.id === parseInt(req.params.id));
-//
-//     if(found){
-//         res.json(members.filter(form => form.id === parseInt(req.params.id)));
-//     }
-//     else {
-//         res.status(400).json({msg: `Form ${req.params.id} not found`});
-//     }
-//
-// });
+
+
+router.post('/', async (req, res) => {
+   const form = new Form ({
+      title: req.body.title,
+      name: req.body.name,
+      surname: req.body.surname
+   });
+
+   try{
+      const savedForm = await form.save();
+      res.json(savedForm);
+   } catch(err){
+      res.json({message: err});
+   }
+
+});
 
 module.exports = router;

@@ -12,11 +12,11 @@ const formSchema = mongoose.Schema({
     },
     phoneNumber: Number,
     email: String,
-    postalCode: Number,
-    date: Date.now
+    postalCode: Number
+
 
 });
 
-const form = mongoose.model('form', formSchema);
+const Form = mongoose.model('Form', formSchema);
 
-module.exports = form;
+module.exports = Form;
