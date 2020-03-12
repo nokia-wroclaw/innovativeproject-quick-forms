@@ -3,23 +3,30 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const connectDb = require('./src/connection');
-const formRoute = require('./forms/formRouting');
+const User = require('./src/User.model');
 
 app.use(cors());
 
-app.use('/forms', formRoute);
+const PORT = process.env.PORT || 80;
 
+app.get('/users', async (req, res) => {
+  const users = await User.find();
 
-const PORT = process.env.PORT || 8080;
-
-app.get('/', (req, res) => {
-  res.json(formRoute);
-
+  res.json(users);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server started on ${PORT}`);
+app.get('/user-create', async (req, res) => {
+  const user = new User({username: 'userTest'});
 
-  connectDb();
+  await user.save().then(() => console.log('User created'));
+
+  res.send('User created \n');
 });
 
+app.listen(PORT, function() {
+  console.log(`Listening on ${PORT}`);
+
+  connectDb().then(() => {
+    console.log('MongoDb connected');
+  });
+});
