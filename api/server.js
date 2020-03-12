@@ -7,7 +7,7 @@ const formRoute = require('./forms/formRouting');
 
 app.use(cors());
 
-app.use('/forms', formRoute);
+app.use('/api/forms', formRoute);
 
 
 const PORT = process.env.PORT || 8080;
