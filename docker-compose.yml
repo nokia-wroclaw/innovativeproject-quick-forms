@@ -1,37 +1,27 @@
 version: "2"
 
 services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '8010:8010'
   ui:
-    build: ./ui
-    image: ui
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./ui
     ports:
       - "3000:3000"
-    depends_on:
-      - api
-    networks:
-      - network
+    volumes:
+      - /app/node_modules
   
   api:
-    build: ./api
-    image: api
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
     ports:
-      - "8080:8080"
+      - "80:80"
     volumes:
-      - ./api:/api
-    depends_on:
-      - mongo
-    networks:
-      - network
-
-  mongo:
-    image: mongo
-    container_name: mongo
-    ports:
-      - "27017:27017"
-    command: mongod --noauth
-    networks:
-      - network
-
-networks:
-  network:
-    driver: bridge
+      - /app/node_modules

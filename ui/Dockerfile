@@ -1,19 +1,12 @@
-FROM node:12.16.1
-
-# Set the working directory to /ui
-WORKDIR /ui
-
-# copy package.json into the container at /ui
-COPY package*.json /ui/
-
-# install dependencies
+FROM node:12.16.1 as builder
+WORKDIR "/app"
+COPY ./package*.json ./
 RUN npm install
+COPY . .
+RUN npm run build
 
-# Copy the current directory contents into the container at /ui
-COPY . /ui/
-
-# Make port 3000 available to the world outside this container
+FROM nginx
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/build /usr/share/nginx/html
 EXPOSE 3000
-
-# Run the app when the container launches
-CMD ["npm", "start"]
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
