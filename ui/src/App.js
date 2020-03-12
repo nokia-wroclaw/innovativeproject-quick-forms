@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './App.css';
 import Button from '@material-ui/core/Button';
-import logo from './logo.svg';
+import UserForms from './components/UserForms';
 import SignIn from './components/SignIn';
 
 const apiUrl = '';
@@ -35,24 +35,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-
-          <Button variant="contained" color="primary">
-            Hello World
-          </Button>
-
-          <SignIn />
+          
+          <UserForms/>
 
           <button type="button" onClick={() => this.createUser()}>
             Create User
