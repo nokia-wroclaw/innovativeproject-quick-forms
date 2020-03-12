@@ -7,8 +7,8 @@ mongoose.Promise = global.Promise;
 const connectDb = () => {
 
   return mongoose.connect(connection,
-      {useNewUrlParser: true},
-      () => console.log('connected to database')).then(() => setTimeout( () => {
+      {useNewUrlParser: true, useUnifiedTopology: true },
+  () => console.log('connected to database')).then(() => setTimeout( () => {
     console.log(mongoose.connection.readyState); // should print 1
   }, 0))
 
