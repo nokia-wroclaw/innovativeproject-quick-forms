@@ -22,10 +22,3 @@ app.listen(PORT, () => {
   connectDb();
 });
 
-// app.listen(PORT, function() {
-//   console.log(`Listening on ${PORT}`);
-//
-//   connectDb().then(() => {
-//     console.log('MongoDb connected');
-//   });
-// });
