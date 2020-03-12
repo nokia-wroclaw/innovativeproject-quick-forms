@@ -15,7 +15,14 @@ router.get('/', async (req, res) => {
    }
 });
 
-
+router.get('/:formId', async (req, res) => {
+   try{
+      const form = await Form.findById(req.params.formId);
+      res.json (form)
+   } catch (err){
+      res.json({message:err})
+   }
+});
 
 router.post('/', async (req, res) => {
    const form = new Form ({
@@ -30,7 +37,8 @@ router.post('/', async (req, res) => {
    } catch(err){
       res.json({message: err});
    }
-
 });
+
+
 
 module.exports = router;
