@@ -2,8 +2,8 @@ const express = require('express');
 
 const app = express();
 const cors = require('cors');
-const connectDb = require('./src/connection');
-const formRoute = require('./forms/formRouting');
+const connectDb = require('./src/connection/connection');
+const formRoute = require('./src/routing/formRouting');
 
 app.use(cors());
 
