@@ -1,17 +1,11 @@
 import React from "react";
-import axios from "axios";
-
-
 
 class SingleForm extends React.Component{
     constructor(props) {
         super(props);
-
         this.state = {
             form: []
         }
-
-
     }
     //5e738e611c9d4400008103ca
     //TODO: hardcoded, change that
@@ -23,7 +17,6 @@ class SingleForm extends React.Component{
                 this.setState({form: res})
             });
             }
-
 
     render(){
         return(
