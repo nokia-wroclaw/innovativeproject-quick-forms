@@ -1,32 +1,19 @@
 import React from 'react';
-import axios from 'axios';
-import UserForms from './components/UserForms';
+//import axios from 'axios';
+import { Route, Switch } from 'react-router-dom';
 import SignIn from './components/SignIn';
-import { Container } from '@material-ui/core';
+import HomePage from './components/HomePage';
+//const apiUrl = '/api';
 
-const apiUrl = '/api';
-
-class App extends React.Component {
-  componentDidMount() {
-    this.getForms();
-  }
-
-  async getForms() {
-    await axios.get(`${apiUrl}/forms`);
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <SignIn />
-          <Container mt={8}
-          >   <UserForms/>
-          </Container>
-        </header>
-      </div>
-    );
-  }
+const App = () => {
+  return (
+    <div className="App">
+      <Switch>
+        <Route exact path='/' component={HomePage} />
+        <Route exact path='/signin' component={SignIn} />>
+      </Switch>
+    </div>
+  );
 }
 
 export default App;
