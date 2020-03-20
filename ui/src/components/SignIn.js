@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import axios from 'axios';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -94,6 +96,15 @@ export default function SignIn() {
             className={classes.submit}
           >
             Sign In
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="secondary"
+            className={classes.submit}
+            onClick={() => axios.get('/api/signin/auth/github')}
+          >
+            Sign In with GitHub
           </Button>
           <Grid container>
             <Grid item xs>
