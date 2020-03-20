@@ -2,6 +2,7 @@ const express = require('express');
 const Form = require('../schemeModels/form.model');
 const router = express.Router();
 
+
 router.use(express.json());
 router.use(express.urlencoded({extended: true}));
 
@@ -45,6 +46,16 @@ router.post('/', async (req, res) => {
 
    try{
       const savedForm = await form.save();
+      res.json(savedForm);
+   } catch(err){
+      res.json({message: err});
+   }
+});
+
+router.post('/create', async (req, res) => {
+   try{
+      console.log(req.body);
+      const savedForm = await Form.create(req.body);
       res.json(savedForm);
    } catch(err){
       res.json({message: err});
