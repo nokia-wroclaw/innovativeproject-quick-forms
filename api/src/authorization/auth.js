@@ -1,28 +1,29 @@
 require('dotenv').config();
-const express = require("express")
-const app = express.Router();
-var passport = require("passport")
-var session = require("express-session")
-var GitHubStrategy = require("passport-github2").Strategy
+const express = require('express');
 
-const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
-const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
-const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL
+const app = express.Router();
+const passport = require('passport');
+const session = require('express-session');
+const GitHubStrategy = require('passport-github2').Strategy;
+
+const { GITHUB_CLIENT_ID } = process.env;
+const { GITHUB_CLIENT_SECRET } = process.env;
+const { GITHUB_CALLBACK_URL } = process.env;
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return next()
+    return next();
   }
-  res.redirect("/login")
+  res.redirect('/login');
 }
 
 passport.serializeUser(function(user, done) {
-  done(null, user)
-})
+  done(null, user);
+});
 
 passport.deserializeUser(function(obj, done) {
-  done(null, obj)
-})
+  done(null, obj);
+});
 
 passport.use(
   new GitHubStrategy(
@@ -33,50 +34,50 @@ passport.use(
     },
     function(accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
-      console.log({ accessToken, refreshToken, profile })
-      
-       new User({ username: profile.username }).fetch().then(user => {
-         if (!user) {
-           user = User.forge({ username: profile.username })
-         }
-       
-         user.save({ profile: profile, access_token: accessToken }).then(() => {
-           return done(null, user)
-         })
-      })
+      console.log({ accessToken, refreshToken, profile });
+
+      new User({ username: profile.username }).fetch().then(user => {
+        if (!user) {
+          user = User.forge({ username: profile.username });
+        }
+
+        user.save({ profile, access_token: accessToken }).then(() => {
+          return done(null, user);
+        });
+      });
     }
   )
-)
+);
 app.use(
-  session({ secret: "keyboard cat", resave: false, saveUninitialized: false })
-)
-app.use(passport.initialize())
-app.use(passport.session())
+  session({ secret: 'keyboard cat', resave: false, saveUninitialized: false })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get("/", (req, res) => {
-  res.send("<a href='/secret'>Access Secret Area</a>")
-})
+app.get('/', (req, res) => {
+  res.send("<a href='/secret'>Access Secret Area</a>");
+});
 
-app.get("/login", (req, res) => {
-  res.send("<a href='auth/github'>Sign in With GitHub</a>")
-})
+app.get('/login', (req, res) => {
+  res.send("<a href='auth/github'>Sign in With GitHub</a>");
+});
 
-app.get("/secret", ensureAuthenticated, (req, res) => {
-  res.send(`<h2>yo ${req.user}</h2>`)
-})
-
-app.get(
-  "/auth/github",
-  passport.authenticate("github", { scope: ["repo:status"] }),
-  function(req, res) { }
-)
+app.get('/secret', ensureAuthenticated, (req, res) => {
+  res.send(`<h2>yo ${req.user}</h2>`);
+});
 
 app.get(
-  "/auth/github/callback",
-  passport.authenticate("github", { failureRedirect: "/login" }),
+  '/auth/github',
+  passport.authenticate('github', { scope: ['repo:status'] }),
+  function(req, res) {}
+);
+
+app.get(
+  '/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect("/")
+    res.redirect('/');
   }
-)
+);
 
 module.exports = app;
