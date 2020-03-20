@@ -20,8 +20,6 @@ const onSubmit = ({formData}) => {
 
 
 
-
-
 export class UserForms extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +32,6 @@ export class UserForms extends Component {
     axios.get('./api/forms/5e738e611c9d4400008103ca')
     .then((response) => {
       this.setState({form: response.data});
-      console.log(response.data);
     })
     .catch ((error) => {
       // handle error
