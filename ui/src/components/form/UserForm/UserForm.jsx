@@ -3,7 +3,7 @@ import { withTheme } from 'react-jsonschema-form';
 import { Theme as MuiTheme } from 'rjsf-material-ui';
 import { Button, Container } from '@material-ui/core';
 import axios from 'axios';
-import Submit from './SubmitForm'
+import Submit from '../SubmitForm/SubmitForm'
 
 
 const Form = withTheme(MuiTheme);
