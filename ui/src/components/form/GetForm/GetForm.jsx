@@ -1,9 +1,10 @@
+import axios from 'axios';
+
 const GetForm = formData => {
-    fetch(`./api/forms/${formData}`)
+    axios.get(`./api/forms/${formData}`)
         .then(res => res.json())
         .then(res => {
             console.log(res);
-
         });
 };
 export default GetForm;

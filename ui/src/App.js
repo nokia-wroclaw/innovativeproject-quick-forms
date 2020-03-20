@@ -8,14 +8,14 @@ import SingleForm from './components/form/SingleForm/SingleForm';
 // const apiUrl = '/api';
 
 const App = () => (
-    <div className="App">
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/signin" component={SignIn} />
-        <Route exact path="/userform" component={UserForm} />
-          <Route exact path="/singleform" component={SingleForm} />
-      </Switch>
-    </div>
+  <div className="App">
+    <Switch>
+      <Route exact path="/" component={HomePage} />
+      <Route exact path="/signin" component={SignIn} />
+      <Route exact path="/userform" component={UserForm} />
+      <Route exact path="/singleform" component={SingleForm} />
+    </Switch>
+  </div>
 );
 
 export default App;
