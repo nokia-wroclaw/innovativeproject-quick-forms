@@ -36,16 +36,11 @@ router.get('/title/:formTitle', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/create', async (req, res) => {
    // hardcoded TODO change that
-   const form = new Form ({
-      title: req.body.title,
-      name: req.body.name,
-      surname: req.body.surname
-   });
-
    try{
-      const savedForm = await form.save();
+      console.log("jebac");
+      const savedForm = await form.create(req.body);
       res.json(savedForm);
    } catch(err){
       res.json({message: err});
