@@ -60,18 +60,5 @@ router.delete('/:formId', async (req, res) => {
    }
 });
 
-// hardcoded TODO change that
-router.patch('/:formId', async (req, res) => {
-   try{
-      const updatedForm = await Form.updateOne({ _id: req.params.formId},
-          {$set: {name : req.body.name}},
-          {$set: {surname : req.body.surname}}
-          );
-      res.json(updatedForm)
-   } catch (err){
-      res.json({ message: err});
-   }
-});
-
 
 module.exports = router;
