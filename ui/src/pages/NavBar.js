@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const NavBar = ({history}) => {
+const NavBar = ({ history }) => {
   const classes = useStyles();
 
   return (
@@ -33,6 +33,5 @@ const NavBar = ({history}) => {
       </AppBar>
     </div>
   );
-}
-
+};
 export default withRouter(NavBar);
