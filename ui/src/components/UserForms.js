@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { withTheme } from 'react-jsonschema-form';
 import { Theme as MuiTheme } from 'rjsf-material-ui';
 import { Button } from '@material-ui/core';
+import axios from 'axios';
 
 const Form = withTheme(MuiTheme);
 
@@ -45,7 +46,16 @@ const schema = {
 };
 
 
-const onSubmit = ({formData}, e) => console.log("Data submitted: ",  formData);
+const onSubmit = ({formData}) => {
+  console.log("Data submitted: ",  formData);
+  axios.post('./api/forms', formData)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
 
 export class UserForms extends Component {
