@@ -4,11 +4,11 @@ const formSchema = mongoose.Schema({
    title: String,
     name: {
     type: String,
-     required: true
+
     },
     surname: {
     type: String,
-     required: true
+
     },
     phoneNumber: Number,
     email: String,
