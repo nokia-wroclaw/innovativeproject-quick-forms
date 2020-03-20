@@ -1,4 +1,6 @@
 import React from "react";
+import axios from "axios";
+import Submit from "../addForm";
 
 class SingleForm extends React.Component{
     constructor(props) {
@@ -20,9 +22,10 @@ class SingleForm extends React.Component{
 
     render(){
         return(
-          <div className="singleForm.component">
-              {typeof(this.state.form)}
+          <div className="singleForm">
+              {console.log(this.state.form)}
               <pre>{JSON.stringify(this.state.form, null, 2)}</pre>
+              <button onClick={() => Submit(this.state.form)} > Submit</button>
           </div>
         );
     }
