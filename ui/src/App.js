@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import SignIn from './components/SignIn';
 import HomePage from './components/HomePage';
-import UserForms from './components/form/UserForms';
+import UserForm from './components/form/UserForm';
 //const apiUrl = '/api';
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
       <Switch>
         <Route exact path='/' component={HomePage} />
         <Route exact path='/signin' component={SignIn} />
-        <Route exact path='/userform' component={UserForms} />
+        <Route exact path='/userform' component={UserForm} />
       </Switch>
     </div>
   );
