@@ -1,8 +1,8 @@
 import React from 'react';
 //import axios from 'axios';
 import { Route, Switch } from 'react-router-dom';
-import SignIn from './components/SignIn';
-import HomePage from './components/HomePage';
+import SignIn from './pages/SignIn';
+import HomePage from './pages/HomePage';
 import UserForm from './components/form/UserForm';
 //const apiUrl = '/api';
 
