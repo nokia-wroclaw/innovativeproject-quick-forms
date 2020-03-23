@@ -1,5 +1,5 @@
 const express = require('express');
-
+const FormSchema = require('../models/form.model');
 const router = express.Router();
 
 router.use(express.json());
@@ -34,13 +34,24 @@ router.get('/title/:formTitle', async (req, res) => {
   }
 });
 
-router.post('/create', async (req, res) => {
-  // hardcoded TODO change that
+router.post('/prototype', async (req, res) => {
   try {
-    const savedForm = await form.create(req.body);
-    res.json(savedForm);
+    const form = new FormSchema(req.body);
+    const savedForm = await form.save();
+    res.status(201).json(savedForm);
   } catch (err) {
-    res.json({ message: err });
+    res.status(400).json({ message: err });
+  }
+});
+
+
+router.post('/filled', async (req, res) => {
+  try {
+    const form = new FormSchema(req.body);
+    const savedForm = await form.save();
+    res.status(201).json(savedForm);
+  } catch (err) {
+    res.status(400).json({message: err});
   }
 });
 
