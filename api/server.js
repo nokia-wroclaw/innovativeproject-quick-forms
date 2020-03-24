@@ -3,18 +3,16 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const connectDb = require('./src/connection/connection');
-const formRoute = require('./src/routing/formRouting');
+const filledFormsRoute = require('./src/routing/filledForms');
+const prototypesRoute = require('./src/routing/prototypes');
 // const auth = require('./src/auth');
 
 app.use(cors());
-app.use('/api/forms', formRoute);
+app.use('/api/forms/prototypes', filledFormsRoute);
+app.use('/api/forms/filled-forms', prototypesRoute);
 // app.use('/api/signin', auth);
 
 const PORT = process.env.PORT || 8080;
-
-app.get('/', (req, res) => {
-  res.json(formRoute);
-});
 
 app.listen(PORT, () => {
   connectDb();
