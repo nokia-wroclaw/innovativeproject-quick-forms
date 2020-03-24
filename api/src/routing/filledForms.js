@@ -1,5 +1,7 @@
 const express = require('express');
-const Form = require('../models/form.model');
+const mongoose = require('mongoose');
+const Form = require('../models/filledForm.model');
+const filledForm = mongoose.model('filledForm', Form);
 const router = express.Router();
 
 router.use(express.json());
@@ -7,7 +9,7 @@ router.use(express.urlencoded({ extended: true }));
 
 router.get('/', async (req, res) => {
     try {
-        const forms = await Form.find();
+        const forms = await filledForm.find();
         res.status(200).json(forms);
     } catch (err) {
         res.status(404).json({ message: err });
@@ -16,7 +18,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const forms = await Form.findById(req.params.id);
+        const forms = await filledForm.findById(req.params.id);
         res.status(200).json(forms);
     } catch (err) {
         res.status(404).json({
@@ -28,7 +30,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const form = new Form(req.body);
+        const form = new filledForm(req.body);
         const savedForm = await form.save();
         res.status(201).json(savedForm);
     } catch (err) {
@@ -38,7 +40,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async(req, res) => {
     try{
-        const removedForm = await Form.findByIdAndDelete(req.params.id);
+        const removedForm = await filledForm.findByIdAndDelete(req.params.id);
         res.status(200).json(removedForm);
     } catch (err){
         res.status(404).json({message: err});
