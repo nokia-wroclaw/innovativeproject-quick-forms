@@ -1,42 +1,57 @@
+
 const express = require('express');
-const FormSchema = require('../models/form.model');
+const Form = require('../models/form.model');
 const router = express.Router();
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.get('/', async (req, res) => {
+// todo delete
+
+router.get('/prototypes', async (req, res) => {
   try {
     const forms = await Form.find();
-    res.json(forms);
+    res.status(200).json(forms);
   } catch (err) {
-    res.json({ message: err });
+    res.status(404).json({ message: err });
   }
 });
 
-router.get('/:formId', async (req, res) => {
+router.get('/filled-forms', async (req, res) => {
   try {
-    const form = await Form.findById(req.params.formId);
-    res.json(form);
+    const forms = await Form.find();
+    res.status(200).json(forms);
   } catch (err) {
-    res.json({ message: err });
+    res.status(404).json({ message: err });
   }
 });
 
-router.get('/title/:formTitle', async (req, res) => {
-  console.log(req.params.title);
+router.get('/prototypes/:id', async (req, res) => {
   try {
-    const form = await Form.find({ title: req.params.formTitle });
-    console.log(typeof form);
-    res.json(form);
+    const forms = await Form.findById(req.params.id);
+    res.status(200).json(forms);
   } catch (err) {
-    res.json({ message: err });
+    res.status(404).json({
+      message: `id: ${req.params.id} not found`,
+      status: err});
   }
 });
 
-router.post('/prototype', async (req, res) => {
+router.get('/filled-forms/:id', async (req, res) => {
   try {
-    const form = new FormSchema(req.body);
+    const forms = await Form.findById(req.params.id);
+    res.status(200).json(forms);
+  } catch (err) {
+    res.status(404).json({
+      message: `id: ${req.params.id} not found`,
+      status: err
+       });
+  }
+});
+
+router.post('/prototypes', async (req, res) => {
+  try {
+    const form = new Form(req.body);
     const savedForm = await form.save();
     res.status(201).json(savedForm);
   } catch (err) {
@@ -44,23 +59,13 @@ router.post('/prototype', async (req, res) => {
   }
 });
 
-
-router.post('/filled', async (req, res) => {
+router.post('/filled-forms', async (req, res) => {
   try {
-    const form = new FormSchema(req.body);
+    const form = new Form(req.body);
     const savedForm = await form.save();
     res.status(201).json(savedForm);
   } catch (err) {
-    res.status(400).json({message: err});
-  }
-});
-
-router.delete('/:formId', async (req, res) => {
-  try {
-    const removedForm = await Form.deleteOne({ _id: req.params.formId });
-    res.json(removedForm);
-  } catch (err) {
-    res.json({ message: err });
+    res.status(400).json({ message: err });
   }
 });
 
