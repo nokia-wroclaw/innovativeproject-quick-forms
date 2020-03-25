@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 
-const app = express.Router();
+const router = express.Router();
 const passport = require('passport');
 const session = require('express-session');
 const GitHubStrategy = require('passport-github2').Strategy;
@@ -48,36 +48,36 @@ passport.use(
     }
   )
 );
-app.use(
+router.use(
   session({ secret: 'keyboard cat', resave: false, saveUninitialized: false })
 );
-app.use(passport.initialize());
-app.use(passport.session());
+router.use(passport.initialize());
+router.use(passport.session());
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
   res.send("<a href='/secret'>Access Secret Area</a>");
 });
 
-app.get('/login', (req, res) => {
+router.get('/login', (req, res) => {
   res.send("<a href='auth/github'>Sign in With GitHub</a>");
 });
 
-app.get('/secret', ensureAuthenticated, (req, res) => {
+router.get('/secret', ensureAuthenticated, (req, res) => {
   res.send(`<h2>yo ${req.user}</h2>`);
 });
 
-app.get(
+router.get(
   '/auth/github',
   passport.authenticate('github', { scope: ['repo:status'] }),
   function(req, res) {}
 );
 
-app.get(
+router.get(
   '/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/signin' }),
   function(req, res) {
     res.redirect('/');
   }
 );
 
-module.exports = app;
+module.exports = router;
