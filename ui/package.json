@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "cors": "^2.8.5",
     "eslint-config-prettier": "^6.10.0",
+    "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-jsonschema-form": "^1.8.1",
@@ -24,7 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ignore-path .gitignore .",
-    "prettier": "prettier --single-quote --trailing-comma es5 --print-width 80 --write --no-bracket-spacing **/*.js"
+    "prettier": "prettier --single-quote --trailing-comma es5 --print-width 80 --write --no-bracket-spacing **/*.js **/*.jsx"
   },
   "eslintConfig": {
     "extends": "react-app"
