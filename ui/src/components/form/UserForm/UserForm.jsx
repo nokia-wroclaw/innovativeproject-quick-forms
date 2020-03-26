@@ -16,9 +16,9 @@ export class UserForms extends Component {
   }
 
   componentDidMount() {
-    const { formID } = this.props.match.params
+    const { formID } = this.props.match.params;
     axios
-      .get('/api/forms/ftemplate'+ formID)
+      .get(`/api/forms/templates/${formID}`)
       .then(response => {
         this.setState({formScheme: response.data});
       })
