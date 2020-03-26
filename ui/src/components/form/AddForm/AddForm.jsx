@@ -8,8 +8,8 @@ class AddForm extends React.Component {
   }
 
   handleSubmit = () => {
-    SubmitForm(this.fileInput.current.files[0], '');
-  }; /// Wpisac url na scheme formularza
+    SubmitForm(this.fileInput.current.files[0], 'api/forms/templates');
+  };
 
   render() {
     return (
