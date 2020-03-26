@@ -19,6 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
+        console.log("hello there");
         const forms = await templateForm.findById(req.params.id);
         res.status(200).json(forms);
     } catch (err) {
@@ -30,8 +31,11 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
+        console.log(req.body);
         const form = new templateForm(req.body);
+        console.log(form);
         const savedForm = await form.save();
+        console.log(savedForm);
         res.status(201).json(savedForm);
     } catch (err) {
         res.status(400).json({ message: err });

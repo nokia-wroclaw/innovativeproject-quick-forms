@@ -14,8 +14,8 @@ const App = () => (
     <Switch>
       <Route exact path="/" component={HomePage} />
       <Route exact path="/signin" component={SignIn} />
-      <Route exact path="/userform" component={UserForm} />
-      <Route exact path="/showform" component={ShowForm} />
+      <Route exact path="/userform/:formID" component={UserForm} />
+      <Route exact path="/showform/:formID" component={ShowForm} />
       <Route exact path="/addform" component={AddForm} />
     </Switch>
   </div>
