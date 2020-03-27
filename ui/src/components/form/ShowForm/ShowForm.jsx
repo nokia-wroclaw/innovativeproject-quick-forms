@@ -1,24 +1,18 @@
 import React from 'react';
 import axios from 'axios';
+import GetForm from "../GetForm/GetForm";
 
 class SingleForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      form: [],
+      form: {},
     };
   }
 
   componentDidMount() {
-    axios
-      .get('') ///// Wpisac tu url skad bedziemy pobierac pojedynczego formsa
-      .then(response => {
-        this.setState({form: response.data});
-      })
-      .catch(error => {
-        // handle error
-        console.log(error);
-      });
+    const { formID } = this.props.match.params;
+    GetForm(formID).then(res =>this.setState({form : res}));
   }
 
   render() {

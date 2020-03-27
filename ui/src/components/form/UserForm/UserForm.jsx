@@ -16,6 +16,7 @@ export class UserForms extends Component {
   }
   componentDidMount() {
     const { formID } = this.props.match.params;
+    console.log(formID);
     axios
       .get(`/api/forms/templates/${formID}`)
       .then(response => {
