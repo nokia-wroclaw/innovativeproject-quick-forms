@@ -14,13 +14,12 @@ export class UserForms extends Component {
       formScheme: {},
     };
   }
-
   componentDidMount() {
     const { formID } = this.props.match.params;
     axios
       .get(`/api/forms/templates/${formID}`)
       .then(response => {
-        this.setState({formScheme: response.data});
+        this.setState({formScheme: response.data.template});
       })
       .catch(error => {
         // handle error
@@ -29,7 +28,6 @@ export class UserForms extends Component {
   }
 
   handleSubmit = ({formData}) => SubmitForm(formData, '/api/forms/filled-forms/');
-
   render() {
     return (
       <Container ms={8}>
