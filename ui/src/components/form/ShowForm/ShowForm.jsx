@@ -1,27 +1,31 @@
 import React from 'react';
 import axios from 'axios';
 import GetForm from "../GetForm/GetForm";
+import MuiForm, {Theme as MuiTheme} from "rjsf-material-ui";
+import {Container} from "@material-ui/core";
+import {withTheme} from "react-jsonschema-form";
 
-class SingleForm extends React.Component {
+class ShowForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      form: {},
+      formSchema: {},
     };
   }
 
   componentDidMount() {
     const { formID } = this.props.match.params;
-    GetForm(formID).then(res =>this.setState({form : res}));
+    GetForm(formID).then(res =>this.setState({formSchema : res}));
   }
 
   render() {
     return (
-      <div className="singleForm.component">
-        <pre>{JSON.stringify(this.state.form, null, 2)}</pre>
-      </div>
+        <Container ms={8}>
+          <ShowForm schema={this.state.formSchema} />
+        </Container>
     );
   }
 }
 
-export default SingleForm;
+export default ShowForm;
+
