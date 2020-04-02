@@ -100,9 +100,8 @@ export default function SignIn() {
             variant="contained"
             color="secondary"
             className={classes.submit}
-            onClick={() => {window.open('/api/signin/auth/auth/github', '_parent', 'location=no')}}
           >
-            Sign In with GitHub
+            <a href="/api/signin/auth/github">Sign In with GitHub</a>
           </Button>
           <Grid container>
             <Grid item xs>
