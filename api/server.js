@@ -5,14 +5,14 @@ const cors = require('cors');
 const connectDb = require('./src/connection/connection');
 const filledFormsRoute = require('./src/routing/filledForms');
 const templatesRoute = require('./src/routing/templateForms');
-const auth = require('./src/authorization/auth');
-const users = require('./src/routing/users');
+const authRoute = require('./src/authorization/auth');
+const usersRoute = require('./src/routing/users');
 
 app.use(cors());
 app.use('/api/forms/templates', templatesRoute);
 app.use('/api/forms/filled-forms', filledFormsRoute);
-app.use('/api/auth', auth);
-app.use('/api/users', users);
+app.use('/api/auth', authRoute);
+app.use('/api/users', usersRoute);
 
 const PORT = process.env.PORT || 8080;
 
