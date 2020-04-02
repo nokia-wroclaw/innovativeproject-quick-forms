@@ -5,7 +5,7 @@ const cors = require('cors');
 const connectDb = require('./src/connection/connection');
 const filledFormsRoute = require('./src/routing/filledForms');
 const templatesRoute = require('./src/routing/templateForms');
-const authRoute = require('./src/authorization/auth');
+const authRoute = require('./src/routing/auth');
 const usersRoute = require('./src/routing/users');
 
 app.use(cors());
