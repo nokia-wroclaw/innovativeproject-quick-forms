@@ -15,7 +15,7 @@ export class UserForms extends Component {
     };
   }
   componentDidMount() {
-    const { formID } = this.props.match.params;
+    const {formID} = this.props.match.params;
     console.log(formID);
     axios
       .get(`/api/forms/templates/${formID}`)
@@ -28,7 +28,8 @@ export class UserForms extends Component {
       });
   }
 
-  handleSubmit = ({formData}) => SubmitForm(formData, '/api/forms/filled-forms/');
+  handleSubmit = ({formData}) =>
+    SubmitForm(formData, '/api/forms/filled-forms/');
   render() {
     return (
       <Container ms={8}>

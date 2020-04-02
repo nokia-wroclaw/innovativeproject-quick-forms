@@ -1,6 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import SingleForm from '../SingleForm/SingleForm';
+import {withStyles} from '@material-ui/core/styles';
+
+const useStyles = () => ({
+  paper: {
+    display: 'flex',
+    flexDirection: 'column' | 'row',
+    alignItems: 'center',
+  },
+});
+
 class ListOfForms extends React.Component {
   constructor(props) {
     super(props);
@@ -21,8 +31,9 @@ class ListOfForms extends React.Component {
   }
 
   render() {
+    const {classes} = this.props;
     return (
-      <div>
+      <div className={classes.paper}>
         {this.state.listOfForms.map(index => (
           <SingleForm
             key={index._id}
@@ -35,4 +46,4 @@ class ListOfForms extends React.Component {
   }
 }
 
-export default ListOfForms;
+export default withStyles(useStyles)(ListOfForms);
