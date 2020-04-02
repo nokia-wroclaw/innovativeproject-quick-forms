@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 function Copyright() {
@@ -26,7 +26,7 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -100,9 +100,8 @@ export default function SignIn() {
             variant="contained"
             color="secondary"
             className={classes.submit}
-            onClick={() => {window.open('/api/signin/auth/auth/github', '_parent', 'location=no')}}
           >
-            Sign In with GitHub
+            <a href="/api/signin/auth/github">Sign In with GitHub</a>
           </Button>
           <Grid container>
             <Grid item xs>

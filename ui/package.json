@@ -12,6 +12,8 @@
     "axios": "^0.19.2",
     "cors": "^2.8.5",
     "eslint-config-prettier": "^6.10.0",
+    "http-proxy-middleware": "^1.0.3",
+    "js-cookie": "^2.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-art-svg-renderer": "0.0.1-rc.8",
@@ -44,7 +46,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
