@@ -3,6 +3,7 @@ const router = express.Router();
 const {check, validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user.model');
 
 // todo change jwt to passport-jwt
 
@@ -12,7 +13,7 @@ const jwt = require('jsonwebtoken');
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-const User = require('../models/user.model');
+
 router.get('/', (req, res) =>
     res.send('User route'));
 
