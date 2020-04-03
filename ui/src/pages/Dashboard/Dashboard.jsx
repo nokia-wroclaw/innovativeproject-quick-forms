@@ -12,7 +12,7 @@ const useStyles = () => ({
   buttonStyle: {
     padding: '10px',
     margin: '10px',
-    alignItems: 'center',
+    background: 'linear-gradient(to right, #373b44, #4286f4)',
   },
 });
 
