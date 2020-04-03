@@ -12,11 +12,17 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
     margin: '10px',
   },
+  bar: {
+    background: 'linear-gradient(to right, #373b44, #4286f4)',
+  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
+  },
+  buttons: {
+    margin: '20px',
   },
 }));
 
@@ -25,12 +31,15 @@ const NavBar = ({ history, title }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar className={classes.bar} position="static">
         <Toolbar>
           <Typography variant="h5" className={classes.title}>
             {title}
           </Typography>
-          <Button color="inherit" onClick={() => history.push('/signin')}>
+          <Button className={classes.buttons} color="inherit" onClick={() => history.push('/dashboard')}>
+            Dashboard
+          </Button>
+          <Button className={classes.buttons} color="inherit" onClick={() => history.push('/signin')}>
             Login
           </Button>
         </Toolbar>
