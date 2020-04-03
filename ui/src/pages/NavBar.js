@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '10px',
   },
   bar: {
-    background: 'linear-gradient(to right, #373b44, #4286f4)',
+    background: 'linear-gradient(to right, #2980b9, #6dd5fa)',
   },
   menuButton: {
     marginRight: theme.spacing(2),
