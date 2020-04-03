@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+const {useState} = require("react");
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -46,7 +48,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
+const SignIn = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const {email, password} = formData;
+
   const classes = useStyles();
 
   return (
@@ -124,4 +133,6 @@ export default function SignIn() {
       </Box>
     </Container>
   );
-}
+};
+
+export default SignIn;
