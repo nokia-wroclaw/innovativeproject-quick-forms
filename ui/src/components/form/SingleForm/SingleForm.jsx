@@ -1,4 +1,4 @@
-import React, { useState, setState } from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 });
 
 function SingleForm({formID, template, history}) {
-  const [ifQR,showQR] = useState(false);
+  const [ifQR, showQR] = useState(false);
   const classes = useStyles();
 
   return (
@@ -31,7 +31,7 @@ function SingleForm({formID, template, history}) {
             {template.description}
           </Typography>
           <Typography>
-            { ifQR ?  <QRCode value={`/userform/${formID}`} /> :  null }
+            {ifQR ? <QRCode value={`/userform/${formID}`} /> : null}
           </Typography>
         </CardContent>
       </CardActionArea>

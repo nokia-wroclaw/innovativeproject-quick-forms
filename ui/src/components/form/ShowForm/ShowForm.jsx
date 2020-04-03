@@ -1,9 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import GetForm from '../GetForm/GetForm';
-import MuiForm, {Theme as MuiTheme} from 'rjsf-material-ui';
 import {Container} from '@material-ui/core';
-import {withTheme} from 'react-jsonschema-form';
 
 class ShowForm extends React.Component {
   constructor(props) {
