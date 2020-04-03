@@ -7,10 +7,6 @@ const User = require('../models/user.model');
 
 // todo change jwt to passport-jwt
 
-// @route  GET api/users
-// @desc   Test route
-// @access Public
-
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 

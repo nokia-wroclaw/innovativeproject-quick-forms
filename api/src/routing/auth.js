@@ -9,17 +9,9 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 
-// @route  GET api/auth
-// @desc   Test route
-// @access Public
-
 router.get('/', auth, (req, res) => {
     res.send('Auth route')
 });
-
-// @route  POST api/auth
-// @desc   Authenticate user and get token
-// @access Public
 
 router.post('/',
     [
