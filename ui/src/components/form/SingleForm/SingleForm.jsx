@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, setState } from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {withRouter} from 'react-router-dom';
+import QRCode from 'react-qr-code';
 
 const useStyles = makeStyles({
   root: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles({
 });
 
 function SingleForm({formID, template, history}) {
+  const [ifQR,showQR] = useState(false);
   const classes = useStyles();
 
   return (
@@ -28,6 +30,9 @@ function SingleForm({formID, template, history}) {
           <Typography variant="body2" color="textSecondary" component="p">
             {template.description}
           </Typography>
+          <Typography>
+            { ifQR ?  <QRCode value={`/userform/${formID}`} /> :  null }
+          </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
@@ -38,7 +43,7 @@ function SingleForm({formID, template, history}) {
         >
           Edit
         </Button>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={() => showQR(!ifQR)}>
           Generate QR code
         </Button>
       </CardActions>
