@@ -9,20 +9,29 @@ import {withRouter} from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    padding: '20px',
-    margin: '10px',
+    margin: '0px',
   },
   bar: {
     background: 'linear-gradient(to right, #2980b9, #6dd5fa)',
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  button: {
+    fontSize: 20,
+    fontFamily: 'sans-serif',
+    padding: '40px 100px 40px 5px',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 15,
+      padding: '0',
+    },
   },
   title: {
+    fontSize: 20,
+    padding: '20px 50px 20px 5px',
+    fontFamily: 'sans-serif',
     flexGrow: 1,
-  },
-  buttons: {
-    margin: '20px',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 15,
+      padding: '0 0 0 0',
+    },
   },
 }));
 
@@ -31,20 +40,20 @@ const NavBar = ({history, title}) => {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.bar} position="static">
-        <Toolbar>
-          <Typography variant="h5" className={classes.title}>
+      <AppBar position="static">
+        <Toolbar className={classes.bar}>
+          <Typography className={classes.title}>
             {title}
           </Typography>
           <Button
-            className={classes.buttons}
+            className={classes.button}
             color="inherit"
             onClick={() => history.push('/dashboard')}
           >
             Dashboard
           </Button>
           <Button
-            className={classes.buttons}
+            className={classes.button}
             color="inherit"
             onClick={() => history.push('/signin')}
           >
