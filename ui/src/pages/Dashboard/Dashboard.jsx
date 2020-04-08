@@ -12,6 +12,7 @@ const useStyles = () => ({
   buttonStyle: {
     padding: '10px',
     margin: '10px',
+    fontFamily: 'sans-serif',
     background: 'linear-gradient(to right, #2980b9, #6dd5fa)',
   },
 });
@@ -21,7 +22,7 @@ class Dashboard extends React.Component {
     const {classes} = this.props;
     return (
       <div className={classes.root}>
-        <NavBar title="My forms" />
+        <NavBar title="MY FORMS" />
 
         <Container maxWidth="md">
           <Button
