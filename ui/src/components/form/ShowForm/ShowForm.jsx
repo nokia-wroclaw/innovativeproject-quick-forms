@@ -12,14 +12,20 @@ class ShowForm extends React.Component {
 
   componentDidMount() {
     const {formID} = this.props.match.params;
-    console.log(formID);
-    GetForm(formID).then(res => this.setState({formSchema: res}));
+    this.LoadSchema(formID);
   }
+
+  LoadSchema = formID =>
+    GetForm(formID, '/api/forms/templates/').then(response =>
+      this.setState({formSchema : response.data.template})
+    );
 
   render() {
     return (
       <Container ms={8}>
-        <ShowForm schema={this.state.formSchema} />
+        <div>
+        { JSON.stringify(this.state.formSchema, null, 2) }
+        </div>
       </Container>
     );
   }

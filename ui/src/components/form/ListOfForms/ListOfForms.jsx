@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import GetForm from '../GetForm/GetForm';
 import SingleForm from '../SingleForm/SingleForm';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -20,15 +20,14 @@ class ListOfForms extends React.Component {
   }
 
   componentDidMount() {
-    axios
-      .get(`/api/forms/templates/`)
-      .then(response => {
-        this.setState({listOfForms: response.data});
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.LoadSchema();
   }
+
+  LoadSchema = () => {
+    GetForm('', '/api/forms/templates/').then(response =>
+      this.setState({listOfForms: response.data})
+    );
+  };
 
   render() {
     const {classes} = this.props;

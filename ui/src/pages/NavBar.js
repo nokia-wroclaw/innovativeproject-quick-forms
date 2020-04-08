@@ -1,12 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     padding: '20px',
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = ({ history, title }) => {
+const NavBar = ({history, title}) => {
   const classes = useStyles();
 
   return (
@@ -36,10 +36,18 @@ const NavBar = ({ history, title }) => {
           <Typography variant="h5" className={classes.title}>
             {title}
           </Typography>
-          <Button className={classes.buttons} color="inherit" onClick={() => history.push('/dashboard')}>
+          <Button
+            className={classes.buttons}
+            color="inherit"
+            onClick={() => history.push('/dashboard')}
+          >
             Dashboard
           </Button>
-          <Button className={classes.buttons} color="inherit" onClick={() => history.push('/signin')}>
+          <Button
+            className={classes.buttons}
+            color="inherit"
+            onClick={() => history.push('/signin')}
+          >
             Login
           </Button>
         </Toolbar>

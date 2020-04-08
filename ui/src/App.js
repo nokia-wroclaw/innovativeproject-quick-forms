@@ -8,19 +8,19 @@ import UserForm from './components/form/UserForm/UserForm';
 import ShowForm from './components/form/ShowForm/ShowForm';
 import AddForm from './components/form/AddForm/AddForm';
 import Dashboard from './pages/Dashboard/Dashboard';
-
-// const apiUrl = '/api';
+import ListOfForms from './components/form/ListOfForms/ListOfForms';
 
 const App = () => (
   <div className="App">
     <Switch>
       <Route exact path="/" component={HomePage} />
       <Route exact path="/signin" component={SignIn} />
-        <Route exact path="/signup" component={SignUp} />
+      <Route exact path="/signup" component={SignUp} />
       <Route exact path="/userform/:formID" component={UserForm} />
       <Route exact path="/showform/:formID" component={ShowForm} />
       <Route exact path="/addform" component={AddForm} />
       <Route exact path="/dashboard" component={Dashboard} />
+      <Route exact path="/formslist" component={ListOfForms} />
     </Switch>
   </div>
 );
