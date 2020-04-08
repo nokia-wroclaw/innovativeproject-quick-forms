@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "devStart": "nodemon server.js",
     "test": "./node_modules/.bin/mocha",
     "lint": "./node_modules/.bin/eslint --fix --ignore-path .gitignore .",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --print-width 80 --write --no-bracket-spacing **/*.js"
