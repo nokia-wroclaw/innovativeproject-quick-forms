@@ -1,3 +1,5 @@
+require('dotenv').config();
+const {JWT_SECRET} = process.env;
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -57,10 +59,9 @@ router.post('/login',
                 }
             };
 
-            // todo hide secret
             jwt.sign(
                 payload,
-                "Secret",
+                JWT_SECRET,
                 {expiresIn: 3600},
                 (err, token) => {
                     if (err) throw err;
