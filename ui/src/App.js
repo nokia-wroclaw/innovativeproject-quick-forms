@@ -9,6 +9,7 @@ import ShowForm from './components/form/ShowForm';
 import AddForm from './components/form/AddForm';
 import Dashboard from './pages/Dashboard/Dashboard';
 import ListOfForms from './components/form/ListOfForms';
+import FilledForms from  './components/form/FilledForms';
 
 const App = () => (
   <div className="App">
@@ -21,6 +22,8 @@ const App = () => (
       <Route exact path="/addform" component={AddForm} />
       <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/formslist" component={ListOfForms} />
+      <Route exact path="/filledforms/:templateID" component={FilledForms} />
+
     </Switch>
   </div>
 );
