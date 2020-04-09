@@ -15,8 +15,6 @@ script:
   - docker tag $DOCKER_USERNAME/docker_client registry.heroku.com/$HEROKU_APP_CLIENT/web;
   - docker build -t $DOCKER_USERNAME/docker_backend ./api;
   - docker tag $DOCKER_USERNAME/docker_backend registry.heroku.com/$HEROKU_APP_BACKEND/web;
-  - docker build -t $DOCKER_USERNAME/docker_nginx ./nginx;
-  - docker tag $DOCKER_USERNAME/docker_nginx registry.heroku.com/$HEROKU_APP_NGINX/web;
 
 deploy:
   skip_cleanup: true
@@ -29,8 +27,5 @@ deploy:
     docker push $DOCKER_USERNAME/docker_backend;
     docker push registry.heroku.com/$HEROKU_APP_BACKEND/web;
     heroku container:release web --app $HEROKU_APP_BACKEND;
-    docker push $DOCKER_USERNAME/docker_nginx;
-    docker push registry.heroku.com/$HEROKU_APP_NGINX/web;
-    heroku container:release web --app $HEROKU_APP_NGINX;
   on: 
     branch: master

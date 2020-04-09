@@ -10,8 +10,7 @@ const useStyles = () => ({
     alignItems: 'center',
   },
   buttonStyle: {
-    padding: '10px',
-    margin: '10px',
+    margin: '10px 10px 10px 0px',
     fontFamily: 'sans-serif',
     background: 'linear-gradient(to right, #2980b9, #6dd5fa)',
   },
@@ -24,14 +23,18 @@ class Dashboard extends React.Component {
       <div className={classes.root}>
         <NavBar title="MY FORMS" />
 
-        <Container maxWidth="md">
+        <Container maxWidth="sm">
           <Button
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
+            fullWidth
           >
             Create a new form
           </Button>
+        </Container>
+
+        <Container maxWidth="md">
           <ListOfForms />
         </Container>
       </div>
