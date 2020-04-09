@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   button: {
     fontSize: 20,
     fontFamily: 'sans-serif',
-    padding: '40px 100px 40px 5px',
+    padding: '30px 50px 30px 50px',
     [theme.breakpoints.down('xs')]: {
       fontSize: 15,
       padding: '0',
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     fontSize: 20,
-    padding: '20px 50px 20px 5px',
+    padding: '15px 50px 15px 5px',
     fontFamily: 'sans-serif',
     flexGrow: 1,
     [theme.breakpoints.down('xs')]: {
