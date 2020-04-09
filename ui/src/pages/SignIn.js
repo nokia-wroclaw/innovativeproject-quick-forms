@@ -110,9 +110,9 @@ const SignIn = () => {
             variant="contained"
             color="secondary"
             className={classes.submit}
-            onClick={() => {window.open('/api/signin/auth/auth/github', '_parent', 'location=no')}}
+            onClick={() => {window.open('http://localhost:8080/api/auth/google', '_parent', 'location=no')}}
           >
-            Sign In with GitHub
+            Sign In with Google
           </Button>
           <Grid container>
             <Grid item xs>
