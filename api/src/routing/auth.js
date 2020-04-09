@@ -1,19 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../authorization/authmiddleware');
 const bcrypt = require('bcryptjs');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const passport = require('passport');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 
-router.get('/', auth, (req, res) => {
-    res.send('Auth route')
+
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile']
+}));
+
+router.get('/google/redirect', passport.authenticate('google'), (req, res) =>{
+   res.redirect('http://localhost:3000');
 });
 
-router.post('/',
+router.get('/logout', (req, res) => {
+    res.logout();
+    res.redirect('http://localhost:3000');
+})
+
+router.get('/login', (req, res) => {
+
+})
+
+router.post('/login',
     [
         check('email', 'Please include valid email').isEmail(),
         check('password', 'Password is required')
