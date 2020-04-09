@@ -47,7 +47,8 @@ function SingleForm({formID, title, description, history}) {
         <Button size="small" color="primary" onClick={() => showQR(!ifQR)}>
           Generate QR code
         </Button>
-        <Button size="small" color="primary" onClick={() => DeleteForm(formID)}>
+        <Button size="small" color="primary" onClick={() => {DeleteForm(formID);
+                                                            window.location.reload()}}>
           Delete
         </Button>
       </CardActions>

@@ -33,7 +33,7 @@ export class UserForms extends Component {
     return (
       <Container ms={8}>
         <Form schema={this.state.formScheme} onSubmit={this.handleSubmit}>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" color="primary" type="submit" onClick={ () => window.location.reload()}>
             Submit
           </Button>
         </Form>
