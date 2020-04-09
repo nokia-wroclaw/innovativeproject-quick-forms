@@ -1,6 +1,6 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import ListOfForms from '../../components/form/ListOfForms/ListOfForms';
+import ListOfForms from '../../components/form/ListOfForms';
 import NavBar from '../NavBar';
 import {Button, Container} from '@material-ui/core';
 

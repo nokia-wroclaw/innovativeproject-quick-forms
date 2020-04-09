@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-function SingleForm({formID, template, history}) {
+function SingleForm({formID, title, description, history}) {
   const [ifQR, showQR] = useState(false);
   const classes = useStyles();
 
@@ -25,10 +25,10 @@ function SingleForm({formID, template, history}) {
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {template.title}
+            {title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {template.description}
+            {description}
           </Typography>
           <Typography>
             {ifQR ? <QRCode value={`/userform/${formID}`} /> : null}

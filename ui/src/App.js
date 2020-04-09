@@ -4,11 +4,11 @@ import {Route, Switch} from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage';
-import UserForm from './components/form/UserForm/UserForm';
-import ShowForm from './components/form/ShowForm/ShowForm';
-import AddForm from './components/form/AddForm/AddForm';
+import UserForm from './components/form/UserForm';
+import ShowForm from './components/form/ShowForm';
+import AddForm from './components/form/AddForm';
 import Dashboard from './pages/Dashboard/Dashboard';
-import ListOfForms from './components/form/ListOfForms/ListOfForms';
+import ListOfForms from './components/form/ListOfForms';
 
 const App = () => (
   <div className="App">

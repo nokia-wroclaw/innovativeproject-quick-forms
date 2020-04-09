@@ -1,5 +1,5 @@
 import React from 'react';
-import SubmitForm from '../SubmitForm/SubmitForm';
+import SubmitForm from './SubmitForm';
 
 class AddForm extends React.Component {
   constructor(props) {

@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const templateModel = require('./template.model');
 
 const filledFormSchema = new mongoose.Schema({
-    template: templateModel,
+    dataForm: Object,
+    templateID: String,
     userID: String,
     ownerID: String
 });

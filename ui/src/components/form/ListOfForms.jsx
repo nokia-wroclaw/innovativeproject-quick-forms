@@ -1,6 +1,6 @@
 import React from 'react';
-import GetForm from '../GetForm/GetForm';
-import SingleForm from '../SingleForm/SingleForm';
+import GetForm from './GetForm';
+import SingleForm from './SingleForm';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
@@ -30,9 +30,9 @@ class ListOfForms extends React.Component {
   }
 
   LoadSchema = () => {
-    GetForm('', '/api/forms/templates/').then(response =>
+    GetForm('', '/api/forms/templates/').then(response => {
       this.setState({listOfForms: response.data})
-    );
+    });
   };
 
   render() {
@@ -47,7 +47,8 @@ class ListOfForms extends React.Component {
                   className={classes.paper}
                   key={index._id}
                   formID={index._id}
-                  template={index.template}
+                  title={index.title}
+                  description={index.description}
                 />
               </Grid>
             ))}

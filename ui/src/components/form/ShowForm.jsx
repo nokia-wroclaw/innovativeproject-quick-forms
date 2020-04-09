@@ -1,5 +1,5 @@
 import React from 'react';
-import GetForm from '../GetForm/GetForm';
+import GetForm from './GetForm';
 import {Container} from '@material-ui/core';
 
 class ShowForm extends React.Component {
@@ -17,7 +17,7 @@ class ShowForm extends React.Component {
 
   LoadSchema = formID =>
     GetForm(formID, '/api/forms/templates/').then(response =>
-      this.setState({formSchema : response.data.template})
+      this.setState({formSchema : response.data})
     );
 
   render() {
