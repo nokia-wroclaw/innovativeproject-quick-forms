@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {withRouter} from 'react-router-dom';
 import QRCode from 'react-qr-code';
+import DeleteForm from './DeleteForm';
 
 const useStyles = makeStyles({
   root: {
@@ -45,6 +46,9 @@ function SingleForm({formID, title, description, history}) {
         </Button>
         <Button size="small" color="primary" onClick={() => showQR(!ifQR)}>
           Generate QR code
+        </Button>
+        <Button size="small" color="primary" onClick={() => DeleteForm(formID)}>
+          Delete
         </Button>
       </CardActions>
     </Card>
