@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
 import {Button, Container} from '@material-ui/core';
-import axios from 'axios';
-import SubmitForm from '../SubmitForm/SubmitForm';
-
+import SubmitForm from './SubmitForm';
+import GetForm from './GetForm';
 const Form = withTheme(MuiTheme);
 
 export class UserForms extends Component {
@@ -12,27 +11,29 @@ export class UserForms extends Component {
     super(props);
     this.state = {
       formScheme: {},
+      formID: ""
     };
   }
+
   componentDidMount() {
-    const { formID } = this.props.match.params;
-    axios
-      .get(`/api/forms/templates/${formID}`)
-      .then(response => {
-        this.setState({formScheme: response.data.template});
-      })
-      .catch(error => {
-        // handle error
-        console.log(error);
-      });
+    let id = this.props.match.params.formID;
+    this.setState({formID: id});
+    this.LoadSchema(id);
   }
 
-  handleSubmit = ({formData}) => SubmitForm(formData, '/api/forms/filled-forms/');
+  LoadSchema = formID =>
+    GetForm(formID, '/api/forms/templates/').then(response =>
+      this.setState({formScheme: response.data})
+    );
+
+  handleSubmit = ({formData}) =>
+    SubmitForm({dataForm: formData,templateID: this.state.formID}, '/api/forms/filled-forms/');
+
   render() {
     return (
       <Container ms={8}>
         <Form schema={this.state.formScheme} onSubmit={this.handleSubmit}>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" color="primary" type="submit" onClick={ () => window.location.reload()}>
             Submit
           </Button>
         </Form>

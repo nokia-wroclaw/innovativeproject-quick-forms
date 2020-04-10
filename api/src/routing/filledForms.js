@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const forms = await filledForm.findById(req.params.id);
+        const forms = await filledForm.find({templateID: req.params.id});
         res.status(200).json(forms);
     } catch (err) {
         res.status(404).json({
@@ -27,6 +27,7 @@ router.get('/:id', async (req, res) => {
         });
     }
 });
+
 
 router.post('/', async (req, res) => {
     try {
@@ -37,7 +38,7 @@ router.post('/', async (req, res) => {
         res.status(400).json({ message: err });
     }
 });
-
+/*
 router.delete('/:id', async(req, res) => {
     try{
         const removedForm = await filledForm.findByIdAndDelete(req.params.id);
@@ -46,5 +47,17 @@ router.delete('/:id', async(req, res) => {
         res.status(404).json({message: err});
     }
 });
+*/
+router.delete('/:id', async(req, res) => {
+
+    await filledForm.remove({templateID: req.params.id}, function (error) {
+        if(error)
+            res.status(404).json({message: error});
+        else
+            res.status(200);
+
+        });
+    }
+);
 
 module.exports = router;

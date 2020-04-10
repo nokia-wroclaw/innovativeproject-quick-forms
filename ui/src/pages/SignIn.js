@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-const {useState} = require("react");
+const {useState} = require('react');
 
 function Copyright() {
   return (
@@ -49,11 +49,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = () => {
+  // eslint-disable-next-line
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-
+  // eslint-disable-next-line
   const {email, password} = formData;
 
   const classes = useStyles();
@@ -101,7 +102,9 @@ const SignIn = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => {window.open('/', '_parent', 'location=no')}}
+            onClick={() => {
+              window.open('/', '_parent', 'location=no');
+            }}
           >
             Sign In
           </Button>
@@ -110,9 +113,10 @@ const SignIn = () => {
             variant="contained"
             color="secondary"
             className={classes.submit}
+          feat/authentication
             onClick={() => {window.open('http://localhost:8080/api/auth/google', '_parent', 'location=no')}}
           >
-            Sign In with Google
+            develop
           </Button>
           <Grid container>
             <Grid item xs>

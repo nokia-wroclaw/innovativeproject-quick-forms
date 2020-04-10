@@ -1,5 +1,5 @@
 import React from 'react';
-import SubmitForm from '../SubmitForm/SubmitForm';
+import SubmitForm from './SubmitForm';
 
 class AddForm extends React.Component {
   constructor(props) {
@@ -8,7 +8,10 @@ class AddForm extends React.Component {
   }
 
   handleSubmit = () => {
-    SubmitForm(this.fileInput.current.files[0], 'api/forms/templates');
+    SubmitForm(
+      this.fileInput.current.files[0],
+      'http://localhost:8080/api/forms/templates'
+    );
   };
 
   render() {
