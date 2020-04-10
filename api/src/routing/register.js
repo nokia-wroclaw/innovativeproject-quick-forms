@@ -1,3 +1,5 @@
+require('dotenv').config();
+const {JWT_SECRET} = process.env;
 const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator');
@@ -32,7 +34,7 @@ router.post('/',
         if (user){
            return res.status(400).json({errors: [{msg: "User already exists"}]});
         }
-        // todo : change to req.body
+
         user = new User({
             name,
             email,
@@ -49,10 +51,9 @@ router.post('/',
             }
         };
 
-        // todo hide secret
         jwt.sign(
             payload,
-            "Secret",
+            JWT_SECRET,
             {expiresIn: 3600},
             (err, token) => {
             if (err) throw err;

@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "devStart": "nodemon server.js",
     "test": "./node_modules/.bin/mocha",
     "lint": "./node_modules/.bin/eslint --fix --ignore-path .gitignore .",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --print-width 80 --write --no-bracket-spacing **/*.js"
@@ -17,6 +18,7 @@
     "body-parser": "^1.19.0",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.5",
+    "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "custom-env": "^2.0.1",
     "express": "^4.17.1",
@@ -27,10 +29,13 @@
     "passport": "^0.4.1",
     "passport-github": "^1.1.0",
     "passport-github2": "^0.1.11",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "rjsf-material-ui": "^0.3.9"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.10.0",
@@ -39,6 +44,7 @@
     "express-validator": "^6.4.0",
     "mocha": "^7.1.0",
     "nodemon": "^2.0.2",
+    "passport-google-oauth20": "^2.0.0",
     "prettier": "1.19.1",
     "request": "^2.88.2"
   }
