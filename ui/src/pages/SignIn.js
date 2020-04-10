@@ -113,10 +113,9 @@ const SignIn = () => {
             variant="contained"
             color="secondary"
             className={classes.submit}
-          feat/authentication
             onClick={() => {window.open('http://localhost:8080/api/auth/google', '_parent', 'location=no')}}
           >
-            develop
+            Sign in with google
           </Button>
           <Grid container>
             <Grid item xs>
