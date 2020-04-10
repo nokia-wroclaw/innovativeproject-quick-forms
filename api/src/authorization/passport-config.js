@@ -2,8 +2,7 @@ require('dotenv').config()
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20')
 const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET} = process.env
-let User = require('../models/user.model')
-
+const User = require('../models/user.model')
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -22,7 +21,6 @@ passport.use(
         callbackURL: '/api/auth/google/redirect'
     },
         (accessToken, refreshToken, profile, done) => {
-            console.log(profile);
             User.findOne({googleId:profile.id}).then(currentUser => {
                 if (!currentUser){
                     new User({
