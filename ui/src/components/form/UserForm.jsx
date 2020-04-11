@@ -27,13 +27,13 @@ export class UserForms extends Component {
     );
 
   handleSubmit = ({formData}) =>
-    SubmitForm({dataForm: formData,templateID: this.state.formID}, '/api/forms/filled-forms/');
+    SubmitForm({dataForm: formData,templateID: this.state.formID}, '/api/forms/filled-forms/').then(() => window.location.replace('/'));
 
   render() {
     return (
       <Container ms={8}>
         <Form schema={this.state.formScheme} onSubmit={this.handleSubmit}>
-          <Button variant="contained" color="primary" type="submit" onClick={ () => window.location.reload()}>
+          <Button variant="contained" color="primary" type="submit">
             Submit
           </Button>
         </Form>

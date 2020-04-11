@@ -51,6 +51,14 @@ function SingleForm({formID, title, description, history}) {
                                                             window.location.reload()}}>
           Delete
         </Button>
+
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => history.push(`/filledforms/${formID}`)}
+        >
+          Filled Forms
+        </Button>
       </CardActions>
     </Card>
   );

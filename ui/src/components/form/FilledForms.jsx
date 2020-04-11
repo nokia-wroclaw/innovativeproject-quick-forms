@@ -20,20 +20,15 @@ class ListOfFilledForms extends React.Component {
       console.log(response.data);
       this.setState({filledForms : response.data})}
     );
+    
+    _render(obj){
+      return <code>{JSON.stringify(obj, null, 2)}</code>
+   }
 
-  render() {
-
-    /// Zrobic tu jakiegos foreach'a i ubrac to w material ui cnie <3 dla cb.
-    return (
-        <div> 
-        {JSON.stringify(this.state.filledForms[0], null, 2)}
-        <br></br>
-        {JSON.stringify(this.state.filledForms[1], null, 2)}
-        <br></br>
-        {JSON.stringify(this.state.filledForms[2], null, 2)}
-        </div>
-    );
-  }
+    render() {
+      return (
+        this.state.filledForms.map(i => this._render(i.dataForm)));
+    }
 }
 
 export default ListOfFilledForms;
