@@ -21,10 +21,11 @@ passport.use(
         callbackURL: '/api/auth/google/redirect'
     },
         (accessToken, refreshToken, profile, done) => {
+            console.log(profile);
+
             User.findOne({googleId:profile.id}).then(currentUser => {
                 if (!currentUser){
                     new User({
-                        name: profile.displayName,
                         googleId: profile.id
                     }).save().then(newUser => {
                         done(null, newUser);
