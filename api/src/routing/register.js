@@ -4,25 +4,39 @@ const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const generateToken = require('../authorization/generateToken')
 
 // todo change jwt to passport-jwt
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+const hashPassword = async (password) => {
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+    return password
+}
+
+const createUser = (name, email, password) => {
+    return new User({
+        name,
+        email,
+        password
+    });
+}
+
+const checkCredentials = () => {
+        check('name', 'Name is required').not().isEmpty();
+        check('email', 'Please include valid email').isEmail();
+        check('password', 'Please enter password with 6 or more characters')
+            .isLength({min : 6});
+}
+
 router.get('/', (req, res) =>
     res.send('User route'));
 
-router.post('/',
-    [
-    check('name', 'Name is required').not().isEmpty(),
-        check('email', 'Please include valid email').isEmail(),
-        check('password', 'Please enter password with 6 or more characters')
-            .isLength({min : 6})
-    ],
-   async (req, res) => {
+router.post('/', checkCredentials, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()){
         return res.status(400).json({errors : errors.array()});
@@ -35,14 +49,8 @@ router.post('/',
            return res.status(400).json({errors: [{msg: "User already exists"}]});
         }
 
-        user = new User({
-            name,
-            email,
-            password
-        });
-
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
+        user = createUser(name, email, password)
+        user.password = hashPassword(password);
         await user.save();
 
         const payload = {
@@ -50,15 +58,7 @@ router.post('/',
                 id: user.id
             }
         };
-
-        jwt.sign(
-            payload,
-            JWT_SECRET,
-            {expiresIn: 3600},
-            (err, token) => {
-            if (err) throw err;
-            res.json({token});
-        });
+        res.json(generateToken(payload));
 
     } catch(err){
         console.error(err.message);

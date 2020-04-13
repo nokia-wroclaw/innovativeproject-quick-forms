@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-const {COOKIE_KEY} = process.env;
+const {COOKIE_KEY, EXPIRY_TIME } = process.env;
 const app = express();
 const cors = require('cors');
 const passport = require('passport');
@@ -13,10 +13,8 @@ const nativeAuthRoute = require('./src/routing/nativeAuth');
 const googleAuthRoute = require('./src/routing/googleAuth')
 const registerRoute = require('./src/routing/register');
 
-const DAY = 24 * 60 * 60 * 1000;
-
 app.use(cookieSession({
-  maxAge:DAY,
+  maxAge:EXPIRY_TIME,
   keys: [COOKIE_KEY]
 }))
 

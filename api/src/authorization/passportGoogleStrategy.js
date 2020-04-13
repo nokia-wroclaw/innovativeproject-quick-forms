@@ -29,7 +29,7 @@ const strategyOptions = {
 
 
 const verifyCallback = async (accessToken, refreshToken, profile, done) => {
-    verifyUser(profile.id, profile.emails[0].value, done);
+    await verifyUser(profile.id, profile.emails[0].value, done);
 }
 
 passport.serializeUser((user, done) => {
