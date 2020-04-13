@@ -13,7 +13,8 @@ router.use(express.urlencoded({ extended: true }));
 
 
 router.get('/google', passport.authenticate('google', {
-    scope: ['email']
+    scope: ['https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email']
 }));
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res) =>{
