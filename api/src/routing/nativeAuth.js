@@ -1,27 +1,30 @@
 require('dotenv').config();
-const {JWT_SECRET, CLIENT_API_URL} = process.env;
+const {CLIENT_API_URL, JWT_SECRET, EXPIRY_TIME } = process.env;
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
-const generateToken = require('../authorization/generateToken')
+const validateToken = require('../authorization/validateToken');
+const generateToken = require('../authorization/generateToken');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-
 
 router.get('/logout', (req, res) => {
     res.logout();
     res.redirect(CLIENT_API_URL);
 })
 
-const checkCredentials = () => {
-    check('email', 'Please include valid email').isEmail();
-    check('password', 'Password is required').exists();
-}
+router.get('/protected',
+    validateToken,
+    function(req, res) {
+        res.sendStatus(200);
+    });
 
-router.post('/login', checkCredentials,
+router.post('/login', [
+    check('email', 'Please include valid email').isEmail(),
+    check('password', 'Password is required').exists()],
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()){
@@ -45,8 +48,8 @@ router.post('/login', checkCredentials,
                     id: user.id
                 }
             };
-
-            res.json(generateToken(payload));
+            const token = generateToken(payload);
+            res.json({token});
 
         } catch(err){
             console.error(err.message);

@@ -1,21 +1,18 @@
 require('dotenv').config();
-const {JWT_SECRET} = process.env;
+const {JWT_SECRET, EXPIRY_TIME } = process.env;
 const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
-const generateToken = require('../authorization/generateToken')
-
-// todo change jwt to passport-jwt
+const generateToken = require('../authorization/generateToken');
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 const hashPassword = async (password) => {
     const salt = await bcrypt.genSalt(10);
-    password = await bcrypt.hash(password, salt);
-    return password
+    return await bcrypt.hash(password, salt);
 }
 
 const createUser = (name, email, password) => {
@@ -26,17 +23,18 @@ const createUser = (name, email, password) => {
     });
 }
 
-const checkCredentials = () => {
-        check('name', 'Name is required').not().isEmpty();
-        check('email', 'Please include valid email').isEmail();
-        check('password', 'Please enter password with 6 or more characters')
-            .isLength({min : 6});
-}
 
-router.get('/', (req, res) =>
+router.get('/',  (req, res) =>
     res.send('User route'));
 
-router.post('/', checkCredentials, async (req, res) => {
+router.post('/register',
+    [
+        check('name', 'Name is required').not().isEmpty(),
+        check('email', 'Please include valid email').isEmail(),
+        check('password', 'Please enter password with 6 or more characters')
+        .isLength({min : 6})
+    ],
+    async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()){
         return res.status(400).json({errors : errors.array()});
@@ -49,8 +47,8 @@ router.post('/', checkCredentials, async (req, res) => {
            return res.status(400).json({errors: [{msg: "User already exists"}]});
         }
 
-        user = createUser(name, email, password)
-        user.password = hashPassword(password);
+        user = createUser(name, email, password);
+        user.password = await hashPassword(user.password)
         await user.save();
 
         const payload = {
@@ -58,7 +56,9 @@ router.post('/', checkCredentials, async (req, res) => {
                 id: user.id
             }
         };
-        res.json(generateToken(payload));
+
+        const token = generateToken(payload);
+        res.json({token});
 
     } catch(err){
         console.error(err.message);

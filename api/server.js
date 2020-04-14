@@ -13,14 +13,8 @@ const nativeAuthRoute = require('./src/routing/nativeAuth');
 const googleAuthRoute = require('./src/routing/googleAuth')
 const registerRoute = require('./src/routing/register');
 
-app.use(cookieSession({
-  maxAge:EXPIRY_TIME,
-  keys: [COOKIE_KEY]
-}))
 
 app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(cors());
 
 app.use('/api/forms/templates', templatesRoute);

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const generateToken = require('../authorization/generateToken')
 const {CLIENT_API_URL} = process.env;
 
 const EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email';
@@ -11,7 +13,14 @@ router.get('/google', passport.authenticate('google', {
 }));
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res) =>{
-    res.redirect(CLIENT_API_URL);
+    const user = req.user;
+    const payload = {
+        user: {
+            id: user.id
+        }
+    };
+    res.status(200).cookie('access_token', generateToken(payload)).redirect(CLIENT_API_URL);
+
 });
 
 
