@@ -1,40 +1,32 @@
 require('dotenv').config();
-const {JWT_SECRET} = process.env;
+const {CLIENT_API_URL} = process.env;
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
-const passport = require('passport');
+const validateToken = require('../authorization/authenticate');
+const generateToken = require('../authorization/generateToken');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-
-
-router.get('/google', passport.authenticate('google', {
-    scope: ['profile']
-}));
-
-router.get('/google/redirect', passport.authenticate('google'), (req, res) =>{
-   res.redirect('http://localhost:3000');
-});
-
 router.get('/logout', (req, res) => {
     res.logout();
-    res.redirect('http://localhost:3000');
+    res.redirect(CLIENT_API_URL);
 })
 
-router.get('/login', (req, res) => {
-
-})
+router.get('/protected',
+    validateToken,
+    function(req, res) {
+        res.sendStatus(200);
+    });
 
 router.post('/login',
     [
-        check('email', 'Please include valid email').isEmail(),
-        check('password', 'Password is required')
-            .exists()
-    ],
+    check('email', 'Please include valid email').isEmail(),
+    check('password', 'Password is required').exists()],
+
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()){
@@ -59,14 +51,14 @@ router.post('/login',
                 }
             };
 
-            jwt.sign(
-                payload,
-                JWT_SECRET,
-                {expiresIn: 3600},
-                (err, token) => {
-                    if (err) throw err;
-                    res.json({token});
-                });
+            const token = generateToken(payload);
+            res.status(200)
+                .cookie('access_token', token, { httpOnly: true })
+                .json({
+                    success: true
+                    })
+
+
 
         } catch(err){
             console.error(err.message);
