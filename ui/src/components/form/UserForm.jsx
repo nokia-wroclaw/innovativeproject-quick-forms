@@ -11,7 +11,7 @@ export class UserForms extends Component {
     super(props);
     this.state = {
       formScheme: {},
-      formID: ""
+      formID: '',
     };
   }
 
@@ -27,7 +27,14 @@ export class UserForms extends Component {
     );
 
   handleSubmit = ({formData}) =>
-    SubmitForm({dataForm: formData,templateID: this.state.formID}, '/api/forms/filled-forms/').then(() => window.location.replace('/'));
+    SubmitForm(
+      {
+        dataForm: formData,
+        templateID: this.state.formID,
+        userID: this.state.formScheme.userID,
+      },
+      '/api/forms/filled-forms/'
+    ).then(() => window.location.replace('/'));
 
   render() {
     return (

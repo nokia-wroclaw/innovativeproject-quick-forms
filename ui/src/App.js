@@ -6,10 +6,9 @@ import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage';
 import UserForm from './components/form/UserForm';
 import ShowForm from './components/form/ShowForm';
-import AddForm from './components/form/AddForm';
 import Dashboard from './pages/Dashboard/Dashboard';
 import ListOfForms from './components/form/ListOfForms';
-import FilledForms from  './components/form/FilledForms';
+import FilledForms from './components/form/FilledForms';
 
 const App = () => (
   <div className="App">
@@ -19,11 +18,9 @@ const App = () => (
       <Route exact path="/signup" component={SignUp} />
       <Route exact path="/userform/:formID" component={UserForm} />
       <Route exact path="/showform/:formID" component={ShowForm} />
-      <Route exact path="/addform" component={AddForm} />
       <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/formslist" component={ListOfForms} />
       <Route exact path="/filledforms/:templateID" component={FilledForms} />
-
     </Switch>
   </div>
 );

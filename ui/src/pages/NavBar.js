@@ -42,9 +42,7 @@ const NavBar = ({history, title}) => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar className={classes.bar}>
-          <Typography className={classes.title}>
-            {title}
-          </Typography>
+          <Typography className={classes.title}>{title}</Typography>
           <Button
             className={classes.button}
             color="inherit"

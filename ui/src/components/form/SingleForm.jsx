@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   },
   qr: {
     marginTop: 5,
-  }
+  },
 });
 
 function SingleForm({formID, title, description, history}) {
@@ -50,8 +50,14 @@ function SingleForm({formID, title, description, history}) {
         <Button size="small" color="primary" onClick={() => showQR(!ifQR)}>
           QR code
         </Button>
-        <Button size="small" color="primary" onClick={() => {DeleteForm(formID);
-                                                            window.location.reload()}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => {
+            DeleteForm(formID);
+            window.location.reload();
+          }}
+        >
           Delete
         </Button>
 
