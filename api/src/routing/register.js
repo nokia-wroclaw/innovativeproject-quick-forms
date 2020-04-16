@@ -1,5 +1,5 @@
 require('dotenv').config();
-const {JWT_SECRET, EXPIRY_TIME } = process.env;
+const {CLIENT_API_URL } = process.env;
 const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator');
@@ -58,7 +58,11 @@ router.post('/register',
         };
 
         const token = generateToken(payload);
-        res.json({token});
+        res.status(200)
+            .cookie('access_token', token, { httpOnly: true})
+            .json({
+                success: true
+            })
 
     } catch(err){
         console.error(err.message);

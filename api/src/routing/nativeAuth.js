@@ -1,12 +1,12 @@
 require('dotenv').config();
-const {CLIENT_API_URL, JWT_SECRET, EXPIRY_TIME } = process.env;
+const {CLIENT_API_URL} = process.env;
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
-const validateToken = require('../authorization/validateToken');
+const validateToken = require('../authorization/authenticate');
 const generateToken = require('../authorization/generateToken');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -22,9 +22,11 @@ router.get('/protected',
         res.sendStatus(200);
     });
 
-router.post('/login', [
+router.post('/login',
+    [
     check('email', 'Please include valid email').isEmail(),
     check('password', 'Password is required').exists()],
+
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()){
@@ -48,8 +50,15 @@ router.post('/login', [
                     id: user.id
                 }
             };
+
             const token = generateToken(payload);
-            res.json({token});
+            res.status(200)
+                .cookie('access_token', token, { httpOnly: true })
+                .json({
+                    success: true
+                    })
+
+
 
         } catch(err){
             console.error(err.message);
