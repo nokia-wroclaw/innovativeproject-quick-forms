@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const templateSchema = new mongoose.Schema({
-    name: String,
-    surname: String,
-    email: String,
-    phoneNumber: String
-
+let templateSchema = new mongoose.Schema({
+    title: String,
+    description: String,
+    type: Object,
+    required: Array,
+    properties: mongoose.Schema.Types.Mixed
 });
 
 module.exports = templateSchema;

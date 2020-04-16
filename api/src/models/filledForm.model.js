@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const prototypeModel = require('./template.model');
+const templateModel = require('./template.model');
 
 const filledFormSchema = new mongoose.Schema({
-    template: prototypeModel,
+    dataForm: Object,
+    templateID: String,
     userID: String,
-    ownerID: String
 });
 
 module.exports = filledFormSchema;

@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
 import {Button, Container} from '@material-ui/core';
-import axios from 'axios';
-import SubmitForm from '../SubmitForm/SubmitForm';
-
+import SubmitForm from './SubmitForm';
+import GetForm from './GetForm';
 const Form = withTheme(MuiTheme);
 
 export class UserForms extends Component {
@@ -12,22 +11,23 @@ export class UserForms extends Component {
     super(props);
     this.state = {
       formScheme: {},
+      formID: ""
     };
   }
 
   componentDidMount() {
-    axios
-      .get('/api/forms/5e738e611c9d4400008103ca')
-      .then(response => {
-        this.setState({formScheme: response.data});
-      })
-      .catch(error => {
-        // handle error
-        console.log(error);
-      });
+    let id = this.props.match.params.formID;
+    this.setState({formID: id});
+    this.LoadSchema(id);
   }
 
-  handleSubmit = ({formData}) => SubmitForm(formData, '/api/forms/aaa');
+  LoadSchema = formID =>
+    GetForm(formID, '/api/forms/templates/').then(response =>
+      this.setState({formScheme: response.data})
+    );
+
+  handleSubmit = ({formData}) =>
+    SubmitForm({dataForm: formData,templateID: this.state.formID}, '/api/forms/filled-forms/').then(() => window.location.replace('/'));
 
   render() {
     return (

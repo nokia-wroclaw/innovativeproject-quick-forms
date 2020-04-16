@@ -8,11 +8,15 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
+    "art": "^0.10.3",
     "axios": "^0.19.2",
     "cors": "^2.8.5",
     "eslint-config-prettier": "^6.10.0",
+    "http-proxy-middleware": "^1.0.3",
+    "js-cookie": "^2.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
+    "react-art-svg-renderer": "0.0.1-rc.8",
     "react-dom": "^16.13.0",
     "react-jsonschema-form": "^1.8.1",
     "react-router-dom": "^5.1.2",
@@ -42,7 +46,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
@@ -55,6 +58,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "prettier": "1.19.1"
+    "prettier": "1.19.1",
+    "react-qr-code": "^0.1.3"
   }
 }
