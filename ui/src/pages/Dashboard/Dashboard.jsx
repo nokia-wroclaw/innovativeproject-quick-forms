@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
       <div className={classes.root}>
         <NavBar title="MY FORMS" />
 
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <Button
             className={classes.buttonStyle}
             variant="contained"
@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
           </Button>
         </Container>
 
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <ListOfForms />
         </Container>
       </div>

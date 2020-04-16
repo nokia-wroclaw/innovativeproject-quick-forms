@@ -15,6 +15,9 @@ const useStyles = makeStyles({
     maxWidth: 345,
     margin: '10px 10px',
   },
+  qr: {
+    marginTop: 5,
+  }
 });
 
 function SingleForm({formID, title, description, history}) {
@@ -31,7 +34,7 @@ function SingleForm({formID, title, description, history}) {
           <Typography variant="body2" color="textSecondary" component="p">
             {description}
           </Typography>
-          <Typography>
+          <Typography className="qr" align="center">
             {ifQR ? <QRCode value={`/userform/${formID}`} /> : null}
           </Typography>
         </CardContent>
@@ -45,7 +48,7 @@ function SingleForm({formID, title, description, history}) {
           Edit
         </Button>
         <Button size="small" color="primary" onClick={() => showQR(!ifQR)}>
-          Generate QR code
+          QR code
         </Button>
         <Button size="small" color="primary" onClick={() => {DeleteForm(formID);
                                                             window.location.reload()}}>
