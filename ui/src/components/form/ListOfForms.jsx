@@ -3,6 +3,9 @@ import GetForm from './GetForm';
 import SingleForm from './SingleForm';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Cookies from 'js-cookie';
+
+const jwtDecode = require('jwt-decode');
 
 const useStyles = theme => ({
   root: {
@@ -22,16 +25,19 @@ class ListOfForms extends React.Component {
     super(props);
     this.state = {
       listOfForms: [],
+      userID: '',
     };
   }
 
   componentDidMount() {
-    this.LoadSchema();
+    const token = Cookies.get('access_token');
+    this.setState({userID: jwtDecode(token).user.id});
+    this.LoadSchema(jwtDecode(token).user.id);
   }
 
-  LoadSchema = () => {
-    GetForm('', '/api/forms/templates/').then(response => {
-      this.setState({listOfForms: response.data})
+  LoadSchema = userID => {
+    GetForm(userID, `/api/forms/templates/user`).then(response => {
+      this.setState({listOfForms: response.data});
     });
   };
 

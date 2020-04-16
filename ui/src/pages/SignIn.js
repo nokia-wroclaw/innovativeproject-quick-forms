@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import axios from 'axios';
 
 require('dotenv').config();
+
 const {SERVER_API_URL} = process.env;
 
 const {useState} = require('react');
@@ -62,29 +63,35 @@ const SignIn = () => {
   const {email, password} = formData;
 
   const handleSubmit = e => {
-      e.preventDefault()
-      const {email, password} = formData
+    e.preventDefault();
+    const {email, password} = formData;
 
-      let body = JSON.stringify({
-          email:email,
-          password:password
-      })
-      console.log(email);
-      console.log(password);
+    const body = JSON.stringify({
+      email,
+      password,
+    });
+    console.log(email);
+    console.log(password);
 
-      axios.post(`/api/auth/login`, body,
+    axios
+      .post(
+        '/api/auth/login',
+        body,
 
-      {withCredentials: true,
+        {
+          withCredentials: true,
           headers: {
-              "Content-Type": "application/json"
-          }}
-
-          ).then(res => {
-           if (res.data.success){
-               window.open(`/`, '_parent', 'location=no')
-           }
-      }).catch(e => console.log(e))
-  }
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(res => {
+        if (res.data.success) {
+          window.open('/', '_parent', 'location=no');
+        }
+      })
+      .catch(e => console.log(e));
+  };
 
   const classes = useStyles();
 
@@ -109,7 +116,7 @@ const SignIn = () => {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={e => setFormData({ ...formData, email: e.target.value })}
+            onChange={e => setFormData({...formData, email: e.target.value})}
           />
           <TextField
             variant="outlined"
@@ -121,7 +128,7 @@ const SignIn = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={e => setFormData({ ...formData, password: e.target.value })}
+            onChange={e => setFormData({...formData, password: e.target.value})}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -133,8 +140,8 @@ const SignIn = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={(e) => {
-              handleSubmit(e)
+            onClick={e => {
+              handleSubmit(e);
             }}
           >
             Sign In
@@ -144,7 +151,9 @@ const SignIn = () => {
             variant="contained"
             color="secondary"
             className={classes.submit}
-            onClick={() => {window.open(`/api/auth/google`, '_parent', 'location=no')}}
+            onClick={() => {
+              window.open('/api/auth/google', '_parent', 'location=no');
+            }}
           >
             Sign in with google
           </Button>

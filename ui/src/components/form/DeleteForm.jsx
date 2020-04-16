@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const DeleteForm = (formID) => {
+const DeleteForm = formID => {
   axios.delete(`/api/forms/filled-forms/${formID}`).catch(error => {
     // handle error
     console.log(error);
