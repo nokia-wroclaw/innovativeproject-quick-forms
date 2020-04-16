@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
           </Button>
         </Container>
 
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
           <ListOfForms />
         </Container>
       </div>
