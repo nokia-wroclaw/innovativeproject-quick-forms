@@ -21,10 +21,7 @@ router.get('/:id', async (req, res) => {
     const forms = await templateForm.findById(req.params.id);
     res.status(200).json(forms);
   } catch (err) {
-    res.status(404).json({
-      message: `id: ${req.params.id} not found`,
-      status: err,
-    });
+    res.status(404).json({message: err});
   }
 });
 

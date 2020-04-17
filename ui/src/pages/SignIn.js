@@ -15,7 +15,7 @@ import Container from '@material-ui/core/Container';
 import axios from 'axios';
 
 require('dotenv').config();
-
+// eslint-disable-next-line
 const {SERVER_API_URL} = process.env;
 
 const {useState} = require('react');
