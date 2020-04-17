@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   text: {
     margin: 10,
     fontSize: 20,
@@ -26,8 +26,9 @@ export default function Content(props) {
       </Typography>
       <Divider />
       <Typography className={classes.text}>
-        Usage is really simple. You just need to create an account. And then you will be redirected to your dashboard,
-        where you can create new forms and share them with others!. Form filling process has never been that easy!
+        Usage is really simple. You just need to create an account. And then you
+        will be redirected to your dashboard, where you can create new forms and
+        share them with others!. Form filling process has never been that easy!
       </Typography>
     </Grid>
   );

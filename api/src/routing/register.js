@@ -1,14 +1,16 @@
 require('dotenv').config();
-const {CLIENT_API_URL} = process.env;
+
+const { CLIENT_API_URL } = process.env;
 const express = require('express');
+
 const router = express.Router();
-const {check, validationResult} = require('express-validator');
+const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
 const generateToken = require('../authorization/generateToken');
 
 router.use(express.json());
-router.use(express.urlencoded({extended: true}));
+router.use(express.urlencoded({ extended: true }));
 
 const hashPassword = async password => {
   const salt = await bcrypt.genSalt(10);
@@ -19,7 +21,7 @@ const createUser = (name, email, password) => {
   return new User({
     name,
     email,
-    password,
+    password
   });
 };
 
@@ -35,19 +37,21 @@ router.post(
     check(
       'password',
       'Please enter password with 6 or more characters'
-    ).isLength({min: 6}),
+    ).isLength({ min: 6 })
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({errors: errors.array()});
+      return res.status(400).json({ errors: errors.array() });
     }
-    const {name, email, password} = req.body;
+    const { name, email, password } = req.body;
 
     try {
-      let user = await User.findOne({email});
+      let user = await User.findOne({ email });
       if (user) {
-        return res.status(400).json({errors: [{msg: 'User already exists'}]});
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'User already exists' }] });
       }
 
       user = createUser(name, email, password);
@@ -56,8 +60,8 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id,
-        },
+          id: user.id
+        }
       };
 
       const token = generateToken(payload);
@@ -65,7 +69,7 @@ router.post(
         .status(200)
         .cookie('access_token', token)
         .json({
-          success: true,
+          success: true
         });
     } catch (err) {
       console.error(err.message);

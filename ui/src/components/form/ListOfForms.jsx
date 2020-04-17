@@ -36,9 +36,11 @@ class ListOfForms extends React.Component {
   }
 
   LoadSchema = userID => {
-    GetForm(userID, `/api/forms/templates/user`).then(response => {
-      this.setState({listOfForms: response.data});
-    });
+    GetForm(userID, `/api/forms/templates/user`)
+      .then(response =>
+        response.data ? this.setState({listOfForms: response.data}) : []
+      )
+      .catch(error => console.error(`Blad pobierania template usera:${error}`));
   };
 
   render() {

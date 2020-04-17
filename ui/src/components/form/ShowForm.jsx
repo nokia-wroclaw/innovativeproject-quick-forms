@@ -16,9 +16,9 @@ class ShowForm extends React.Component {
   }
 
   LoadSchema = formID =>
-    GetForm(formID, '/api/forms/templates/').then(response =>
-      this.setState({formSchema: response.data})
-    );
+    GetForm(formID, '/api/forms/templates/')
+      .then(response => this.setState({formSchema: response.data}))
+      .catch(error => console.error(`Bląd pobierania template: ${error}`));
 
   render() {
     return (

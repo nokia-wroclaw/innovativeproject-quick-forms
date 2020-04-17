@@ -4,6 +4,8 @@
   "rules": {
     "no-unused-vars":["warn"],
     "react/jsx-filename-extension": ["off"],
-    "no-underscore-dangle":["warn"]
+    "no-underscore-dangle":["warn"],
+    "no-console": ["off"],
+    "react/prop-types": ["off"]
   }
 }

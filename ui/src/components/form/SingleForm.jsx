@@ -40,7 +40,7 @@ function SingleForm({formID, title, description, history}) {
         <Button
           size="small"
           color="primary"
-          onClick={() => history.push(`/userform/${formID}`)}
+          onClick={() => window.location.replace(`/userform/${formID}`)}
         >
           Edit
         </Button>
@@ -61,7 +61,7 @@ function SingleForm({formID, title, description, history}) {
         <Button
           size="small"
           color="primary"
-          onClick={() => history.push(`/filledforms/${formID}`)}
+          onClick={() => window.location.replace(`/filledforms/${formID}`)}
         >
           Filled Forms
         </Button>
@@ -71,11 +71,3 @@ function SingleForm({formID, title, description, history}) {
 }
 
 export default withRouter(SingleForm);
-
-// export const SingleForm = ({formID, template}) => (
-//   <div>
-//     <pre>
-//       <h1>{JSON.stringify(template, null, 2)}</h1>{' '}
-//     </pre>
-//   </div>
-// );

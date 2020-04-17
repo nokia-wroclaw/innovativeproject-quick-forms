@@ -1,2 +1,2 @@
-const {expect} = require('chai');
+const { expect } = require('chai');
 const request = require('request');

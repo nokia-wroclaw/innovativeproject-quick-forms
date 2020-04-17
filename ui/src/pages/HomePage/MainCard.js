@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.common.white,
     marginTop: 10,
     marginBottom: theme.spacing(4),
-    backgroundImage: `url(${require("../../images/pen.jpg")})`,
+    backgroundImage: `url(${require('../../images/pen.jpg')})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -41,12 +41,16 @@ export default function MainCard(props) {
 
   return (
     <Paper className={classes.mainCard}>
-      
       <div className={classes.overlay} />
       <Grid container>
         <Grid item md={6}>
           <div className={classes.mainCardContent}>
-            <Typography component="h1" variant="h3" color="inherit" gutterBottom>
+            <Typography
+              component="h1"
+              variant="h3"
+              color="inherit"
+              gutterBottom
+            >
               {card.title}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
