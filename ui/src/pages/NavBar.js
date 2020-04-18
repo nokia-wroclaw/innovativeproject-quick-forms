@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
+import { isAuth, logout } from '../components/PrivateRoute';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +21,12 @@ const useStyles = makeStyles((theme) => ({
     padding: '30px 50px 30px 50px',
     [theme.breakpoints.down('xs')]: {
       fontSize: 15,
-      padding: '0',
+      padding: '0 0 0 0',
+      paddingLeft: 5,
+      paddingRight: 5,
+    },
+    [theme.breakpoints.down('300')]: {
+      fontSize: 10,
     },
   },
   title: {
@@ -31,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       fontSize: 15,
       padding: '0 0 0 0',
+      paddingRight: 2,
+    },
+    [theme.breakpoints.down('300')]: {
+      fontSize: 10,
     },
   },
 }));
@@ -53,9 +63,16 @@ const NavBar = ({ history, title }) => {
           <Button
             className={classes.button}
             color="inherit"
-            onClick={() => history.push('/signin')}
+            onClick={() => {
+              if (!isAuth()) {
+                history.push('/signin')
+              } else {
+                logout();
+                history.push('/');
+              }
+            }}
           >
-            Login
+            {isAuth() ? 'Logout' : 'Login'}
           </Button>
         </Toolbar>
       </AppBar>
