@@ -3,10 +3,10 @@ require('dotenv').config();
 
 const { JWT_SECRET } = process.env;
 
-const authenticate = jwt({ secret: JWT_SECRET,
+const authenticateToken = jwt({ secret: JWT_SECRET,
                                 getToken: function fromCookie (req) {
                                     if (req.cookies['access_token'])
                                        return req.cookies['access_token'];
                                 } });
 
-module.exports = authenticate;
+module.exports = authenticateToken;

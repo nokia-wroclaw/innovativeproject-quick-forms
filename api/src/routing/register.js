@@ -7,7 +7,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
-const generateToken = require('../authorization/generateToken');
+const generateToken = require('../authentication/generateToken');
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
