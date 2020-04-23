@@ -17,12 +17,14 @@
     "jwt-decode": "^2.2.0",
     "markdown-to-jsx": "^6.11.1",
     "prop-types": "^15.7.2",
+    "qrcode.react": "^1.0.0",
     "react": "^16.13.0",
     "react-art-svg-renderer": "0.0.1-rc.8",
     "react-dom": "^16.13.0",
     "react-jsonschema-form": "^1.8.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
+    "reactjs-popup": "^1.5.0",
     "rjsf-material-ui": "^0.3.9"
   },
   "scripts": {
