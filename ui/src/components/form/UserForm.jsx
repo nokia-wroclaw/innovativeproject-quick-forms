@@ -11,7 +11,7 @@ export class UserForms extends Component {
     super(props);
     this.state = {
       formScheme: {},
-      formID: ""
+      formID: '',
     };
   }
 
@@ -22,12 +22,21 @@ export class UserForms extends Component {
   }
 
   LoadSchema = formID =>
-    GetForm(formID, '/api/forms/templates/').then(response =>
-      this.setState({formScheme: response.data})
-    );
+    GetForm(formID, '/api/forms/templates/')
+      .then(response => this.setState({formScheme: response.data}))
+      .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
 
   handleSubmit = ({formData}) =>
-    SubmitForm({dataForm: formData,templateID: this.state.formID}, '/api/forms/filled-forms/').then(() => window.location.replace('/'));
+    SubmitForm(
+      {
+        dataForm: formData,
+        templateID: this.state.formID,
+        userID: this.state.formScheme.userID,
+      },
+      '/api/forms/filled-forms/'
+    )
+      .then(() => window.location.replace('/'))
+      .catch(error => console.error(`Sumbit error:${error}`));
 
   render() {
     return (

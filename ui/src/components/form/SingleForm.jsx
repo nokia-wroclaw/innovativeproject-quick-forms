@@ -15,9 +15,6 @@ const useStyles = makeStyles({
     maxWidth: 345,
     margin: '10px 10px',
   },
-  qr: {
-    marginTop: 5,
-  }
 });
 
 function SingleForm({formID, title, description, history}) {
@@ -34,7 +31,7 @@ function SingleForm({formID, title, description, history}) {
           <Typography variant="body2" color="textSecondary" component="p">
             {description}
           </Typography>
-          <Typography className="qr" align="center">
+          <Typography align="center">
             {ifQR ? <QRCode value={`/userform/${formID}`} /> : null}
           </Typography>
         </CardContent>
@@ -43,22 +40,28 @@ function SingleForm({formID, title, description, history}) {
         <Button
           size="small"
           color="primary"
-          onClick={() => history.push(`/userform/${formID}`)}
+          onClick={() => window.location.replace(`/userform/${formID}`)}
         >
           Edit
         </Button>
         <Button size="small" color="primary" onClick={() => showQR(!ifQR)}>
           QR code
         </Button>
-        <Button size="small" color="primary" onClick={() => {DeleteForm(formID);
-                                                            window.location.reload()}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => {
+            DeleteForm(formID);
+            window.location.reload();
+          }}
+        >
           Delete
         </Button>
 
         <Button
           size="small"
           color="primary"
-          onClick={() => history.push(`/filledforms/${formID}`)}
+          onClick={() => window.location.replace(`/filledforms/${formID}`)}
         >
           Filled Forms
         </Button>
@@ -68,11 +71,3 @@ function SingleForm({formID, title, description, history}) {
 }
 
 export default withRouter(SingleForm);
-
-// export const SingleForm = ({formID, template}) => (
-//   <div>
-//     <pre>
-//       <h1>{JSON.stringify(template, null, 2)}</h1>{' '}
-//     </pre>
-//   </div>
-// );

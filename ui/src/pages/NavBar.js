@@ -1,12 +1,13 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { isAuth, logout } from '../components/PrivateRoute';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     margin: '0px',
@@ -20,7 +21,12 @@ const useStyles = makeStyles(theme => ({
     padding: '30px 50px 30px 50px',
     [theme.breakpoints.down('xs')]: {
       fontSize: 15,
-      padding: '0',
+      padding: '0 0 0 0',
+      paddingLeft: 5,
+      paddingRight: 5,
+    },
+    [theme.breakpoints.down('300')]: {
+      fontSize: 10,
     },
   },
   title: {
@@ -31,20 +37,22 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       fontSize: 15,
       padding: '0 0 0 0',
+      paddingRight: 2,
+    },
+    [theme.breakpoints.down('300')]: {
+      fontSize: 10,
     },
   },
 }));
 
-const NavBar = ({history, title}) => {
+const NavBar = ({ history, title }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar className={classes.bar}>
-          <Typography className={classes.title}>
-            {title}
-          </Typography>
+          <Typography className={classes.title}>{title}</Typography>
           <Button
             className={classes.button}
             color="inherit"
@@ -55,9 +63,16 @@ const NavBar = ({history, title}) => {
           <Button
             className={classes.button}
             color="inherit"
-            onClick={() => history.push('/signin')}
+            onClick={() => {
+              if (!isAuth()) {
+                history.push('/signin')
+              } else {
+                logout();
+                history.push('/');
+              }
+            }}
           >
-            Login
+            {isAuth() ? 'Logout' : 'Login'}
           </Button>
         </Toolbar>
       </AppBar>

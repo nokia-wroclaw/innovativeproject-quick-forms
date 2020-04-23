@@ -16,16 +16,14 @@ class ShowForm extends React.Component {
   }
 
   LoadSchema = formID =>
-    GetForm(formID, '/api/forms/templates/').then(response =>
-      this.setState({formSchema : response.data})
-    );
+    GetForm(formID, '/api/forms/templates/')
+      .then(response => this.setState({formSchema: response.data}))
+      .catch(error => console.error(`Bląd pobierania template: ${error}`));
 
   render() {
     return (
       <Container ms={8}>
-        <div>
-        { JSON.stringify(this.state.formSchema, null, 2) }
-        </div>
+        <div>{JSON.stringify(this.state.formSchema, null, 2)}</div>
       </Container>
     );
   }
