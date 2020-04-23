@@ -1,13 +1,12 @@
 const express = require('express');
 require('dotenv').config();
-
 const app = express();
 const router = express.Router();
 const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const connectDb = require('./src/connection/connection');
-const passportGoogleStrategy = require('./src/authorization/passportGoogleStrategy');
+const passportGoogleStrategy = require('./src/authentication/passportGoogleStrategy');
 const filledFormsRoute = require('./src/routing/filledForms');
 const templatesRoute = require('./src/routing/templateForms');
 const nativeAuthRoute = require('./src/routing/nativeAuth');
@@ -29,6 +28,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(cookieParser());
+
 
 app.use('/api/forms/templates', templatesRoute);
 app.use('/api/forms/templates/file', templatesRoute);

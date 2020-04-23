@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const generateToken = require('../authorization/generateToken');
+const generateToken = require('../authentication/generateToken');
 
 const { CLIENT_API_URL } = process.env;
 
