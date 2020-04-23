@@ -1,6 +1,5 @@
 const express = require('express');
 require('dotenv').config();
-
 const app = express();
 const router = express.Router();
 const cors = require('cors');
@@ -29,6 +28,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(cookieParser());
+
 
 app.use('/api/forms/templates', templatesRoute);
 app.use('/api/forms/templates/file', templatesRoute);
