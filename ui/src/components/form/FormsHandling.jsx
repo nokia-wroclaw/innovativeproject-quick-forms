@@ -41,7 +41,7 @@ export const DeleteFilled = formID => {
     );
 };
 
-export const  AcceptForm =  async formID => {
+export const  AcceptForm =  formID => {
   const RemoveOldId = (obj, prop) => {
     let res = Object.assign({}, obj);
     delete res[prop];
@@ -53,6 +53,5 @@ export const  AcceptForm =  async formID => {
     .then(() => DeletePending(formID))
     .then(() => window.location.reload())
     .catch(error => console.error(`Błąd akceptowania formularza: ${error}`));
-    return true;
 };
 
