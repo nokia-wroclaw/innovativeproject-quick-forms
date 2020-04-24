@@ -1,6 +1,8 @@
 import React from 'react';
-import GetForm from './GetForm';
-import {Button} from '@material-ui/core';
+import PendingForms from './PendingForms';
+import AcceptedForms from './AcceptedForms';
+
+
 
 class ListOfFilledForms extends React.Component {
   constructor(props) {
@@ -10,27 +12,13 @@ class ListOfFilledForms extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const {templateID} = this.props.match.params;
-    this.LoadSchema(templateID);
-  }
-
-  LoadSchema = templateID =>
-    GetForm(templateID, '/api/forms/filled-forms')
-      .then(response => this.setState({filledForms: response.data}))
-      .catch(error => console.error(`Błąd pobierania danego template:${error}`));
-
-  _render(obj) {
+  render() {
     return (
-      <div key={obj._id}>
-        {obj._id}:&nbsp;
-        {JSON.stringify(obj.dataForm, null, 2)}
+      <div>
+        <PendingForms formID={this.props.match.params}></PendingForms>
+        <AcceptedForms formID={this.props.match.params}></AcceptedForms>
       </div>
     );
-  }
-
-  render() {
-    return <div> {this.state.filledForms.map(i => this._render(i))}</div>;
   }
 }
 

@@ -7,12 +7,12 @@ const connectDb = () => {
   return mongoose
     .connect(
       connection,
-      { useNewUrlParser: true, useUnifiedTopology: true },
+      {useNewUrlParser: true, useUnifiedTopology: true},
       () => console.log('connected to database')
     )
     .then(() =>
       setTimeout(() => {
-        console.log(mongoose.connection.readyState); // should print 1
+        console.log(mongoose.connection.readyState);
       }, 0)
     );
 };

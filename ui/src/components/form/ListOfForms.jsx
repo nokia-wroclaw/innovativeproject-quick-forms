@@ -1,5 +1,5 @@
 import React from 'react';
-import GetForm from './GetForm';
+import {GetForm} from './FormsHandling';
 import SingleForm from './SingleForm';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

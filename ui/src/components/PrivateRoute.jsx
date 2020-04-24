@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import {Redirect, Route} from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 export const isAuth = () => {
@@ -10,17 +10,17 @@ export const logout = () => {
   Cookies.remove('access_token');
 };
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PrivateRoute = ({component: Component, ...rest}) => (
   <Route
     {...rest}
-    render={props => 
+    render={props =>
       isAuth() ? (
         <Component {...props} />
       ) : (
-        <Redirect 
+        <Redirect
           to={{
             pathname: '/signin',
-            state: { from: props.location }
+            state: {from: props.location},
           }}
         />
       )

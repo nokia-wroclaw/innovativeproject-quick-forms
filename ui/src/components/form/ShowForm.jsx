@@ -1,12 +1,12 @@
 import React from 'react';
-import GetForm from './GetForm';
+import {GetForm} from './FormsHandling';
 import {Container} from '@material-ui/core';
 
 class ShowForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formSchema: {},
+      formData: {},
     };
   }
 
@@ -16,14 +16,14 @@ class ShowForm extends React.Component {
   }
 
   LoadSchema = formID =>
-    GetForm(formID, '/api/forms/templates/')
-      .then(response => this.setState({formSchema: response.data}))
+    GetForm(formID, '/api/forms/pendingforms/single/')
+      .then(response => this.setState({formData: response.data}))
       .catch(error => console.error(`Bląd pobierania template: ${error}`));
 
   render() {
     return (
       <Container ms={8}>
-        <div>{JSON.stringify(this.state.formSchema, null, 2)}</div>
+        {JSON.stringify(this.state.formData, null, '\t')}
       </Container>
     );
   }

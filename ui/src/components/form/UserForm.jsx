@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
 import {Button, Container} from '@material-ui/core';
-import SubmitForm from './SubmitForm';
-import GetForm from './GetForm';
+import {SubmitForm, GetForm} from './FormsHandling';
+
 const Form = withTheme(MuiTheme);
 
 export class UserForms extends Component {
@@ -12,6 +12,7 @@ export class UserForms extends Component {
     this.state = {
       formScheme: {},
       formID: '',
+      formDefault: '',
     };
   }
 
@@ -33,7 +34,7 @@ export class UserForms extends Component {
         templateID: this.state.formID,
         userID: this.state.formScheme.userID,
       },
-      '/api/forms/filled-forms/'
+      '/api/forms/pendingforms/'
     )
       .then(() => window.location.replace('/'))
       .catch(error => console.error(`Sumbit error:${error}`));

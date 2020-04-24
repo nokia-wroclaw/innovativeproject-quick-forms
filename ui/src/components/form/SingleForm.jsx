@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {withRouter} from 'react-router-dom';
 import QRCode from 'react-qr-code';
-import DeleteForm from './DeleteForm';
+import {DeleteTemplate} from './FormsHandling';
 
 const useStyles = makeStyles({
   root: {
@@ -42,7 +42,7 @@ function SingleForm({formID, title, description, history}) {
           color="primary"
           onClick={() => window.location.replace(`/userform/${formID}`)}
         >
-          Edit
+          Fill
         </Button>
         <Button size="small" color="primary" onClick={() => showQR(!ifQR)}>
           QR code
@@ -51,7 +51,7 @@ function SingleForm({formID, title, description, history}) {
           size="small"
           color="primary"
           onClick={() => {
-            DeleteForm(formID);
+            DeleteTemplate(formID);
             window.location.reload();
           }}
         >
