@@ -3,51 +3,47 @@ import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import {withRouter} from 'react-router-dom';
-import QRCode from 'react-qr-code';
-import {DeleteTemplate} from './FormsHandling';
+import DeleteForm from './DeleteForm';
+import QrPopup from './QrPopup';
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
     margin: '10px 10px',
   },
+  actions: {
+    background: '#efffff',
+  },
+  buttons: {
+    //color: '#0f0f0f',
+  },
 });
 
-function SingleForm({formID, title, description, history}) {
+function SingleForm({formID, title, description}) {
   const [ifQR, showQR] = useState(false);
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {description}
-          </Typography>
-          <Typography align="center">
-            {ifQR ? <QRCode value={`/userform/${formID}`} /> : null}
-          </Typography>
-        </CardContent>
+        <QrPopup formID={formID} title={title} description={description} ifQR={ifQR} showQR={showQR} />
       </CardActionArea>
-      <CardActions>
+      <CardActions className={classes.actions}>
         <Button
+          className={classes.buttons}
           size="small"
           color="primary"
           onClick={() => window.location.replace(`/userform/${formID}`)}
         >
           Fill
         </Button>
-        <Button size="small" color="primary" onClick={() => showQR(!ifQR)}>
+        <Button className={classes.buttons} size="small" color="primary" onClick={() => showQR(!ifQR)}>
           QR code
         </Button>
         <Button
+          className={classes.buttons}
           size="small"
           color="primary"
           onClick={() => {
@@ -59,6 +55,7 @@ function SingleForm({formID, title, description, history}) {
         </Button>
 
         <Button
+          className={classes.buttons}
           size="small"
           color="primary"
           onClick={() => window.location.replace(`/filledforms/${formID}`)}

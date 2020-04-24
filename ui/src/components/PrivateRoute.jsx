@@ -1,9 +1,19 @@
 import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export const isAuth = () => {
-  return Cookies.get('access_token');
+    if (Cookies.get('access_token')){
+        function axiosGetCookie(){
+            return axios.get('/api/auth/protected').then(res => {
+                if (res.status === 200){
+                    return Cookies.get('access_token');
+                } else return false
+            });
+        }
+      return axiosGetCookie().then(cookie => cookie);
+    }
 };
 
 export const logout = () => {

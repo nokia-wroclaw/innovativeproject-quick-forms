@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const templateFormSchema = require('../models/template.model');
+const authenticateToken = require('../authentication/authenticateToken');
 
 const templateForm = mongoose.model('templateForm', templateFormSchema);
 const router = express.Router();
@@ -8,7 +9,7 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({extended: true}));
 
-router.get('/user/:id', async (req, res) => {
+router.get('/user/:id', authenticateToken, async (req, res) => {
   try {
     const forms = await templateForm.find({userID: req.params.id});
     res.status(200).json(forms);
@@ -17,7 +18,7 @@ router.get('/user/:id', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const forms = await templateForm.findById(req.params.id);
     res.status(200).json(forms);
@@ -26,7 +27,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
     const form = new templateForm(req.body);
     const savedForm = await form.save();
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const removedForm = await templateForm.findByIdAndDelete(req.params.id);
     res.status(200).json(removedForm);

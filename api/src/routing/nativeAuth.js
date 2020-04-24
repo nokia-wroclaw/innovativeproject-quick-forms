@@ -8,8 +8,8 @@ const bcrypt = require('bcryptjs');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
-const validateToken = require('../authorization/authenticate');
-const generateToken = require('../authorization/generateToken');
+const authenticateToken = require('../authentication/authenticateToken');
+const generateToken = require('../authentication/generateToken');
 
 router.use(express.json());
 router.use(express.urlencoded({extended: true}));
@@ -19,7 +19,7 @@ router.get('/logout', (req, res) => {
   res.redirect(CLIENT_API_URL);
 });
 
-router.get('/protected', validateToken, function(req, res) {
+router.get('/protected', authenticateToken, function(req, res) {
   res.sendStatus(200);
 });
 
