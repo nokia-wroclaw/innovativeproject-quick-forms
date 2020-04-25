@@ -18,7 +18,7 @@ router.get('/user/:id', authenticateToken, async (req, res) => {
   }
 });
 
-router.get('/:id', authenticateToken, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const forms = await templateForm.findById(req.params.id);
     res.status(200).json(forms);
