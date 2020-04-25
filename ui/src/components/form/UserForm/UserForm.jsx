@@ -1,3 +1,4 @@
+import io from 'socket.io-client';
 import React, {Component} from 'react';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
@@ -7,6 +8,8 @@ import FormStep from "./FormStep";
 import EndStep from "./EndStep";
 
 const Form = withTheme(MuiTheme);
+const socketConnection = io.connect('http://localhost:8080');
+
 
 export class UserForms extends Component {
   constructor(props) {

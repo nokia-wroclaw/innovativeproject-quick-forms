@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const app = express();
 const router = express.Router();
+const socket = require('socket.io');
 const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
@@ -13,6 +14,7 @@ const pendingFormsRoute = require('./src/routing/pendingForms');
 const nativeAuthRoute = require('./src/routing/nativeAuth');
 const googleAuthRoute = require('./src/routing/googleAuth');
 const registerRoute = require('./src/routing/register');
+
 
 const corsOptions = {
   origin: ['http://localhost:3000'],
@@ -30,7 +32,6 @@ app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(cookieParser());
 
-
 app.use('/api/forms/templates', templatesRoute);
 app.use('/api/forms/templates/file', templatesRoute);
 app.use('/api/forms/templates/user', templatesRoute);
@@ -44,6 +45,12 @@ app.use('/api/auth', registerRoute);
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   connectDb();
+});
+
+const io = socket(server);
+
+io.on('connection', (socket) => {
+  console.log('made socket connection')
 });
