@@ -34,18 +34,6 @@ export class UserForms extends Component {
         });
     }
 
-    formFillScreen = () => {
-
-    }
-
-    lockScreen = () => {
-
-    }
-
-    endScreen = () => {
-
-    }
-
 
   componentDidMount() {
     const id = this.props.match.params.formID;
@@ -60,9 +48,7 @@ export class UserForms extends Component {
 
 
   handleSubmit = ({formData}) =>
-
     SubmitForm(
-
       {
         dataForm: formData,
         templateID: this.state.formID,
