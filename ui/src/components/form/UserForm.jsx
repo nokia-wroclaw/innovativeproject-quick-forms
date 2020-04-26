@@ -36,6 +36,7 @@ export class UserForms extends Component {
       },
       '/api/forms/pendingforms/'
     )
+      .then(() => window.location.replace('/'))
       .catch(error => console.error(`Sumbit error:${error}`));
 
   render() {
