@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.use(express.json());
 router.use(express.urlencoded({extended: true}));
+mongoose.set('useFindAndModify', false);
+
 
 router.get('/', async (req, res) => {
   try {
@@ -45,8 +47,8 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    await filledForm.findByIdAndRemove(req.params.id);
-    res.status(200);
+    const form = await filledForm.findByIdAndRemove(req.params.id);
+    res.status(200).json(form);
   } catch (err) {
     res.status(400).json({message: err});
   }

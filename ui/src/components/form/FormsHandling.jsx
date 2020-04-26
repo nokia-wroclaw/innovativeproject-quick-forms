@@ -26,19 +26,11 @@ export const DeleteTemplate = formID => {
 };
 
 export const DeletePending = formID => {
-  axios
-    .delete(`/api/forms/pendingforms/${formID}`)
-    .catch(error =>
-      console.log(`Bląd usuwania oczekujacego formularza${error}`)
-    );
+  return axios.delete(`/api/forms/pendingforms/${formID}`)
 };
 
 export const DeleteFilled = formID => {
-  axios
-    .delete(`/api/forms/filled-forms/single/${formID}`)
-    .catch(error =>
-      console.log(`Bląd usuwania zakceptowanego formularza${error}`)
-    );
+  return axios.delete(`/api/forms/filled-forms/single/${formID}`)
 };
 
 export const  AcceptForm =  formID => {
@@ -47,11 +39,14 @@ export const  AcceptForm =  formID => {
     delete res[prop];
     return res;
   };
-
+  var promise = new Promise( (resolve, reject) => {
   GetForm(formID, '/api/forms/pendingforms/single')
     .then(formToSave => SubmitForm(RemoveOldId(formToSave.data, '_id'), '/api/forms/filled-forms/'))
-    .then(() => DeletePending(formID))
-    .then(() => window.location.reload())
-    .catch(error => console.error(`Błąd akceptowania formularza: ${error}`));
+    .then((prom) => DeletePending(formID))
+    .then(() => {resolve("Promise resolved successfully")})
+    .catch(error => console.error(`Błąd akceptowania formularza: ${error}`))
+    .catch(error =>  {reject(Error(error))});
+  })
+  return promise;
 };
 

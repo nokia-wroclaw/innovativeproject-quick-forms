@@ -4,37 +4,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import Box from '@material-ui/core/Box';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {DeletePending, AcceptForm, GetForm} from './FormsHandling';
+import {DeletePending, AcceptForm} from './FormsHandling';
 
-class ListOfPendingForms extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pendingForms: [],
-    };
-  }
-
-  componentDidMount() {
-    const {templateID} = this.props.formID;
-    this.LoadSchema(templateID);
-  }
-
-  LoadSchema = templateID =>
-    GetForm(templateID, '/api/forms/pendingforms')
-      .then(response => this.setState({pendingForms: response.data}))
-      .catch(error =>
-        console.error(`Błąd pobierania danego pending formsa:${error}`)
-      );
-
+class PendingForms extends React.Component {
    handleAccept = (id) => {
-      AcceptForm(id)
+     AcceptForm(id)
+     .then((res) =>  this.props.reload(this.props.formID))
+     .catch((error) => console.log(`Nie udalo sie zakceptowac${error}`));
     };
 
-  handleDelete = id => {
-    DeletePending(id);
-    window.location.reload();
+  handleDelete = (id) => {
+    DeletePending(id)
+    .then((res) =>  this.props.reload(this.props.formID))
+    .catch((error) => console.log(`Nie udalo sie usunac pending formsa${error}`));
   };
-
 
   _render(obj) {
     return (
@@ -70,12 +53,11 @@ class ListOfPendingForms extends React.Component {
   render() {
     return (
       <Box>
-        <h3>For approval:</h3>
-
-        {this.state.pendingForms.map(i => this._render(i))}
+        <h3>For approval:</h3> 
+        {this.props.listOfForms.map(i => this._render(i))}
       </Box>
     );
   }
 }
 
-export default ListOfPendingForms;
+export default PendingForms;

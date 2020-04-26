@@ -47,8 +47,8 @@ router.delete('/:id', async (req, res) => {
 
 router.delete('/single/:id', async (req, res) => {
   try {
-    await filledForm.findByIdAndDelete(req.params.id);
-    res.status(200);
+    const form = await filledForm.findByIdAndDelete(req.params.id);
+    res.status(200).json(form);
   } catch (err) {
     res.status(400).json({message: err});
   }
