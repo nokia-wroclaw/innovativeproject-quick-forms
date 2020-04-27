@@ -22,7 +22,7 @@ class PendingForms extends React.Component {
   _render(obj) {
     return (
       <Box m={3} key={obj._id}>
-        {obj._id}:&nbsp;
+        {obj._id.substr(obj._id.length - 5)}:&nbsp;
         <Button
           variant="contained"
           color="default"

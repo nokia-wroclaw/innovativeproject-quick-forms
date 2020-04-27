@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
   try {
     const form = new filledForm(req.body);
     const savedForm = await form.save();
-    res.status(201).json(savedForm);
+    res.status(201).json(savedForm._id);
   } catch (err) {
     res.status(400).json({message: err});
   }

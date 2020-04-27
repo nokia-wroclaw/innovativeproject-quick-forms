@@ -3,6 +3,23 @@ import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
 import {Button, Container} from '@material-ui/core';
 import {SubmitForm, GetForm} from './FormsHandling';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import {withStyles} from '@material-ui/core/styles';
+
+const useStyles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  textAlign: {
+    title: 'center' 
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+});
+
 
 const Form = withTheme(MuiTheme);
 
@@ -13,6 +30,7 @@ export class UserForms extends Component {
       formScheme: {},
       formID: '',
       formDefault: '',
+      idOfPending: ''
     };
   }
 
@@ -36,19 +54,24 @@ export class UserForms extends Component {
       },
       '/api/forms/pendingforms/'
     )
-      .then(() => window.location.replace('/'))
+      .then((res) => this.setState({idOfPending: res.data}))
       .catch(error => console.error(`Sumbit error:${error}`));
 
   render() {
     return (
       <Container ms={8}>
-        <Form schema={this.state.formScheme} onSubmit={this.handleSubmit}>
-          <Button variant="contained" color="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
+        <Card>
+          <CardHeader title={`Twój kod oczekującego: ${this.state.idOfPending.substr(this.state.idOfPending.length - 5)}`}/>
+          <CardContent>
+            <Form schema={this.state.formScheme} onSubmit={this.handleSubmit}>
+              <Button variant="contained" color="primary" type="submit">
+                Submit
+              </Button>
+            </Form>
+          </CardContent>
+        </Card>
       </Container>
     );
   }
 }
-export default UserForms;
+export default withStyles(useStyles)(UserForms);
