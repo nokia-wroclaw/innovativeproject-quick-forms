@@ -21,14 +21,27 @@ const useStyles = makeStyles({
   },
 });
 
-function SingleForm({formID, title, description}) {
+function handleDelete(id, userID, reload) {
+  console.log(DeleteTemplate(id));
+  DeleteTemplate(id)
+    .then(res => reload(userID))
+    .catch(error => console.log(`Nie udalo sie usunac formularza${error}`));
+}
+
+function SingleForm({formID, title, description, reload, userID}) {
   const [ifQR, showQR] = useState(false);
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <QrPopup formID={formID} title={title} description={description} ifQR={ifQR} showQR={showQR} />
+        <QrPopup
+          formID={formID}
+          title={title}
+          description={description}
+          ifQR={ifQR}
+          showQR={showQR}
+        />
       </CardActionArea>
       <CardActions className={classes.actions}>
         <Button
@@ -39,17 +52,19 @@ function SingleForm({formID, title, description}) {
         >
           Fill
         </Button>
-        <Button className={classes.buttons} size="small" color="primary" onClick={() => showQR(!ifQR)}>
+        <Button
+          className={classes.buttons}
+          size="small"
+          color="primary"
+          onClick={() => showQR(!ifQR)}
+        >
           QR code
         </Button>
         <Button
           className={classes.buttons}
           size="small"
           color="primary"
-          onClick={() => {
-            DeleteTemplate(formID);
-            window.location.reload();
-          }}
+          onClick={() => handleDelete(formID, userID, reload)}
         >
           Delete
         </Button>

@@ -6,7 +6,7 @@ const templateSchema = new mongoose.Schema({
   description: String,
   type: Object,
   required: Array,
-  properties: mongoose.Schema.Types.Mixed,
+  properties: mongoose.Schema.Types.Mixed
 });
 
 module.exports = templateSchema;

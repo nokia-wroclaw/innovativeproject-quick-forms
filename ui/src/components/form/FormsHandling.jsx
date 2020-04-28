@@ -10,43 +10,47 @@ export const SubmitForm = (formData, url) => {
 };
 
 export const DeleteTemplate = formID => {
-  axios
+  return axios
     .delete(`/api/forms/filled-forms/${formID}`)
-    .catch(error =>
-      console.log(`Bląd usuwania wypelnonych formularzy${error}`)
-    );
-  axios
-    .delete(`/api/forms/pendingforms/${formID}`)
+    .catch(error => console.log(`Bląd usuwania wypelnonych formularzy${error}`))
+    .then(res => axios.delete(`/api/forms/pendingforms/${formID}`))
     .catch(error =>
       console.log(`Bląd usuwania oczekujacych formularzy formularzy${error}`)
-    );
-  axios
-    .delete(`/api/forms/templates/${formID}`)
+    )
+    .then(res => axios.delete(`/api/forms/templates/${formID}`))
     .catch(error => console.log(`Bląd usuwania template formularza${error}`));
 };
 
 export const DeletePending = formID => {
-  return axios.delete(`/api/forms/pendingforms/${formID}`)
+  return axios.delete(`/api/forms/pendingforms/${formID}`);
 };
 
 export const DeleteFilled = formID => {
-  return axios.delete(`/api/forms/filled-forms/single/${formID}`)
+  return axios.delete(`/api/forms/filled-forms/single/${formID}`);
 };
 
-export const  AcceptForm =  formID => {
+export const AcceptForm = formID => {
   const RemoveOldId = (obj, prop) => {
     let res = Object.assign({}, obj);
     delete res[prop];
     return res;
   };
-  var promise = new Promise( (resolve, reject) => {
-  GetForm(formID, '/api/forms/pendingforms/single')
-    .then(formToSave => SubmitForm(RemoveOldId(formToSave.data, '_id'), '/api/forms/filled-forms/'))
-    .then((prom) => DeletePending(formID))
-    .then(() => {resolve("Promise resolved successfully")})
-    .catch(error => console.error(`Błąd akceptowania formularza: ${error}`))
-    .catch(error =>  {reject(Error(error))});
-  })
+  var promise = new Promise((resolve, reject) => {
+    GetForm(formID, '/api/forms/pendingforms/single')
+      .then(formToSave =>
+        SubmitForm(
+          RemoveOldId(formToSave.data, '_id'),
+          '/api/forms/filled-forms/'
+        )
+      )
+      .then(prom => DeletePending(formID))
+      .then(() => {
+        resolve('Promise resolved successfully');
+      })
+      .catch(error => console.error(`Błąd akceptowania formularza: ${error}`))
+      .catch(error => {
+        reject(Error(error));
+      });
+  });
   return promise;
 };
-

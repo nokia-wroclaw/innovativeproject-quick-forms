@@ -31,15 +31,14 @@ class ListOfForms extends React.Component {
 
   componentDidMount() {
     const token = Cookies.get('access_token');
-    this.setState({userID: jwtDecode(token).user.id});
-    this.LoadSchema(jwtDecode(token).user.id);
+    const loggedID = jwtDecode(token).user.id;
+    this.setState({userID: loggedID});
+    this.LoadForms(loggedID);
   }
 
-  LoadSchema = userID => {
+  LoadForms = userID => {
     GetForm(userID, `/api/forms/templates/user`)
-      .then(response =>
-        response.data ? this.setState({listOfForms: response.data}) : []
-      )
+      .then(response => this.setState({listOfForms: response.data}))
       .catch(error => console.error(`Blad pobierania template usera:${error}`));
   };
 
@@ -57,6 +56,8 @@ class ListOfForms extends React.Component {
                   formID={index._id}
                   title={index.title}
                   description={index.description}
+                  reload={this.LoadForms}
+                  userID={this.state.userID}
                 />
               </Grid>
             ))}

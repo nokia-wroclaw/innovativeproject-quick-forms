@@ -13,13 +13,12 @@ const useStyles = theme => ({
     flexGrow: 1,
   },
   textAlign: {
-    title: 'center' 
+    title: 'center',
   },
   control: {
     padding: theme.spacing(2),
   },
 });
-
 
 const Form = withTheme(MuiTheme);
 
@@ -30,7 +29,7 @@ export class UserForms extends Component {
       formScheme: {},
       formID: '',
       formDefault: '',
-      idOfPending: ''
+      idOfPending: '',
     };
   }
 
@@ -54,14 +53,18 @@ export class UserForms extends Component {
       },
       '/api/forms/pendingforms/'
     )
-      .then((res) => this.setState({idOfPending: res.data}))
+      .then(res => this.setState({idOfPending: res.data}))
       .catch(error => console.error(`Sumbit error:${error}`));
 
   render() {
     return (
       <Container ms={8}>
         <Card>
-          <CardHeader title={`Twój kod oczekującego: ${this.state.idOfPending.substr(this.state.idOfPending.length - 5)}`}/>
+          <CardHeader
+            title={`Twój kod oczekującego: g${this.state.idOfPending.substr(
+              this.state.idOfPending.length - 5
+            )}`}
+          />
           <CardContent>
             <Form schema={this.state.formScheme} onSubmit={this.handleSubmit}>
               <Button variant="contained" color="primary" type="submit">

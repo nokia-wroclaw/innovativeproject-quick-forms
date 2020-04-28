@@ -7,16 +7,18 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {DeletePending, AcceptForm} from './FormsHandling';
 
 class PendingForms extends React.Component {
-   handleAccept = (id) => {
-     AcceptForm(id)
-     .then((res) =>  this.props.reload(this.props.formID))
-     .catch((error) => console.log(`Nie udalo sie zakceptowac${error}`));
-    };
+  handleAccept = id => {
+    AcceptForm(id)
+      .then(res => this.props.reload(this.props.formID))
+      .catch(error => console.log(`Nie udalo sie zakceptowac${error}`));
+  };
 
-  handleDelete = (id) => {
+  handleDelete = id => {
     DeletePending(id)
-    .then((res) =>  this.props.reload(this.props.formID))
-    .catch((error) => console.log(`Nie udalo sie usunac pending formsa${error}`));
+      .then(res => this.props.reload(this.props.formID))
+      .catch(error =>
+        console.log(`Nie udalo sie usunac pending formsa${error}`)
+      );
   };
 
   _render(obj) {
@@ -53,7 +55,7 @@ class PendingForms extends React.Component {
   render() {
     return (
       <Box>
-        <h3>For approval:</h3> 
+        <h3>For approval:</h3>
         {this.props.listOfForms.map(i => this._render(i))}
       </Box>
     );

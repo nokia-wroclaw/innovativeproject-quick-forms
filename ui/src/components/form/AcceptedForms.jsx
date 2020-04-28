@@ -6,14 +6,14 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {DeleteFilled} from './FormsHandling';
 
 class ListOfFilledForms extends React.Component {
-
-  
-  handleDelete = (id) => {
+  handleDelete = id => {
     DeleteFilled(id)
-    .then((res) =>  this.props.reload(this.props.formID))
-    .catch((error) => console.log(`Nie udalo sie usunac pending formsa${error}`));
+      .then(res => this.props.reload(this.props.formID))
+      .catch(error =>
+        console.log(`Nie udalo sie usunac pending formsa${error}`)
+      );
   };
-  
+
   _render(obj) {
     return (
       <Box m={3} key={obj._id}>
