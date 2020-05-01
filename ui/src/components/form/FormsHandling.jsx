@@ -4,9 +4,9 @@ export const GetForm = (formID, url) => {
   return axios.get(`${url}/${formID}`);
 };
 
-export const SubmitForm = (formData, url) => {
+export const SubmitForm =  (formData, url) => {
   console.log('Data submitted: ', formData, 'On route: ', url);
-  return axios.post(url, formData);
+   return  axios.post(url, formData);
 };
 
 export const DeleteTemplate = formID => {

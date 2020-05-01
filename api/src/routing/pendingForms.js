@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Form = require('../models/filledForm.model');
-
 const filledForm = mongoose.model('pendingforms', Form);
 const router = express.Router();
 
 router.use(express.json());
 router.use(express.urlencoded({extended: true}));
+
+
+
 
 router.get('/', async (req, res) => {
   try {
@@ -39,7 +41,7 @@ router.post('/', async (req, res) => {
     const savedForm = await form.save();
     res.status(201).json(savedForm);
   } catch (err) {
-    res.status(400).json({message: err});
+    res.status(400).json({ message: err });
   }
 });
 

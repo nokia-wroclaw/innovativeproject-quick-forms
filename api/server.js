@@ -14,6 +14,7 @@ const pendingFormsRoute = require('./src/routing/pendingForms');
 const nativeAuthRoute = require('./src/routing/nativeAuth');
 const googleAuthRoute = require('./src/routing/googleAuth');
 const registerRoute = require('./src/routing/register');
+const pendingFormsSocket = require('./src/routing/pendingFormsSocket')
 
 
 const corsOptions = {
@@ -50,7 +51,24 @@ const server = app.listen(PORT, () => {
 });
 
 const io = socket(server);
+const connections = [];
 
 io.on('connection', (socket) => {
-  console.log('made socket connection')
+  connections.push(socket)
+  console.log('Connected: %s sockets connected', connections.length)
+  console.log('made socket connection', socket.id)
+  socket.on('pendingFormID', (data) => {
+    console.log(data)
+  })
+
+  //save to db
+  //send to pending forms
+  //get response
+  //
+  socket.emit('pendingFormID',{
+    hello : "hello"
+  })
+
 });
+
+module.exports = server;
