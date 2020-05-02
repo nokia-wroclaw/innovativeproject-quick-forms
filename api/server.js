@@ -14,7 +14,7 @@ const pendingFormsRoute = require('./src/routing/pendingForms');
 const nativeAuthRoute = require('./src/routing/nativeAuth');
 const googleAuthRoute = require('./src/routing/googleAuth');
 const registerRoute = require('./src/routing/register');
-const pendingFormsSocket = require('./src/routing/pendingFormsSocket')
+
 
 
 const corsOptions = {
@@ -44,22 +44,30 @@ app.use('/api/auth', nativeAuthRoute);
 app.use('/api/auth', googleAuthRoute);
 app.use('/api/auth', registerRoute);
 
-const PORT = process.env.PORT || 8080;
 
-const server = app.listen(PORT, () => {
+
+const PORT = process.env.PORT || 8080;
+const server = require("http").createServer(app);
+server.listen(PORT, () => {
   connectDb();
 });
+// const server = app.listen(PORT, () => {
+//   connectDb();
+// });
 
-const io = socket(server);
+const io = require('socket.io')(server);
 const connections = [];
+const socketIDdictionary = {};
+
+const socketMiddleware = require('./src/sockets/socketPendingFormCommunication');
+socketMiddleware.start(io);
 
 io.on('connection', (socket) => {
+
   connections.push(socket)
   console.log('Connected: %s sockets connected', connections.length)
   console.log('made socket connection', socket.id)
-  socket.on('pendingFormID', (data) => {
-    console.log(data)
-  })
+
 
   //save to db
   //send to pending forms
@@ -71,4 +79,4 @@ io.on('connection', (socket) => {
 
 });
 
-module.exports = server;
+module.exports = server
