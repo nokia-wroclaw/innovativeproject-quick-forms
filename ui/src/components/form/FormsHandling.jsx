@@ -46,6 +46,10 @@ export const DeleteFilled = formID => {
     );
 };
 
+export const RejectForm = pendingFormNumberID => {
+
+}
+
 export const  AcceptForm =  formID => {
   const RemoveOldId = (obj, prop) => {
     let res = Object.assign({}, obj);

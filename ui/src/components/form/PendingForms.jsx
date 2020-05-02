@@ -4,7 +4,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import Box from '@material-ui/core/Box';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {DeletePending, AcceptForm, GetForm} from './FormsHandling';
+import {DeletePending, AcceptForm, GetForm, RejectForm} from './FormsHandling';
 
 class ListOfPendingForms extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class ListOfPendingForms extends React.Component {
   componentDidMount() {
     const {templateID} = this.props.formID;
     this.LoadSchema(templateID);
+    console.log(this.state.pendingForms)
   }
 
   LoadSchema = templateID =>
@@ -26,13 +27,24 @@ class ListOfPendingForms extends React.Component {
         console.error(`Błąd pobierania danego pending formsa:${error}`)
       );
 
-   handleAccept = (id) => {
-      AcceptForm(id)
+
+    handleAccept = id => {
+        AcceptForm(id)
+            .then(res => this.props.reload(this.props.formID))
+            .catch(error => console.log(`Nie udalo sie zakceptowac${error}`));
     };
 
-  handleDelete = id => {
-    DeletePending(id);
-    window.location.reload();
+    handleDelete = id => {
+        DeletePending(id)
+            .then(res => this.props.reload(this.props.formID))
+            .catch(error =>
+                console.log(`Nie udalo sie usunac pending formsa${error}`)
+            );
+    };
+
+  handleReject = pendingFormNumberID => {
+      console.log(pendingFormNumberID)
+      RejectForm(pendingFormNumberID)
   };
 
 
@@ -63,6 +75,16 @@ class ListOfPendingForms extends React.Component {
         >
           Save
         </Button>
+
+          <Button
+              variant="contained"
+              color="primary"
+              startIcon={<DeleteIcon />}
+              onClick={() => this.handleReject(obj.filledFormNumberID)}
+              content={"More"}
+          >
+              Reject
+          </Button>
       </Box>
     );
   }
@@ -71,7 +93,6 @@ class ListOfPendingForms extends React.Component {
     return (
       <Box>
         <h3>For approval:</h3>
-
         {this.state.pendingForms.map(i => this._render(i))}
       </Box>
     );
