@@ -10,7 +10,7 @@ export const SubmitForm =  (formData, url) => {
 };
 
 export const SubmitFormSocket = (formData) => {
-  return
+
 }
 
 
@@ -46,8 +46,12 @@ export const DeleteFilled = formID => {
     );
 };
 
-export const RejectForm = pendingFormNumberID => {
-
+export const RejectPending = pendingFormNumberID => {
+  axios
+      .post('/api/sockets/socketPendingFormManager',
+          pendingFormNumberID)
+      .then(r => console.log(r))
+      .catch(error => console.log(error))
 }
 
 export const  AcceptForm =  formID => {

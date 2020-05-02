@@ -4,7 +4,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import Box from '@material-ui/core/Box';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {DeletePending, AcceptForm, GetForm, RejectForm} from './FormsHandling';
+import {DeletePending, AcceptForm, GetForm, RejectPending} from './FormsHandling';
 
 class ListOfPendingForms extends React.Component {
   constructor(props) {
@@ -44,7 +44,7 @@ class ListOfPendingForms extends React.Component {
 
   handleReject = pendingFormNumberID => {
       console.log(pendingFormNumberID)
-      RejectForm(pendingFormNumberID)
+      RejectPending(pendingFormNumberID)
   };
 
 
