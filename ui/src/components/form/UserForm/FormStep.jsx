@@ -5,32 +5,15 @@ import {withTheme} from "react-jsonschema-form";
 import {Theme as MuiTheme} from "rjsf-material-ui";
 
 const Form = withTheme(MuiTheme);
-const ENDPOINT = '//localhost:8080';
+
 
 export class FormStep extends Component{
     continue =  (formData) => {
-        console.log(this.props.values.formScheme._id);
-        console.log(this.props.values.formScheme.userID)
-        const socketConnection = io.connect(ENDPOINT);
-        const socketConnection2 = io.connect(`${ENDPOINT}/api/forms/pendingforms`);
 
-        socketConnection2.on('pendingFormID', (data) => {
-            console.log('?');
-            console.log(data);
-        })
+        this.props.handleSubmitSocket(formData);
+        console.log(this.props.values.pendingFormData);
+        console.log(formData)
 
-        socketConnection.on('pendingFormID', (data) => {
-            console.log('?');
-            console.log(data);
-        })
-        socketConnection.emit('pendingFormID', {
-            schemeFormData : formData,
-            filledFormNumberID : this.props.values.filledFormNumberID,
-            filledFormData : formData.formData,
-            ownerID : this.props.values.formScheme.userID,
-            templateFormID : this.props.values.formScheme._id
-        })
-        this.props.handleSubmit(formData);
         this.props.nextStep();
     }
 

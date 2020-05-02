@@ -8,6 +8,8 @@ import FormStep from "./FormStep";
 import EndStep from "./EndStep";
 
 const Form = withTheme(MuiTheme);
+let socketConnection;
+const ENDPOINT = '//localhost:8080';
 
 const pendingFormIDGenerator = () => {
     const SEED = 1000000000;
@@ -20,10 +22,9 @@ export class UserForms extends Component {
     this.state = {
         step: 1,
       formScheme: {},
-        filledFormData: {},
+        pendingFormData: {},
       formID: '',
       formDefault: '',
-        idOfPending: '',
         filledFormNumberID: -1,
 
     };
@@ -45,10 +46,11 @@ export class UserForms extends Component {
 
 
    componentDidMount() {
+      socketConnection = io.connect(ENDPOINT);
     const id = this.props.match.params.formID;
-    this.setState({filledFormNumberID: pendingFormIDGenerator()})
     this.setState({formID: id});
-     this.LoadSchema(id);
+    this.setState({filledFormNumberID : pendingFormIDGenerator()})
+     this.LoadSchema(id).then(r => console.log(r));
   }
 
   LoadSchema = formID =>
@@ -56,35 +58,40 @@ export class UserForms extends Component {
       .then(response => this.setState({formScheme: response.data}))
       .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
 
+    promisedSetState = (newState) => {
+        return new Promise((resolve) => {
+            this.setState(newState, () => {
+                resolve()
+            });
+        });
+    }
 
-   handleSubmit =  async ({formData}) => {
-      await this.setState({filledFormData: formData})
-       console.log(this.state.filledFormData);
-       SubmitForm( //submit form socket here
-           {
-               dataForm: this.state.filledFormData,
-               templateID: this.state.formID,
-               userID: this.state.formScheme.userID,
-               filledFormNumberID: this.state.filledFormNumberID,
-           },
-           '/api/forms/pendingforms/'
-       ) .then(res => {
-               console.log(res)
-           }
-       )
-           .catch(error => console.error(`Sumbit error:${error}`));
-   }
+     handleSubmitSocket  = async ({formData}) => {
+        const pendingFormData = {
+             dataForm: formData,
+             templateID: this.state.formID,
+             userID: this.state.formScheme.userID,
+             filledFormNumberID: this.state.filledFormNumberID,
+         }
+         await this.promisedSetState({pendingFormData : pendingFormData})
+         console.log(this.state.pendingFormData)
+         console.log(pendingFormData)
+         console.log(formData)
+         console.log(this.state.formID)
 
+         socketConnection.emit(`pendingFormID`, this.state.pendingFormData)
+     }
 
   render() {
       const { step } = this.state;
 
-      const {formScheme, formID, formDefault, filledFormNumberID, filledFormData} = this.state;
-      const values = {formScheme, formID, formDefault, filledFormNumberID, filledFormData};
+      const {formScheme, formID, formDefault, filledFormNumberID, pendingFormData} = this.state;
+      const values = {formScheme, formID, formDefault, filledFormNumberID, pendingFormData};
       switch(step){
           case 1:
           return (
               <FormStep
+                  handleSubmitSocket={this.handleSubmitSocket}
                   handleSubmit={this.handleSubmit}
                   nextStep={this.nextStep}
                   values={values}
