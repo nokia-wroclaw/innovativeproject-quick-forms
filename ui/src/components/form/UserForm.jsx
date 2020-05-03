@@ -61,7 +61,7 @@ export class UserForms extends Component {
       <Container ms={8}>
         <Card>
           <CardHeader
-            title={`Twój kod oczekującego: g${this.state.idOfPending.substr(
+            title={`Twój kod oczekującego: ${this.state.idOfPending.substr(
               this.state.idOfPending.length - 5
             )}`}
           />

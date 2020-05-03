@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const templateSchema = new mongoose.Schema({
   userID: String,
+  definitions: mongoose.Schema.Types.Mixed,
   title: String,
   description: String,
   type: Object,
