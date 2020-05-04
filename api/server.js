@@ -1,8 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-const router = express.Router();
 const app = express();
-const http = require('http').Server(app);
 const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
@@ -50,16 +48,17 @@ server.listen(PORT, () => {
 });
 
 const io = require('socket.io')(server);
-app.set('socketio', io);
+app.set('io', io);
 app.set('server', server);
 
-console.log("server.js app.io: " + app.io)
+
 
 const connections = [];
-const socketIDdictionary = {};
+const socketDictionary = {};
 
 const socketPendingFormOn = require('./src/sockets/socketPendingFormOn');
 const socketPost = require('./src/sockets/socketPendingFormEmit')
+
 socketPendingFormOn.start(io, socketDictionary);
 
 io.on('connection', (socket) => {
@@ -67,7 +66,5 @@ io.on('connection', (socket) => {
   socketPost.start(app, io);
   console.log('Connected: %s sockets connected', connections.length)
   console.log('made socket connection', socket.id)
-
-
 });
 
