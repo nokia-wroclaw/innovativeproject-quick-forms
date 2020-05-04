@@ -14,6 +14,7 @@ const pendingFormsRoute = require('./src/routing/pendingForms');
 const nativeAuthRoute = require('./src/routing/nativeAuth');
 const googleAuthRoute = require('./src/routing/googleAuth');
 const registerRoute = require('./src/routing/register');
+const socketHttpGlueRoute = require('./src/sockets/socketHttpGlue')
 
 const corsOptions = {
   origin: ['http://localhost:3000'],
@@ -41,6 +42,7 @@ app.use('/api/forms/pendingforms/single', pendingFormsRoute);
 app.use('/api/auth', nativeAuthRoute);
 app.use('/api/auth', googleAuthRoute);
 app.use('/api/auth', registerRoute);
+app.use('/api/sockets/socketHttpGlue', socketHttpGlueRoute);
 
 const PORT = process.env.PORT || 8080;
 const server = require("http").createServer(app);

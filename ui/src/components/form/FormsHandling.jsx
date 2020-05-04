@@ -48,7 +48,7 @@ export const DeleteFilled = formID => {
 
 export const RejectPending = pendingFormNumberID => {
   axios
-      .post('/api/sockets/socketPendingFormManager',
+      .post('/api/sockets/socketHttpGlue',
           pendingFormNumberID)
       .then(r => console.log(r))
       .catch(error => console.log(error))
