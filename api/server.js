@@ -52,7 +52,6 @@ app.set('io', io);
 app.set('server', server);
 
 
-
 const connections = [];
 const socketDictionary = {};
 

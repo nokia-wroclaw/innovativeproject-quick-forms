@@ -40,30 +40,41 @@ export class UserForms extends Component {
 
     previousStep = () => {
         const { step } = this.state;
-        this.setState({
-            step: step - 1
-        });
+        if (step > 0)
+            this.setState({
+                step: 1
+            });
+        else {
+            this.setState({
+                step: 1
+            });
+        }
     }
 
 
    componentDidMount() {
       socketConnection = io.connect(ENDPOINT);
-      socketConnection.on('pendingFormID', (data) => {
-          this.setState({socketResponse : data})
-      })
+       socketConnection.on('pendingFormID', (data) => {
+           console.log(data);
+           this.setState({socketResponse : data})
+       })
+
+       if (this.state.socketResponse.message === 'rejected'){
+           this.previousStep();
+       }
     const id = this.props.match.params.formID;
     this.setState({formID: id});
     this.setState({filledFormNumberID : pendingFormIDGenerator()})
      this.LoadSchema(id).then(r => console.log(r));
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-      socketConnection.on('pendingFormID', (data) => {
-          console.log(data);
-          this.setState({socketResponse : data})
-      })
-      console.log(this.state.socketResponse);
-  }
+   componentDidUpdate(prevProps, prevState, snapshot) {
+       if (this.state.socketResponse.message === 'rejected'){
+           this.state.socketResponse.message = '';
+           this.previousStep();
+           this.forceUpdate();
+       }
+   }
 
     LoadSchema = formID =>
     GetForm(formID, '/api/forms/templates/')
