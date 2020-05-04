@@ -26,6 +26,7 @@ export class UserForms extends Component {
       formID: '',
       formDefault: '',
         filledFormNumberID: -1,
+        socketResponse: '',
 
     };
 
@@ -47,13 +48,24 @@ export class UserForms extends Component {
 
    componentDidMount() {
       socketConnection = io.connect(ENDPOINT);
+      socketConnection.on('pendingFormID', (data) => {
+          this.setState({socketResponse : data})
+      })
     const id = this.props.match.params.formID;
     this.setState({formID: id});
     this.setState({filledFormNumberID : pendingFormIDGenerator()})
      this.LoadSchema(id).then(r => console.log(r));
   }
 
-  LoadSchema = formID =>
+  componentDidUpdate(prevProps, prevState, snapshot) {
+      socketConnection.on('pendingFormID', (data) => {
+          console.log(data);
+          this.setState({socketResponse : data})
+      })
+      console.log(this.state.socketResponse);
+  }
+
+    LoadSchema = formID =>
     GetForm(formID, '/api/forms/templates/')
       .then(response => this.setState({formScheme: response.data}))
       .catch(error => console.error(`Błąd pobierania schematu: ${error}`));

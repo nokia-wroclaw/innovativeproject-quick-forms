@@ -1,8 +1,8 @@
 const express = require('express');
 require('dotenv').config();
-const app = express();
 const router = express.Router();
-const socket = require('socket.io');
+const app = express();
+const http = require('http').Server(app);
 const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
@@ -14,7 +14,7 @@ const pendingFormsRoute = require('./src/routing/pendingForms');
 const nativeAuthRoute = require('./src/routing/nativeAuth');
 const googleAuthRoute = require('./src/routing/googleAuth');
 const registerRoute = require('./src/routing/register');
-const socketHttpGlueRoute = require('./src/sockets/socketHttpGlue')
+const socketDictionary = require('./src/sockets/socketDictionary')
 
 const corsOptions = {
   origin: ['http://localhost:3000'],
@@ -31,6 +31,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(cookieParser());
+app.use(express.urlencoded({extended: true}));
 
 app.use('/api/forms/templates', templatesRoute);
 app.use('/api/forms/templates/file', templatesRoute);
@@ -42,7 +43,6 @@ app.use('/api/forms/pendingforms/single', pendingFormsRoute);
 app.use('/api/auth', nativeAuthRoute);
 app.use('/api/auth', googleAuthRoute);
 app.use('/api/auth', registerRoute);
-app.use('/api/sockets/socketHttpGlue', socketHttpGlueRoute);
 
 const PORT = process.env.PORT || 8080;
 const server = require("http").createServer(app);
@@ -51,27 +51,24 @@ server.listen(PORT, () => {
 });
 
 const io = require('socket.io')(server);
+app.set('socketio', io);
+app.set('server', server);
+
+console.log("server.js app.io: " + app.io)
+
 const connections = [];
 const socketIDdictionary = {};
 
 const socketPendingFormOn = require('./src/sockets/socketPendingFormOn');
-const socketPendingFormEmit = require('./src/sockets/socketPendingFormEmit')
-socketPendingFormOn.start(io, socketIDdictionary);
-socketPendingFormEmit.start(io, socketIDdictionary);
+const socketPost = require('./src/sockets/socketPost')
+socketPendingFormOn.start(io, socketDictionary);
 
 io.on('connection', (socket) => {
   connections.push(socket)
+  socketPost(app, io);
   console.log('Connected: %s sockets connected', connections.length)
   console.log('made socket connection', socket.id)
 
-
-  //save to db
-  //send to pending forms
-  //get response
-  //
-  socket.emit('pendingFormID',{
-    hello : "hello"
-  })
 
 });
 
