@@ -74,6 +74,11 @@ export class UserForms extends Component {
            this.previousStep();
            this.forceUpdate();
        }
+       if (this.state.socketResponse.message === 'accepted'){
+           this.state.socketResponse.message = '';
+           this.nextStep();
+           this.forceUpdate();
+       }
    }
 
     LoadSchema = formID =>

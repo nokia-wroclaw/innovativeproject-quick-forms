@@ -61,5 +61,12 @@ export const  AcceptForm =  formID => {
     .then(() => DeletePending(formID))
     .then(() => window.location.reload())
     .catch(error => console.error(`Błąd akceptowania formularza: ${error}`));
+
+  axios
+    .post('/api/sockets/formEmit',
+          'accepted')
+          .then(r => console.log(r))
+          .catch(error => console.log(error))
+
 };
 
