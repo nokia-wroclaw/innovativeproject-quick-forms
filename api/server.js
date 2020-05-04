@@ -54,8 +54,10 @@ const io = require('socket.io')(server);
 const connections = [];
 const socketIDdictionary = {};
 
-const socketPendingFormCommunication = require('./src/sockets/socketPendingFormOn');
-socketPendingFormCommunication.start(io);
+const socketPendingFormOn = require('./src/sockets/socketPendingFormOn');
+const socketPendingFormEmit = require('./src/sockets/socketPendingFormEmit')
+socketPendingFormOn.start(io, socketIDdictionary);
+socketPendingFormEmit.start(io, socketIDdictionary);
 
 io.on('connection', (socket) => {
   connections.push(socket)
