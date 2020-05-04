@@ -9,8 +9,7 @@ module.exports = {
                 const pendingFormNumberID = data.filledFormNumberID;
                 socketDictionary[pendingFormNumberID] = socket.id;
                 console.log(`Added value ${socket.id} with key ${pendingFormNumberID}`);
-                const form = new pendingForm(data)
-                const savedForm = form.save();
+                const form = new pendingForm(data).save();
             });
         });
     }

@@ -14,7 +14,6 @@ const pendingFormsRoute = require('./src/routing/pendingForms');
 const nativeAuthRoute = require('./src/routing/nativeAuth');
 const googleAuthRoute = require('./src/routing/googleAuth');
 const registerRoute = require('./src/routing/register');
-const socketDictionary = require('./src/sockets/socketDictionary')
 
 const corsOptions = {
   origin: ['http://localhost:3000'],
@@ -60,12 +59,12 @@ const connections = [];
 const socketIDdictionary = {};
 
 const socketPendingFormOn = require('./src/sockets/socketPendingFormOn');
-const socketPost = require('./src/sockets/socketPost')
+const socketPost = require('./src/sockets/socketPendingFormEmit')
 socketPendingFormOn.start(io, socketDictionary);
 
 io.on('connection', (socket) => {
   connections.push(socket)
-  socketPost(app, io);
+  socketPost.start(app, io);
   console.log('Connected: %s sockets connected', connections.length)
   console.log('made socket connection', socket.id)
 
