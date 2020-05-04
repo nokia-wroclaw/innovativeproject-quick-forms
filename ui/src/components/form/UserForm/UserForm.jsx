@@ -86,11 +86,6 @@ export class UserForms extends Component {
              filledFormNumberID: this.state.filledFormNumberID,
          }
          await this.promisedSetState({pendingFormData : pendingFormData})
-         console.log(this.state.pendingFormData)
-         console.log(pendingFormData)
-         console.log(formData)
-         console.log(this.state.formID)
-
          socketConnection.emit(`pendingFormID`, this.state.pendingFormData)
      }
 

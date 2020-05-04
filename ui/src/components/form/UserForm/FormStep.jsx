@@ -9,11 +9,7 @@ const Form = withTheme(MuiTheme);
 
 export class FormStep extends Component{
     continue =  (formData) => {
-
         this.props.handleSubmitSocket(formData);
-        console.log(this.props.values.pendingFormData);
-        console.log(formData)
-
         this.props.nextStep();
     }
 

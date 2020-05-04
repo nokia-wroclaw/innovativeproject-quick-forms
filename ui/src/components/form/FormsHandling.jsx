@@ -9,11 +9,6 @@ export const SubmitForm =  (formData, url) => {
    return  axios.post(url, formData);
 };
 
-export const SubmitFormSocket = (formData) => {
-
-}
-
-
 export const DeleteTemplate = formID => {
   axios
     .delete(`/api/forms/filled-forms/${formID}`)
@@ -48,7 +43,7 @@ export const DeleteFilled = formID => {
 
 export const RejectPending = pendingFormNumberID => {
   axios
-      .post('/api/sockets/socketHttpGlue',
+      .post('/api/sockets/formEmit',
           pendingFormNumberID)
       .then(r => console.log(r))
       .catch(error => console.log(error))
