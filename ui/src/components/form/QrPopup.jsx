@@ -19,11 +19,19 @@ export const ContentOfCard = ({formID, title, description, ifQR, showQR}) => {
         {description}
       </Typography>
       <Typography align="center">
-        {ifQR ? <QRCode value={`${window.location.href.substr(0, window.location.href.length - 10)}/userform/${formID}`} size={220} /> : null}
+        {ifQR ? (
+          <QRCode
+            value={`${window.location.href.substr(
+              0,
+              window.location.href.length - 10
+            )}/userform/${formID}`}
+            size={220}
+          />
+        ) : null}
       </Typography>
     </CardContent>
   );
-}
+};
 
 const useStyles = theme => ({
   button: {
@@ -39,46 +47,55 @@ const useStyles = theme => ({
   field: {
     marginTop: 8,
     marginBottom: 8,
-  }
+  },
 });
 
 class QrPopup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: false };
+    this.state = {open: false};
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.baseURL = `${window.location.href.substr(0, window.location.href.length - 10)}/userform/${this.props.formID}`;
+    this.baseURL = `${window.location.href.substr(
+      0,
+      window.location.href.length - 10
+    )}/userform/${this.props.formID}`;
     this.qr = React.createRef();
     this.downloadQR = this.downloadQR.bind(this);
   }
   openModal() {
-    this.setState({ open: true });
+    this.setState({open: true});
   }
   closeModal() {
-    this.setState({ open: false });
+    this.setState({open: false});
   }
 
   downloadQR() {
     console.log(this.qr.current);
     const canvas = document.getElementById(this.baseURL);
     const pngUrl = canvas
-      .toDataURL("image/png")
-      .replace("image/png", "image/octet-stream");
-    let downloadLink = document.createElement("a");
+      .toDataURL('image/png')
+      .replace('image/png', 'image/octet-stream');
+    let downloadLink = document.createElement('a');
     downloadLink.href = pngUrl;
     downloadLink.download = `${this.props.formID}.png`;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
-  };
+  }
 
   render() {
     const {classes} = this.props;
     return (
       <div>
         <ButtonBase className={classes.button} onClick={this.openModal}>
-          <ContentOfCard formID={this.props.formID} title={this.props.title} description={this.props.description} ifQR={this.props.ifQR} showQR={this.props.showQR}/>
+          <ContentOfCard
+            formID={this.props.formID}
+            title={this.props.title}
+            description={this.props.description}
+            ifQR={this.props.ifQR}
+            showQR={this.props.showQR}
+          />
         </ButtonBase>
         <Popup
           open={this.state.open}
@@ -89,10 +106,25 @@ class QrPopup extends React.Component {
           }}
         >
           <div className={classes.popupContent}>
-            <QRCode id={this.baseURL} ref={this.qr} value={this.baseURL} size={250} />
-            <FilledInput className={classes.field} fullWidth readOnly value={this.baseURL} />
+            <QRCode
+              id={this.baseURL}
+              ref={this.qr}
+              value={this.baseURL}
+              size={250}
+            />
+            <FilledInput
+              className={classes.field}
+              fullWidth
+              readOnly
+              value={this.baseURL}
+            />
             <div className={classes.qrbuttons}>
-              <Button variant="contained" color="primary" fullWidth onClick={this.downloadQR}>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={this.downloadQR}
+              >
                 Save
               </Button>
             </div>
@@ -102,6 +134,5 @@ class QrPopup extends React.Component {
     );
   }
 }
-
 
 export default withStyles(useStyles)(QrPopup);

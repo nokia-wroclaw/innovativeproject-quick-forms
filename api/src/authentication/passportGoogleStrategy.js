@@ -2,15 +2,15 @@ require('dotenv').config();
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 
-const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET} = process.env;
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
 const User = require('../models/user.model');
 
 const verifyUser = (id, email, done) => {
-  User.findOne({googleId: id}).then(currentUser => {
+  User.findOne({ googleId: id }).then(currentUser => {
     if (!currentUser) {
       new User({
         googleId: id,
-        email,
+        email
       })
         .save()
         .then(newUser => {
@@ -25,7 +25,7 @@ const verifyUser = (id, email, done) => {
 const strategyOptions = {
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: '/api/auth/google/redirect',
+  callbackURL: '/api/auth/google/redirect'
 };
 
 const verifyCallback = async (accessToken, refreshToken, profile, done) => {
