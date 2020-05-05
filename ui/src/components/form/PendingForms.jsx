@@ -4,7 +4,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import Box from '@material-ui/core/Box';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {DeletePending, AcceptForm} from './FormsHandling';
+import {
+  DeletePending,
+  AcceptForm,
+  GetForm,
+  RejectPending,
+} from './FormsHandling';
 
 class PendingForms extends React.Component {
   handleAccept = id => {
@@ -21,10 +26,15 @@ class PendingForms extends React.Component {
       );
   };
 
+  handleReject = pendingFormNumberID => {
+    console.log(pendingFormNumberID);
+    RejectPending(pendingFormNumberID);
+  };
+
   _render(obj) {
     return (
       <Box m={3} key={obj._id}>
-        {obj._id.substr(obj._id.length - 5)}:&nbsp;
+        {obj.filledFormNumberID}:&nbsp;
         <Button
           variant="contained"
           color="default"
@@ -47,6 +57,15 @@ class PendingForms extends React.Component {
           onClick={() => this.handleAccept(obj._id)}
         >
           Save
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<DeleteIcon />}
+          onClick={() => this.handleReject(obj.filledFormNumberID)}
+          content={'More'}
+        >
+          Reject
         </Button>
       </Box>
     );

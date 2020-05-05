@@ -3,7 +3,7 @@ import {Route, Switch} from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage/HomePage';
-import UserForm from './components/form/UserForm';
+import UserForm from './components/form/UserForm/UserForm';
 import ShowForm from './components/form/ShowForm';
 import Dashboard from './pages/Dashboard/Dashboard';
 import ListOfForms from './components/form/ListOfForms';

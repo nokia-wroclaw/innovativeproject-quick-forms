@@ -29,13 +29,37 @@ export const DeleteFilled = formID => {
   return axios.delete(`/api/forms/filled-forms/single/${formID}`);
 };
 
+export const RejectPending = pendingFormNumberID => {
+  axios
+    .post('/api/sockets/formEmit', pendingFormNumberID)
+    .then(r => console.log(r))
+    .catch(error => console.log(error));
+};
+
 export const AcceptForm = formID => {
   const RemoveOldId = (obj, prop) => {
     let res = Object.assign({}, obj);
     delete res[prop];
     return res;
   };
-  var promise = new Promise((resolve, reject) => {
+
+  GetForm(formID, '/api/forms/pendingforms/single')
+    .then(formToSave =>
+      SubmitForm(
+        RemoveOldId(formToSave.data, '_id'),
+        '/api/forms/filled-forms/'
+      )
+    )
+    .then(() => DeletePending(formID))
+    .then(() => window.location.reload())
+    .catch(error => console.error(`Błąd akceptowania formularza: ${error}`));
+
+  axios
+    .post('/api/sockets/formEmit', 'accepted')
+    .then(r => console.log(r))
+    .catch(error => console.log(error));
+
+  return new Promise((resolve, reject) => {
     GetForm(formID, '/api/forms/pendingforms/single')
       .then(formToSave =>
         SubmitForm(
@@ -52,5 +76,4 @@ export const AcceptForm = formID => {
         reject(Error(error));
       });
   });
-  return promise;
 };
