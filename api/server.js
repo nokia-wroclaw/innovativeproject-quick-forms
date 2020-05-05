@@ -5,6 +5,8 @@ const app = express();
 const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 const connectDb = require('./src/connection/connection');
 const passportGoogleStrategy = require('./src/authentication/passportGoogleStrategy');
 const filledFormsRoute = require('./src/routing/filledForms');
@@ -30,8 +32,7 @@ app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(cookieParser());
 
-app.use(express.urlencoded({extended: true}));
-
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/forms/templates', templatesRoute);
 app.use('/api/forms/templates/file', templatesRoute);
@@ -45,28 +46,24 @@ app.use('/api/auth', googleAuthRoute);
 app.use('/api/auth', registerRoute);
 
 const PORT = process.env.PORT || 8080;
-const server = require("http").createServer(app);
 server.listen(PORT, () => {
   connectDb();
 });
 
-const io = require('socket.io')(server);
 app.set('io', io);
 app.set('server', server);
-
 
 const connections = [];
 const socketDictionary = {};
 
 const socketPendingFormOn = require('./src/sockets/socketPendingFormOn');
-const socketPost = require('./src/sockets/socketPendingFormEmit')
+const socketPost = require('./src/sockets/socketPendingFormEmit');
 
 socketPendingFormOn.start(io, socketDictionary);
 
-io.on('connection', (socket) => {
-  connections.push(socket)
+io.on('connection', socket => {
+  connections.push(socket);
   socketPost.start(app, io);
-  console.log('Connected: %s sockets connected', connections.length)
-  console.log('made socket connection', socket.id)
+  console.log('Connected: %s sockets connected', connections.length);
+  console.log('made socket connection', socket.id);
 });
-

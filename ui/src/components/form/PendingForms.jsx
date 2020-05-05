@@ -4,7 +4,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import Box from '@material-ui/core/Box';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {DeletePending, AcceptForm, GetForm, RejectPending} from './FormsHandling';
+import {
+  DeletePending,
+  AcceptForm,
+  GetForm,
+  RejectPending,
+} from './FormsHandling';
 
 class PendingForms extends React.Component {
   handleAccept = id => {
@@ -13,18 +18,17 @@ class PendingForms extends React.Component {
       .catch(error => console.log(`Nie udalo sie zakceptowac${error}`));
   };
 
-
   handleDelete = id => {
-      DeletePending(id)
-          .then(res => this.props.reload(this.props.formID))
-          .catch(error =>
-              console.log(`Nie udalo sie usunac pending formsa${error}`)
-          );
-  }
+    DeletePending(id)
+      .then(res => this.props.reload(this.props.formID))
+      .catch(error =>
+        console.log(`Nie udalo sie usunac pending formsa${error}`)
+      );
+  };
 
   handleReject = pendingFormNumberID => {
-      console.log(pendingFormNumberID)
-      RejectPending(pendingFormNumberID)
+    console.log(pendingFormNumberID);
+    RejectPending(pendingFormNumberID);
   };
 
   _render(obj) {
@@ -54,16 +58,15 @@ class PendingForms extends React.Component {
         >
           Save
         </Button>
-
-          <Button
-              variant="contained"
-              color="primary"
-              startIcon={<DeleteIcon />}
-              onClick={() => this.handleReject(obj.filledFormNumberID)}
-              content={"More"}
-          >
-              Reject
-          </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<DeleteIcon />}
+          onClick={() => this.handleReject(obj.filledFormNumberID)}
+          content={'More'}
+        >
+          Reject
+        </Button>
       </Box>
     );
   }

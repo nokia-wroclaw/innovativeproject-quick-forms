@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Form = require('../models/filledForm.model');
+
 const pendingForm = mongoose.model('pendingforms', Form);
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const forms = await pendingForm.find({templateID: req.params.id});
+    const forms = await pendingForm.find({ templateID: req.params.id });
     res.status(200).json(forms);
   } catch (err) {
     res.status(404).json({ message: err });

@@ -1,8 +1,6 @@
-let socketDictionary = {};
+const socketDictionary = {};
 const connections = [];
 
 module.exports = {
-    start: (io) => {
-
-    }
-}
+  start: io => {}
+};
