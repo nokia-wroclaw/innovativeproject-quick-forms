@@ -6,6 +6,7 @@ import {Button, Container} from '@material-ui/core';
 import {SubmitForm, GetForm} from '../FormsHandling';
 import FormStep from './FormStep';
 import EndStep from './EndStep';
+import {LockStep} from "./LockStep";
 
 const Form = withTheme(MuiTheme);
 let socketConnection;
@@ -130,24 +131,7 @@ export class UserForms extends Component {
           />
         );
       case 2:
-        return (
-          <div>
-            <h1>{this.state.filledFormNumberID}</h1>
-            <h1>
-              {' '}
-              Screen is locked, please wait for Template Owner to accept your
-              submit
-            </h1>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              onClick={this.nextStep}
-            >
-              Continue
-            </Button>
-          </div>
-        );
+        return <LockStep filledFormNumberID = {this.state.filledFormNumberID}/>
       case 3:
         return <EndStep />;
     }
