@@ -1,15 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
+import CheckIcon from '@material-ui/icons/Check';
 import Box from '@material-ui/core/Box';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {
-  DeletePending,
-  AcceptForm,
-  GetForm,
-  RejectPending,
-} from './FormsHandling';
+import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
+import Typography from '@material-ui/core/Typography';
+import ClearIcon from '@material-ui/icons/Clear';
+import {DeletePending, AcceptForm, RejectPending} from './FormsHandling';
 
 class PendingForms extends React.Component {
   handleAccept = id => {
@@ -27,8 +24,11 @@ class PendingForms extends React.Component {
   };
 
   handleReject = pendingFormNumberID => {
-    console.log(pendingFormNumberID);
     RejectPending(pendingFormNumberID);
+  };
+
+  handlePreview = pendingFormNumberID => {
+    window.location.replace(`/previewdata/${pendingFormNumberID}`);
   };
 
   _render(obj) {
@@ -38,9 +38,26 @@ class PendingForms extends React.Component {
         <Button
           variant="contained"
           color="default"
-          startIcon={<CloudUploadIcon />}
+          startIcon={<ChromeReaderModeIcon />}
         >
           Preview
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<CheckIcon />}
+          onClick={() => this.handleAccept(obj._id)}
+        >
+          Accept
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<ClearIcon />}
+          onClick={() => this.handleReject(obj.filledFormNumberID)}
+          content={'More'}
+        >
+          Reject
         </Button>
         <Button
           variant="contained"
@@ -50,23 +67,6 @@ class PendingForms extends React.Component {
         >
           Delete
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<SaveIcon />}
-          onClick={() => this.handleAccept(obj._id)}
-        >
-          Save
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<DeleteIcon />}
-          onClick={() => this.handleReject(obj.filledFormNumberID)}
-          content={'More'}
-        >
-          Reject
-        </Button>
       </Box>
     );
   }
@@ -74,7 +74,9 @@ class PendingForms extends React.Component {
   render() {
     return (
       <Box>
-        <h3>For approval:</h3>
+        <Typography variant="h6" gutterBottom>
+          For Approval:
+        </Typography>
         {this.props.listOfForms.map(i => this._render(i))}
       </Box>
     );

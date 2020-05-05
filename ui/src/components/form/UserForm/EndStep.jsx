@@ -1,13 +1,7 @@
-import React, {Component, IntrinsicElements as styled} from 'react';
+import React from 'react';
 import {Button, Container} from '@material-ui/core';
-import {withTheme} from 'react-jsonschema-form';
-import Paper from '@material-ui/core/Paper';
-import {Theme as MuiTheme} from 'rjsf-material-ui';
 import {makeStyles} from '@material-ui/core/styles';
 import CardMedia from '@material-ui/core/CardMedia';
-import TextField from '@material-ui/core/TextField';
-
-const Form = withTheme(MuiTheme);
 
 const useStyles = makeStyles(() => ({
   Container: {

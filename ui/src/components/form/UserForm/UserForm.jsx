@@ -1,14 +1,10 @@
 import io from 'socket.io-client';
 import React, {Component} from 'react';
-import {withTheme} from 'react-jsonschema-form';
-import {Theme as MuiTheme} from 'rjsf-material-ui';
-import {Button, Container} from '@material-ui/core';
-import {SubmitForm, GetForm} from '../FormsHandling';
+import {GetForm} from '../FormsHandling';
 import FormStep from './FormStep';
 import EndStep from './EndStep';
-import {LockStep} from "./LockStep";
+import {LockStep} from './LockStep';
 
-const Form = withTheme(MuiTheme);
 let socketConnection;
 const ENDPOINT = '//localhost:8080';
 
@@ -57,9 +53,8 @@ export class UserForms extends Component {
       this.setState({socketResponse: data});
     });
 
-    if (this.state.socketResponse.message === 'rejected') {
-      this.previousStep();
-    }
+    if (this.state.socketResponse.message === 'rejected') this.previousStep();
+
     const id = this.props.match.params.formID;
     this.setState({formID: id});
     this.setState({filledFormNumberID: pendingFormIDGenerator()});
@@ -67,16 +62,11 @@ export class UserForms extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.socketResponse.message === 'rejected') {
-      this.state.socketResponse.message = '';
-      this.previousStep();
-      this.forceUpdate();
-    }
-    if (this.state.socketResponse.message === 'accepted') {
-      this.state.socketResponse.message = '';
-      this.nextStep();
-      this.forceUpdate();
-    }
+    if (this.state.socketResponse.message === 'rejected')
+      this.setState({socketResponse: ''}, this.previousStep());
+
+    if (this.state.socketResponse.message === 'accepted')
+      this.setState({socketResponse: ''}, this.nextStep());
   }
 
   LoadSchema = formID =>
@@ -131,9 +121,11 @@ export class UserForms extends Component {
           />
         );
       case 2:
-        return <LockStep filledFormNumberID = {this.state.filledFormNumberID}/>
+        return <LockStep filledFormNumberID={this.state.filledFormNumberID} />;
       case 3:
         return <EndStep />;
+      default:
+        return;
     }
   }
 }

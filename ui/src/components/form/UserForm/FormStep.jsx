@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import io from 'socket.io-client';
 import {Button, Container} from '@material-ui/core';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';

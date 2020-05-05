@@ -2,6 +2,7 @@ import React from 'react';
 import PendingForms from './PendingForms';
 import AcceptedForms from './AcceptedForms';
 import {GetForm} from './FormsHandling';
+import Container from '@material-ui/core/Container';
 
 class ListOfFilledForms extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class ListOfFilledForms extends React.Component {
 
   render() {
     return (
-      <div>
+      <Container>
         <PendingForms
           formID={this.state.templateid}
           listOfForms={this.state.pendingForms}
@@ -46,7 +47,7 @@ class ListOfFilledForms extends React.Component {
           listOfForms={this.state.acceptedForms}
           reload={this.LoadSchema}
         />
-      </div>
+      </Container>
     );
   }
 }

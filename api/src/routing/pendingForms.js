@@ -47,8 +47,8 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    await pendingForm.findByIdAndRemove(req.params.id);
-    res.status(200);
+    const form = await pendingForm.findByIdAndRemove(req.params.id);
+    res.status(200).json(form);
   } catch (err) {
     res.status(400).json({ message: err });
   }

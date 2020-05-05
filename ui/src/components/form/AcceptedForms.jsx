@@ -2,8 +2,9 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Box from '@material-ui/core/Box';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import {DeleteFilled} from './FormsHandling';
+import Typography from '@material-ui/core/Typography';
 
 class ListOfFilledForms extends React.Component {
   handleDelete = id => {
@@ -21,7 +22,7 @@ class ListOfFilledForms extends React.Component {
         <Button
           variant="contained"
           color="default"
-          startIcon={<CloudUploadIcon />}
+          startIcon={<ChromeReaderModeIcon />}
         >
           Preview
         </Button>
@@ -40,7 +41,9 @@ class ListOfFilledForms extends React.Component {
   render() {
     return (
       <Box>
-        <h3>Approved:</h3>
+        <Typography variant="h6" gutterBottom>
+          Approved:
+        </Typography>
         {this.props.listOfForms.map(i => this._render(i))}
       </Box>
     );

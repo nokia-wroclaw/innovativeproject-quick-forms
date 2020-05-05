@@ -43,22 +43,6 @@ export const AcceptForm = formID => {
     return res;
   };
 
-  GetForm(formID, '/api/forms/pendingforms/single')
-    .then(formToSave =>
-      SubmitForm(
-        RemoveOldId(formToSave.data, '_id'),
-        '/api/forms/filled-forms/'
-      )
-    )
-    .then(() => DeletePending(formID))
-    .then(() => window.location.reload())
-    .catch(error => console.error(`Błąd akceptowania formularza: ${error}`));
-
-  axios
-    .post('/api/sockets/formEmit', 'accepted')
-    .then(r => console.log(r))
-    .catch(error => console.log(error));
-
   return new Promise((resolve, reject) => {
     GetForm(formID, '/api/forms/pendingforms/single')
       .then(formToSave =>
@@ -67,13 +51,15 @@ export const AcceptForm = formID => {
           '/api/forms/filled-forms/'
         )
       )
-      .then(prom => DeletePending(formID))
-      .then(() => {
+      .then(a => DeletePending(formID))
+      .then(b => {
+        axios.post('/api/sockets/formEmit', 'accepted');
         resolve('Promise resolved successfully');
       })
-      .catch(error => console.error(`Błąd akceptowania formularza: ${error}`))
       .catch(error => {
-        reject(Error(error));
+        reject(Error(error)).catch(error =>
+          console.error(`Błąd akceptowania formularza: ${error}`)
+        );
       });
   });
 };

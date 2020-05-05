@@ -22,7 +22,6 @@ const useStyles = makeStyles({
 });
 
 function handleDelete(id, userID, reload) {
-  console.log(DeleteTemplate(id));
   DeleteTemplate(id)
     .then(res => reload(userID))
     .catch(error => console.log(`Nie udalo sie usunac formularza${error}`));
