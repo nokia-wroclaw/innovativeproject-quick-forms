@@ -17,7 +17,7 @@ class ListOfFilledForms extends React.Component {
   _render(obj) {
     return (
       <Box m={3} key={obj._id}>
-        {obj._id.substr(obj._id.length - 5)}:&nbsp;
+        {obj.filledFormNumberID}:&nbsp;
         <Button
           variant="contained"
           color="default"
