@@ -9,8 +9,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {DeletePending, AcceptForm, RejectPending} from './FormsHandling';
 
 class PendingForms extends React.Component {
-  handleAccept = id => {
-    AcceptForm(id)
+  handleAccept = (pendingFormNumberID, id) => {
+    AcceptForm(pendingFormNumberID, id)
       .then(res => this.props.reload(this.props.formID))
       .catch(error => console.log(`Nie udalo sie zakceptowac${error}`));
   };
@@ -46,7 +46,7 @@ class PendingForms extends React.Component {
           variant="contained"
           color="primary"
           startIcon={<CheckIcon />}
-          onClick={() => this.handleAccept(obj._id)}
+          onClick={() => this.handleAccept(obj.filledFormNumberID, obj._id)}
         >
           Accept
         </Button>
