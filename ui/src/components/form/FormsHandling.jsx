@@ -29,11 +29,13 @@ export const DeleteFilled = formID => {
   return axios.delete(`/api/forms/filled-forms/single/${formID}`);
 };
 
-export const RejectPending = pendingFormNumberID => {
+export const RejectPending = (pendingFormNumberID, formID) => {
   axios
     .post('/api/sockets/formEmit', pendingFormNumberID)
     .then(r => console.log(r))
     .catch(error => console.log(error));
+
+  DeletePending(formID).then(r => console.log(r));
 };
 
 export const AcceptForm = formID => {
