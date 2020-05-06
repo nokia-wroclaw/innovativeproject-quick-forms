@@ -23,8 +23,8 @@ class PendingForms extends React.Component {
       );
   };
 
-  handleReject = pendingFormNumberID => {
-    RejectPending(pendingFormNumberID);
+  handleReject = (pendingFormNumberID, id) => {
+    RejectPending(pendingFormNumberID, id);
   };
 
   handlePreview = pendingFormNumberID => {
@@ -54,7 +54,7 @@ class PendingForms extends React.Component {
           variant="contained"
           color="primary"
           startIcon={<ClearIcon />}
-          onClick={() => this.handleReject(obj.filledFormNumberID)}
+          onClick={() => this.handleReject(obj.filledFormNumberID, obj._id)}
           content={'More'}
         >
           Reject
