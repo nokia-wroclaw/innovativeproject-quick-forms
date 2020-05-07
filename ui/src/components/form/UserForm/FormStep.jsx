@@ -9,6 +9,7 @@ export class FormStep extends Component {
   continue = formData => {
     this.props.handleSubmitSocket(formData);
     this.props.nextStep();
+    return false;
   };
 
   render() {
