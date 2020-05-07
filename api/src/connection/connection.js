@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
-
+require('dotenv').config();
+const { DATABASE_SECRET } = process.env;
 const connection =
-  'mongodb+srv://Admin:QHDIpi5ao3m1R0xE@cluster0-icd9k.mongodb.net/test?retryWrites=true&w=majority';
+  DATABASE_SECRET;
 
 const connectDb = () => {
   return mongoose
