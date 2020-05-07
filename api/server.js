@@ -65,6 +65,10 @@ socketPendingFormOn.start(io, socketDictionary);
 io.on('connection', socket => {
   connections.push(socket);
   socketPost.start(app, io, socketDictionary);
-  console.log('Connected: %s sockets connected', connections.length);
   console.log('made socket connection', socket.id);
+
+  socket.on('disconnect', () => {
+      delete socketDictionary[socket.id];
+      console.log('%s disconnected: %s sockets connected', socket.id)
+  })
 });
