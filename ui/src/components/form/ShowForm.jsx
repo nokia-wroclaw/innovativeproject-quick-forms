@@ -1,29 +1,45 @@
 import React from 'react';
 import {GetForm} from './FormsHandling';
-import {Container} from '@material-ui/core';
+import {withTheme} from 'react-jsonschema-form';
+import {Theme as MuiTheme} from 'rjsf-material-ui';
+import {Button, Container} from '@material-ui/core';
+
+const Form = withTheme(MuiTheme);
 
 class ShowForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formData: {},
+      filledForm: {},
+      formSchema: {},
     };
   }
 
   componentDidMount() {
-    const {formID} = this.props.match.params;
-    this.LoadSchema(formID);
+    this.LoadData(this.props.idOfForm, this.props.path, this.props.template);
   }
 
-  LoadSchema = formID =>
-    GetForm(formID, '/api/forms/pendingforms/single/')
-      .then(response => this.setState({formData: response.data}))
+  LoadData = (formID, path, templateID) => {
+    GetForm(formID, `/api/forms/${path}`)
+      .then(response => this.setState({filledForm: response.data}))
+      .catch(error =>
+        console.error(`Bląd pobierania wypelnionych danych: ${error}`)
+      );
+
+    GetForm(templateID, '/api/forms/templates')
+      .then(response => this.setState({formSchema: response.data}))
       .catch(error => console.error(`Bląd pobierania template: ${error}`));
+  };
 
   render() {
     return (
-      <Container ms={8}>
-        {JSON.stringify(this.state.formData, null, '\t')}
+      <Container  >
+        <Form
+          formData={this.state.filledForm.dataForm}
+          disabled={true}
+          schema={this.state.formSchema}>
+          <Button display="none" />
+        </Form>
       </Container>
     );
   }

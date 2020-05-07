@@ -5,11 +5,27 @@ import Box from '@material-ui/core/Box';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import {DeleteFilled} from './FormsHandling';
 import Typography from '@material-ui/core/Typography';
+import Popup from 'reactjs-popup';
+import ShowForm from './ShowForm';
 
 class ListOfFilledForms extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {open: false};
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({open: true});
+  }
+  closeModal() {
+    this.setState({open: false});
+  }
+
   handleDelete = id => {
     DeleteFilled(id)
-      .then(res => this.props.reload(this.props.formID))
+      .then(() => this.props.reload(this.props.formID))
       .catch(error =>
         console.log(`Nie udalo sie usunac pending formsa${error}`)
       );
@@ -23,15 +39,24 @@ class ListOfFilledForms extends React.Component {
           variant="contained"
           color="default"
           startIcon={<ChromeReaderModeIcon />}
-        >
+          onClick={this.openModal}>
           Preview
         </Button>
+        <Popup
+          open={this.state.open}
+          closeOnDocumentClick
+          onClose={this.closeModal}>
+          <ShowForm
+            path={'filled-forms/single'}
+            idOfForm={obj._id}
+            template={obj.templateID}
+          />
+        </Popup>
         <Button
           variant="contained"
           color="secondary"
           onClick={() => this.handleDelete(obj._id)}
-          startIcon={<DeleteIcon />}
-        >
+          startIcon={<DeleteIcon />}>
           Delete
         </Button>
       </Box>

@@ -7,8 +7,24 @@ import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import Typography from '@material-ui/core/Typography';
 import ClearIcon from '@material-ui/icons/Clear';
 import {DeletePending, AcceptForm, RejectPending} from './FormsHandling';
+import Popup from 'reactjs-popup';
+import ShowForm from './ShowForm';
 
 class PendingForms extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {open: false};
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({open: true});
+  }
+  closeModal() {
+    this.setState({open: false});
+  }
+
   handleAccept = id => {
     AcceptForm(id)
       .then(res => this.props.reload(this.props.formID))
@@ -33,21 +49,30 @@ class PendingForms extends React.Component {
 
   _render(obj) {
     return (
-      <Box m={3} key={obj._id}>
+      <Box m={3} key={obj._id} >
         {obj.filledFormNumberID}:&nbsp;
         <Button
           variant="contained"
           color="default"
           startIcon={<ChromeReaderModeIcon />}
-        >
+          onClick={this.openModal}>
           Preview
         </Button>
+        <Popup
+          open={this.state.open}
+          closeOnDocumentClick
+          onClose={this.closeModal}>
+          <ShowForm
+            path={'pendingforms/single'}
+            idOfForm={obj._id}
+            template={obj.templateID}
+          />
+        </Popup>
         <Button
           variant="contained"
           color="primary"
           startIcon={<CheckIcon />}
-          onClick={() => this.handleAccept(obj._id)}
-        >
+          onClick={() => this.handleAccept(obj._id)}>
           Accept
         </Button>
         <Button
@@ -55,16 +80,14 @@ class PendingForms extends React.Component {
           color="primary"
           startIcon={<ClearIcon />}
           onClick={() => this.handleReject(obj.filledFormNumberID)}
-          content={'More'}
-        >
+          content={'More'}>
           Reject
         </Button>
         <Button
           variant="contained"
           color="secondary"
           onClick={() => this.handleDelete(obj._id)}
-          startIcon={<DeleteIcon />}
-        >
+          startIcon={<DeleteIcon />}>
           Delete
         </Button>
       </Box>

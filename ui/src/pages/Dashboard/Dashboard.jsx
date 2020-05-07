@@ -31,8 +31,7 @@ class Dashboard extends React.Component {
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
-            fullWidth
-          >
+            fullWidth>
             Create a new form
           </Button>
         </Container>

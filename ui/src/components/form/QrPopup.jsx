@@ -103,8 +103,7 @@ class QrPopup extends React.Component {
           onClose={this.closeModal}
           contentStyle={{
             width: 255,
-          }}
-        >
+          }}>
           <div className={classes.popupContent}>
             <QRCode
               id={this.baseURL}
@@ -123,8 +122,7 @@ class QrPopup extends React.Component {
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={this.downloadQR}
-              >
+                onClick={this.downloadQR}>
                 Save
               </Button>
             </div>

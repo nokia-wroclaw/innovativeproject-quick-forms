@@ -16,6 +16,14 @@ router.get('/', async (req, res) => {
     res.status(404).json({ message: err });
   }
 });
+router.get('/single/:id', async (req, res) => {
+  try {
+    const forms = await filledForm.findById(req.params.id)
+    res.status(200).json(forms);
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+});
 
 router.get('/:id', async (req, res) => {
   try {

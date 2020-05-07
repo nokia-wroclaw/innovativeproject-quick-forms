@@ -47,24 +47,21 @@ function SingleForm({formID, title, description, reload, userID}) {
           className={classes.buttons}
           size="small"
           color="primary"
-          onClick={() => window.location.replace(`/userform/${formID}`)}
-        >
+          onClick={() => window.location.replace(`/userform/${formID}`)}>
           Fill
         </Button>
         <Button
           className={classes.buttons}
           size="small"
           color="primary"
-          onClick={() => showQR(!ifQR)}
-        >
+          onClick={() => showQR(!ifQR)}>
           QR code
         </Button>
         <Button
           className={classes.buttons}
           size="small"
           color="primary"
-          onClick={() => handleDelete(formID, userID, reload)}
-        >
+          onClick={() => handleDelete(formID, userID, reload)}>
           Delete
         </Button>
 
@@ -72,8 +69,7 @@ function SingleForm({formID, title, description, reload, userID}) {
           className={classes.buttons}
           size="small"
           color="primary"
-          onClick={() => window.location.replace(`/filledforms/${formID}`)}
-        >
+          onClick={() => window.location.replace(`/filledforms/${formID}`)}>
           Filled Forms
         </Button>
       </CardActions>

@@ -47,8 +47,7 @@ export function EndStep(props) {
             variant="contained"
             color="primary"
             type="submit"
-            onClick={next}
-          >
+            onClick={next}>
             Navigate to homepage
           </Button>
         </div>
