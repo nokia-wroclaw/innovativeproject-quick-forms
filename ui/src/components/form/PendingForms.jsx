@@ -41,7 +41,8 @@ class PendingForms extends React.Component {
   };
 
   handleReject = (pendingFormNumberID, id) => {
-    RejectPending(pendingFormNumberID, id);
+    RejectPending(pendingFormNumberID, id)
+        .then(res => this.props.reload(this.props.formID));
   };
 
   handlePreview = pendingFormNumberID => {
