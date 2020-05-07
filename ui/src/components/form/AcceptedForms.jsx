@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Popup from 'reactjs-popup';
 import ShowForm from './ShowForm';
 
-class ListOfFilledForms extends React.Component {
+class AcceptForms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {open: false};
@@ -75,4 +75,4 @@ class ListOfFilledForms extends React.Component {
   }
 }
 
-export default ListOfFilledForms;
+export default AcceptForms;

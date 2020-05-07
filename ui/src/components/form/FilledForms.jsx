@@ -4,7 +4,7 @@ import AcceptedForms from './AcceptedForms';
 import {GetForm} from './FormsHandling';
 import Container from '@material-ui/core/Container';
 
-class ListOfFilledForms extends React.Component {
+class FilledForms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,4 +52,4 @@ class ListOfFilledForms extends React.Component {
   }
 }
 
-export default ListOfFilledForms;
+export default FilledForms;

@@ -66,7 +66,6 @@ export const AcceptForm = (pendingFormNumberID, formID) => {
       )
       .then(a => DeletePending(formID))
       .then(b => {
-        console.log('HIIIIIIIIIII')
         axios.post('/api/sockets/formEmit', message);
         resolve('Promise resolved successfully');
       })
