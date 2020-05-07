@@ -37,7 +37,9 @@ function SingleForm({formID, title, description, reload, userID}) {
 
   const getDataToDownload = () => {
     axios.get(`/api/forms/filled-forms/${formID}`).then(data => {
+      //let parsedData = [];
       setDataToDownload(data.data);
+      // data.data.forEach(i => parsedData.push(i.dataForm))
     });
   }
 
@@ -62,7 +64,7 @@ function SingleForm({formID, title, description, reload, userID}) {
             style={{ textDecoration: 'none',
                     color: '#5519B8',
                     size: "small"}}
-            filename={'filled-forms.csv'}
+            filename={`${title}.csv`}
             target="_blank">
           DOWNLOAD
         </CSVLink>
