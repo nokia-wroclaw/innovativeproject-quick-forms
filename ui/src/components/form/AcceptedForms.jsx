@@ -5,7 +5,6 @@ import Box from '@material-ui/core/Box';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import {DeleteFilled} from './FormsHandling';
 import Typography from '@material-ui/core/Typography';
-import Popup from 'reactjs-popup';
 import ShowForm from './ShowForm';
 
 class AcceptForms extends React.Component {
@@ -31,27 +30,27 @@ class AcceptForms extends React.Component {
       );
   };
 
+  handlePreview = () => {
+    this.refs.child.openModal();
+  };
+
   _render(obj) {
     return (
       <Box m={3} key={obj._id}>
         {obj.filledFormNumberID}:&nbsp;
+        <ShowForm
+          path={'filled-forms/single'}
+          idOfForm={obj._id}
+          template={obj.templateID}
+          ref="child"
+        />
         <Button
           variant="contained"
           color="default"
           startIcon={<ChromeReaderModeIcon />}
-          onClick={this.openModal}>
+          onClick={() => this.handlePreview()}>
           Preview
         </Button>
-        <Popup
-          open={this.state.open}
-          closeOnDocumentClick
-          onClose={this.closeModal}>
-          <ShowForm
-            path={'filled-forms/single'}
-            idOfForm={obj._id}
-            template={obj.templateID}
-          />
-        </Popup>
         <Button
           variant="contained"
           color="secondary"

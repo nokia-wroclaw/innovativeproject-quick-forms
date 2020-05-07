@@ -62,7 +62,7 @@ export class UserForms extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.socketResponse.message === 'rejected'){
+    if (this.state.socketResponse.message === 'rejected') {
       this.setState({socketResponse: ''}, this.previousStep());
     }
 

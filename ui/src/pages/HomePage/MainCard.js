@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   mainCard: {
     position: 'relative',
     backgroundColor: theme.palette.grey[800],
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainCard(props) {
   const classes = useStyles();
-  const { card } = props;
+  const {card} = props;
 
   return (
     <Paper className={classes.mainCard}>

@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Container, Typography } from '@material-ui/core';
-
+import {Container, Typography} from '@material-ui/core';
 
 export class LockStep extends Component {
-
   render() {
     return (
       <Container ms={8}>

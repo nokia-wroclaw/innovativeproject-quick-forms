@@ -32,9 +32,9 @@ export const DeleteFilled = formID => {
 
 export const RejectPending = (pendingFormNumberID, formID) => {
   const message = {
-    pendingFormNumberID : pendingFormNumberID,
-    status : 'rejected'
-  }
+    pendingFormNumberID: pendingFormNumberID,
+    status: 'rejected',
+  };
   axios
     .post('/api/sockets/formEmit', message)
     .then(r => console.log(r))
@@ -45,10 +45,9 @@ export const RejectPending = (pendingFormNumberID, formID) => {
 
 export const AcceptForm = (pendingFormNumberID, formID) => {
   const message = {
-    pendingFormNumberID : pendingFormNumberID,
-    status : 'accepted'
-  }
-
+    pendingFormNumberID: pendingFormNumberID,
+    status: 'accepted',
+  };
 
   const RemoveOldId = (obj, prop) => {
     let res = Object.assign({}, obj);
