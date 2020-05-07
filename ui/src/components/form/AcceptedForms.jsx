@@ -22,8 +22,10 @@ const useStyles = theme => ({
     width: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    [theme.breakpoints.down('359')]: {
-      width: 150,
+    [theme.breakpoints.down('645')]: {
+      width: 100,
+      justifyContent: 'center',
+      alignItems: 'center',
     }
   },
   someButtons: {
