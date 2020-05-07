@@ -6,10 +6,20 @@ import Container from '@material-ui/core/Container';
 import {withStyles} from '@material-ui/core/styles';
 
 const useStyles = theme => ({
-  accepted: {
+  root: {
+    margin: 'auto',
   },
   pending: {
-    align: 'center',
+    margin: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  accepted: {
+    margin: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
 
@@ -47,9 +57,9 @@ class FilledForms extends React.Component {
     const {classes} = this.props
 
     return (
-      <Container maxWidth='lg'>
+      <Container maxWidth='lg' className={classes.root}>
         <PendingForms
-          className={classes.pending}
+          className={classes.accepted}
           formID={this.state.templateid}
           listOfForms={this.state.pendingForms}
           reload={this.LoadSchema}

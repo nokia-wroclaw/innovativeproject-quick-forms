@@ -5,8 +5,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 
 const useStyles = makeStyles(() => ({
   Container: {
+    margin: 'auto',
+    display: 'flex',
     alignItems: 'center',
-    marginLeft: '41%',
+    justifyContent: 'center',
   },
   imageCard: {
     image: `url(${require('../../../images/greenAcceptedTick.png')})`,
@@ -22,6 +24,12 @@ const useStyles = makeStyles(() => ({
     color: 'green',
     textAlign: 'center',
   },
+  button: {
+    marginTop: 30,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 }));
 
 export function EndStep(props) {
@@ -40,17 +48,15 @@ export function EndStep(props) {
         image={require('../../../images/greenAcceptedTick.png')}
         title="Accepted"
       />
-      <Container>
-        <div className={classes.Container}>
+      <Container className={classes.Container}>
           <Button
-            style={{justifyContent: 'center'}}
+            className={classes.button}
             variant="contained"
             color="primary"
             type="submit"
             onClick={next}>
             Navigate to homepage
           </Button>
-        </div>
       </Container>
     </React.Fragment>
   );
