@@ -81,9 +81,8 @@ class PendingForms extends React.Component {
           variant="contained"
           color="primary"
           startIcon={<ClearIcon />}
-          onClick={() => this.handleReject(obj.filledFormNumberID)}
+          onClick={() => this.handleReject(obj.filledFormNumberID, obj._id)}
           content={'More'}>
-
           Reject
         </Button>
         <Button
