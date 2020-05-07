@@ -21,6 +21,14 @@ const useStyles = makeStyles({
   buttons: {
     //color: '#0f0f0f',
   },
+  csv: {
+    textDecoration: 'none',
+    fontStyle: 'inherit',
+    fontDisplay: 'inherti',
+    fontWeight: 'inherit',
+    color: 'inherit',
+    size: "small"
+  }
 });
 
 function handleDelete(id, userID, reload) {
@@ -59,15 +67,15 @@ function SingleForm({formID, title, description, reload, userID}) {
         />
       </CardActionArea>
       <CardActions className={classes.actions}>
-        <CSVLink
-            data={dataToDownload}
-            style={{ textDecoration: 'none',
-                    color: '#5519B8',
-                    size: "small"}}
-            filename={`${title}.csv`}
-            target="_blank">
-          DOWNLOAD
-        </CSVLink>
+        <Button color="primary" size="small">
+          <CSVLink
+              data={dataToDownload}
+              className={classes.csv}
+              filename={`${title}.csv`}
+              target="_blank">
+            Download
+          </CSVLink>
+        </Button>
         <Button
           className={classes.buttons}
           size="small"
