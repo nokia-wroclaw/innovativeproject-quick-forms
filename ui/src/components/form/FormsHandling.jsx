@@ -40,7 +40,7 @@ export const RejectPending = (pendingFormNumberID, formID) => {
     .then(r => console.log(r))
     .catch(error => console.log(error));
 
-  DeletePending(formID).then(r => console.log(r));
+  return DeletePending(formID);
 };
 
 export const AcceptForm = (pendingFormNumberID, formID) => {
