@@ -3,6 +3,15 @@ import PendingForms from './PendingForms';
 import AcceptedForms from './AcceptedForms';
 import {GetForm} from './FormsHandling';
 import Container from '@material-ui/core/Container';
+import {withStyles} from '@material-ui/core/styles';
+
+const useStyles = theme => ({
+  accepted: {
+  },
+  pending: {
+    align: 'center',
+  }
+});
 
 class FilledForms extends React.Component {
   constructor(props) {
@@ -35,14 +44,18 @@ class FilledForms extends React.Component {
   };
 
   render() {
+    const {classes} = this.props
+
     return (
-      <Container>
+      <Container maxWidth='lg'>
         <PendingForms
+          className={classes.pending}
           formID={this.state.templateid}
           listOfForms={this.state.pendingForms}
           reload={this.LoadSchema}
         />
         <AcceptedForms
+          className={classes.accepted}
           formID={this.state.templateid}
           listOfForms={this.state.acceptedForms}
           reload={this.LoadSchema}
@@ -52,4 +65,4 @@ class FilledForms extends React.Component {
   }
 }
 
-export default FilledForms;
+export default withStyles(useStyles)(FilledForms);

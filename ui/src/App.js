@@ -5,7 +5,6 @@ import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage/HomePage';
 import UserForm from './components/form/UserForm/UserForm';
 import Dashboard from './pages/Dashboard/Dashboard';
-import ListOfForms from './components/form/ListOfForms';
 import FilledForms from './components/form/FilledForms';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -17,8 +16,7 @@ const App = () => (
       <Route exact path="/signup" component={SignUp} />
       <Route exact path="/userform/:formID" component={UserForm} />
       <PrivateRoute exact path="/dashboard" component={Dashboard} />
-      <Route exact path="/formslist" component={ListOfForms} />
-      <Route exact path="/filledforms/:templateID" component={FilledForms} />
+      <PrivateRoute exact path="/filledforms/:templateID" component={FilledForms} />
     </Switch>
   </div>
 );
