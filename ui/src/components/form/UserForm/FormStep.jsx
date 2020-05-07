@@ -14,9 +14,10 @@ export class FormStep extends Component {
 
   render() {
     const {values} = this.props;
+    console.log(this.props.show)
     return (
       <Container ms={8}>
-        <Form schema={values.formScheme} onSubmit={this.continue}>
+        <Form schema={values.formScheme} formData={values.pendingFormData.dataForm} onSubmit={this.continue}>
           <Button variant="contained" color="primary" type="submit">
             Submit
           </Button>
