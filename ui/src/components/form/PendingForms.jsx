@@ -23,10 +23,10 @@ class PendingForms extends React.Component {
   }
   closeModal() {
     this.setState({open: false});
+
   }
 
-
-  handleAccept = (pendingFormNumberID, id) => {
+    handleAccept = (pendingFormNumberID, id) => {
     AcceptForm(pendingFormNumberID, id)
       .then(res => this.props.reload(this.props.formID))
       .catch(error => console.log(`Nie udalo sie zakceptowac${error}`));
@@ -104,6 +104,15 @@ class PendingForms extends React.Component {
           For Approval:
         </Typography>
         {this.props.listOfForms.map(i => this._render(i))}
+
+          <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => this.props.reload(this.props.formID)}
+              startIcon={<CheckIcon />}>
+              Load Forms
+          </Button>
+
       </Box>
     );
   }
