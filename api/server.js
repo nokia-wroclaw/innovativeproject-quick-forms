@@ -17,7 +17,7 @@ const googleAuthRoute = require('./src/routing/googleAuth');
 const registerRoute = require('./src/routing/register');
 
 const corsOptions = {
-  origin: ['http://localhost:3000'],
+  origin: [process.env.CLIENT_API_URL],
   allowedHeaders: [
     'Content-Type',
     'Authorization',
