@@ -25,8 +25,9 @@ class PendingForms extends React.Component {
     this.setState({open: false});
   }
 
-  handleAccept = id => {
-    AcceptForm(id)
+
+  handleAccept = (pendingFormNumberID, id) => {
+    AcceptForm(pendingFormNumberID, id)
       .then(res => this.props.reload(this.props.formID))
       .catch(error => console.log(`Nie udalo sie zakceptowac${error}`));
   };
@@ -39,8 +40,8 @@ class PendingForms extends React.Component {
       );
   };
 
-  handleReject = pendingFormNumberID => {
-    RejectPending(pendingFormNumberID);
+  handleReject = (pendingFormNumberID, id) => {
+    RejectPending(pendingFormNumberID, id);
   };
 
   handlePreview = pendingFormNumberID => {
@@ -72,7 +73,8 @@ class PendingForms extends React.Component {
           variant="contained"
           color="primary"
           startIcon={<CheckIcon />}
-          onClick={() => this.handleAccept(obj._id)}>
+          onClick={() => this.handleAccept(obj.filledFormNumberID, obj._id)}
+        >
           Accept
         </Button>
         <Button
@@ -81,6 +83,7 @@ class PendingForms extends React.Component {
           startIcon={<ClearIcon />}
           onClick={() => this.handleReject(obj.filledFormNumberID)}
           content={'More'}>
+
           Reject
         </Button>
         <Button

@@ -33,6 +33,7 @@ app.use(passport.initialize());
 app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use('/api/forms/templates', templatesRoute);
 app.use('/api/forms/templates/file', templatesRoute);
@@ -63,7 +64,7 @@ socketPendingFormOn.start(io, socketDictionary);
 
 io.on('connection', socket => {
   connections.push(socket);
-  socketPost.start(app, io);
+  socketPost.start(app, io, socketDictionary);
   console.log('Connected: %s sockets connected', connections.length);
   console.log('made socket connection', socket.id);
 });
