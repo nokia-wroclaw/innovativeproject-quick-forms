@@ -3,10 +3,16 @@ import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Box from '@material-ui/core/Box';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
-import {DeleteFilled} from './FormsHandling';
+import {DeleteFilled, GetForm} from './FormsHandling';
 import Typography from '@material-ui/core/Typography';
 import ShowForm from './ShowForm';
 import {withStyles} from '@material-ui/core/styles';
+import {Container} from "@material-ui/core";
+import Popup from "reactjs-popup";
+import {withTheme} from "react-jsonschema-form";
+import {Theme as MuiTheme} from "rjsf-material-ui";
+
+const Form = withTheme(MuiTheme);
 
 const useStyles = theme => ({
   root: {
@@ -35,7 +41,12 @@ const useStyles = theme => ({
 class AcceptForms extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {open: false};
+    this.state = {
+      filledForm: {},
+      formSchema: {},
+      isLoading: true,
+      open: false,
+    };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
@@ -47,6 +58,20 @@ class AcceptForms extends React.Component {
     this.setState({open: false});
   }
 
+  getCurrentFormSchema = (templateID) => {
+    GetForm(templateID, `/api/forms/templates`)
+        .then(response => this.setState({formSchema: response.data}))
+  }
+
+  getCurrentFormData = (formID) => {
+    GetForm(formID, `/api/forms/filled-forms/single`)
+        .then(response => {
+          console.log(response)
+          this.setState({filledForm: response.data})
+        })
+  }
+
+
   handleDelete = id => {
     DeleteFilled(id)
       .then(() => this.props.reload(this.props.formID))
@@ -55,9 +80,6 @@ class AcceptForms extends React.Component {
       );
   };
 
-  handlePreview = () => {
-    this.refs.child.openModal();
-  };
 
   _render(obj) {
     const {classes} = this.props;
@@ -65,20 +87,19 @@ class AcceptForms extends React.Component {
       <Box m={3} key={obj._id} display="flex" justifyContent="center" alignItems="center">
         {obj.filledFormNumberID}:&nbsp;
         <div className={classes.someButtons}>
-        <ShowForm
-          path={'filled-forms/single'}
-          idOfForm={obj._id}
-          template={obj.templateID}
-          ref="child"
-        />
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="default"
-          startIcon={<ChromeReaderModeIcon />}
-          onClick={() => this.handlePreview()}>
-          Preview
-        </Button>
+
+          <Button
+              className={classes.button}
+              variant="contained"
+              color="default"
+              startIcon={<ChromeReaderModeIcon />}
+              onClick={() => {
+                this.getCurrentFormSchema(obj.templateID)
+                this.getCurrentFormData(obj._id)
+                this.openModal()}
+              }>
+            Preview
+          </Button>
         <Button
           className={classes.button}
           variant="contained"
@@ -103,6 +124,20 @@ class AcceptForms extends React.Component {
           </Typography>
         </Box>
         {this.props.listOfForms.map(i => this._render(i))}
+        <Popup
+            open={this.state.open}
+
+            closeOnDocumentClick
+            onClose={this.closeModal}>
+          <Container>
+            <Form
+                formData={this.state.filledForm.dataForm}
+                disabled={true}
+                schema={this.state.formSchema}>
+              <Button display="none" />
+            </Form>
+          </Container>
+        </Popup>
       </Box>
     );
   }
