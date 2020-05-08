@@ -1,12 +1,10 @@
 import axios from 'axios';
 
 export const GetForm = (formID, url) => {
-  console.log(`${url}/${formID}`);
   return axios.get(`${url}/${formID}`);
 };
 
 export const SubmitForm = (formData, url) => {
-  console.log('Data submitted: ', formData, 'On route: ', url);
   return axios.post(url, formData);
 };
 

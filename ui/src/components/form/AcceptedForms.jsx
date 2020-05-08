@@ -66,7 +66,6 @@ class AcceptForms extends React.Component {
   getCurrentFormData = (formID) => {
     GetForm(formID, `/api/forms/filled-forms/single`)
         .then(response => {
-          console.log(response)
           this.setState({filledForm: response.data})
         })
   }
@@ -126,7 +125,6 @@ class AcceptForms extends React.Component {
         {this.props.listOfForms.map(i => this._render(i))}
         <Popup
             open={this.state.open}
-
             closeOnDocumentClick
             onClose={this.closeModal}>
           <Container>

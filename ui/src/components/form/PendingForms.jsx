@@ -90,7 +90,6 @@ class PendingForms extends React.Component {
     getCurrentFormData = (formID) => {
         GetForm(formID, `/api/forms/pendingForms/single`)
             .then(response => {
-                console.log(response)
                 this.setState({filledForm: response.data})
             })
     }
