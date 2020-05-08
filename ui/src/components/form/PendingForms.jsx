@@ -6,10 +6,17 @@ import Box from '@material-ui/core/Box';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import Typography from '@material-ui/core/Typography';
 import ClearIcon from '@material-ui/icons/Clear';
-import {DeletePending, AcceptForm, RejectPending} from './FormsHandling';
+import {DeletePending, AcceptForm, RejectPending, GetForm} from './FormsHandling';
 
 import ShowForm from './ShowForm';
 import {withStyles} from '@material-ui/core/styles';
+import Popup from "reactjs-popup";
+import {Container} from "@material-ui/core";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import {withTheme} from "react-jsonschema-form";
+import {Theme as MuiTheme} from "rjsf-material-ui";
+
+const Form = withTheme(MuiTheme);
 
 const useStyles = theme => ({
   root: {
@@ -38,7 +45,14 @@ const useStyles = theme => ({
 class PendingForms extends React.Component {
   constructor(props) {
     super(props);
-    this.child = React.createRef();
+      this.state = {
+          filledForm: {},
+          formSchema: {},
+          isLoading: true,
+          open: false,
+      };
+      this.openModal = this.openModal.bind(this);
+      this.closeModal = this.closeModal.bind(this);
   }
 
   handleAccept = (pendingFormNumberID, id) => {
@@ -61,9 +75,25 @@ class PendingForms extends React.Component {
     );
   };
 
-  handlePreview = () => {
-    this.refs.child.openModal();
-  };
+    openModal() {
+        this.setState({open: true});
+    }
+    closeModal() {
+        this.setState({open: false});
+    }
+
+    getCurrentFormSchema = (templateID) => {
+        GetForm(templateID, `/api/forms/templates`)
+            .then(response => this.setState({formSchema: response.data}))
+    }
+
+    getCurrentFormData = (formID) => {
+        GetForm(formID, `/api/forms/pendingForms/single`)
+            .then(response => {
+                console.log(response)
+                this.setState({filledForm: response.data})
+            })
+    }
 
   _render(obj) {
     const {classes} = this.props;
@@ -71,20 +101,20 @@ class PendingForms extends React.Component {
       <Box m={3} key={obj._id} display="flex" justifyContent="center" alignItems="center">
         {obj.filledFormNumberID}:&nbsp;
         <div className={classes.someButtons}>
-        <ShowForm
-          path={'pendingforms/single'}
-          idOfForm={obj._id}
-          template={obj.templateID}
-          ref="child"
-        />
+
         <Button
           className={classes.button}
           variant="contained"
           color="default"
           startIcon={<ChromeReaderModeIcon />}
-          onClick={() => this.handlePreview()}>
+          onClick={() => {
+              this.getCurrentFormSchema(obj.templateID)
+              this.getCurrentFormData(obj._id)
+              this.openModal()}
+          }>
           Preview
         </Button>
+
         <Button
           className={classes.button}
           variant="contained"
@@ -125,6 +155,21 @@ class PendingForms extends React.Component {
           </Typography>
         </Box>
         {this.props.listOfForms.map(i => this._render(i))}
+
+          <Popup
+              open={this.state.open}
+
+              closeOnDocumentClick
+              onClose={this.closeModal}>
+              <Container>
+                  <Form
+                      formData={this.state.filledForm.dataForm}
+                      disabled={true}
+                      schema={this.state.formSchema}>
+                      <Button display="none" />
+                  </Form>
+              </Container>
+          </Popup>
 
         <Button
           variant="contained"

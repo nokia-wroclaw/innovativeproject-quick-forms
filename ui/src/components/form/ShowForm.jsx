@@ -30,6 +30,10 @@ class ShowForm extends React.Component {
 
   componentDidMount() {
     this.LoadData(this.props.idOfForm, this.props.path, this.props.template);
+    console.log(this.props.idOfForm)
+    console.log( this.props.path)
+    console.log(this.props.template)
+    console.log('-------------------')
   }
 
   LoadData = (formID, path, templateID) => {
@@ -49,6 +53,7 @@ class ShowForm extends React.Component {
     return (
       <Popup
         open={this.state.open}
+
         closeOnDocumentClick
         onClose={this.closeModal}>
         <Container>
