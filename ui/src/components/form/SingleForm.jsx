@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   csv: {
     textDecoration: 'none',
     fontStyle: 'inherit',
-    fontDisplay: 'inherti',
+    fontDisplay: 'inherit',
     fontWeight: 'inherit',
     color: 'inherit',
     size: "small"
