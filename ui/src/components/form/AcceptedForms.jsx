@@ -36,6 +36,10 @@ const useStyles = theme => ({
   someButtons: {
     display: 'block',
   },
+  popup: {
+    maxHeight: 500,
+    overflow: 'auto',
+  }
 });
 
 class AcceptForms extends React.Component {
@@ -127,7 +131,7 @@ class AcceptForms extends React.Component {
             open={this.state.open}
             closeOnDocumentClick
             onClose={this.closeModal}>
-          <Container>
+          <Container className={classes.popup}>
             <Form
                 formData={this.state.filledForm.dataForm}
                 disabled={true}
