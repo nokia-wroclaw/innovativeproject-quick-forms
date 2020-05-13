@@ -40,6 +40,10 @@ const useStyles = theme => ({
   someButtons: {
     display: 'block',
   },
+  popup: {
+    maxHeight: 500,
+    overflow: 'auto',
+  }
 });
 
 class PendingForms extends React.Component {
@@ -157,10 +161,9 @@ class PendingForms extends React.Component {
 
           <Popup
               open={this.state.open}
-
               closeOnDocumentClick
               onClose={this.closeModal}>
-              <Container>
+              <Container className={classes.popup}>
                   <Form
                       formData={this.state.filledForm.dataForm}
                       disabled={true}

@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import {withRouter} from 'react-router-dom';
 import {DeleteTemplate, GetForm} from './FormsHandling';
 import QrPopup from './QrPopup';
+import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -56,50 +57,52 @@ function SingleForm({formID, title, description, reload, userID}) {
     }, [])
 
   return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        <QrPopup
-          formID={formID}
-          title={title}
-          description={description}
-          ifQR={ifQR}
-          showQR={showQR}
-        />
-      </CardActionArea>
-      <CardActions className={classes.actions}>
-        <Button color="primary" size="small">
-          <CSVLink
-              data={dataToDownload}
-              className={classes.csv}
-              filename={`${title}.csv`}
-              target="_blank">
-            Download
-          </CSVLink>
-        </Button>
-        <Button
-          className={classes.buttons}
-          size="small"
-          color="primary"
-          onClick={() => showQR(!ifQR)}>
-          QR code
-        </Button>
-        <Button
-          className={classes.buttons}
-          size="small"
-          color="primary"
-          onClick={() => handleDelete(formID, userID, reload)}>
-          Delete
-        </Button>
+    <Container>
+      <Card className={classes.root}>
+        <CardActionArea>
+          <QrPopup
+            formID={formID}
+            title={title}
+            description={description}
+            ifQR={ifQR}
+            showQR={showQR}
+          />
+        </CardActionArea>
+        <CardActions className={classes.actions}>
+          <Button color="primary" size="small">
+            <CSVLink
+                data={dataToDownload}
+                className={classes.csv}
+                filename={`${title}.csv`}
+                target="_blank">
+              Download
+            </CSVLink>
+          </Button>
+          <Button
+            className={classes.buttons}
+            size="small"
+            color="primary"
+            onClick={() => showQR(!ifQR)}>
+            QR code
+          </Button>
+          <Button
+            className={classes.buttons}
+            size="small"
+            color="primary"
+            onClick={() => handleDelete(formID, userID, reload)}>
+            Delete
+          </Button>
 
-        <Button
-          className={classes.buttons}
-          size="small"
-          color="primary"
-          onClick={() => window.location.replace(`/filledforms/${formID}`)}>
-          Filled Forms
-        </Button>
-      </CardActions>
-    </Card>
+          <Button
+            className={classes.buttons}
+            size="small"
+            color="primary"
+            onClick={() => window.location.replace(`/filledforms/${formID}`)}>
+            Filled Forms
+          </Button>
+        </CardActions>
+      </Card>
+    </Container>
   );
 }
 
