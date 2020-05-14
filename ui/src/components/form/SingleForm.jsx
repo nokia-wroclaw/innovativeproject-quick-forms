@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { CSVLink, CSVDownload } from "react-csv";
+import {CSVLink} from 'react-csv';
 import {makeStyles} from '@material-ui/core/styles';
 import axios from 'axios';
 import Card from '@material-ui/core/Card';
@@ -7,9 +7,9 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import {withRouter} from 'react-router-dom';
-import {DeleteTemplate, GetForm} from './FormsHandling';
+import {DeleteTemplate} from './FormsHandling';
 import QrPopup from './QrPopup';
-import { Container } from '@material-ui/core';
+import {Container} from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -28,8 +28,8 @@ const useStyles = makeStyles({
     fontDisplay: 'inherit',
     fontWeight: 'inherit',
     color: 'inherit',
-    size: "small"
-  }
+    size: 'small',
+  },
 });
 
 function handleDelete(id, userID, reload) {
@@ -38,7 +38,6 @@ function handleDelete(id, userID, reload) {
     .catch(error => console.log(`Nie udalo sie usunac formularza${error}`));
 }
 
-
 function SingleForm({formID, title, description, reload, userID}) {
   const [ifQR, showQR] = useState(false);
   const [dataToDownload, setDataToDownload] = useState([]);
@@ -46,15 +45,15 @@ function SingleForm({formID, title, description, reload, userID}) {
 
   const getDataToDownload = () => {
     axios.get(`/api/forms/filled-forms/${formID}`).then(data => {
-      //let parsedData = [];
-      setDataToDownload(data.data);
-      // data.data.forEach(i => parsedData.push(i.dataForm))
-    });
-  }
+      const parsedData = data.data.map(i => i.dataForm);
 
-    useEffect(() => {
-      getDataToDownload(formID);
-    }, [])
+      setDataToDownload(parsedData);
+    });
+  };
+
+  useEffect(() => {
+    getDataToDownload(formID);
+  }, []);
 
   return (
     <Container>
@@ -71,10 +70,10 @@ function SingleForm({formID, title, description, reload, userID}) {
         <CardActions className={classes.actions}>
           <Button color="primary" size="small">
             <CSVLink
-                data={dataToDownload}
-                className={classes.csv}
-                filename={`${title}.csv`}
-                target="_blank">
+              data={dataToDownload}
+              className={classes.csv}
+              filename={`${title}.csv`}
+              target="_blank">
               Download
             </CSVLink>
           </Button>

@@ -5,12 +5,11 @@ import Box from '@material-ui/core/Box';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import {DeleteFilled, GetForm} from './FormsHandling';
 import Typography from '@material-ui/core/Typography';
-import ShowForm from './ShowForm';
 import {withStyles} from '@material-ui/core/styles';
-import {Container} from "@material-ui/core";
-import Popup from "reactjs-popup";
-import {withTheme} from "react-jsonschema-form";
-import {Theme as MuiTheme} from "rjsf-material-ui";
+import {Container} from '@material-ui/core';
+import Popup from 'reactjs-popup';
+import {withTheme} from 'react-jsonschema-form';
+import {Theme as MuiTheme} from 'rjsf-material-ui';
 
 const Form = withTheme(MuiTheme);
 
@@ -31,7 +30,7 @@ const useStyles = theme => ({
       width: 100,
       justifyContent: 'center',
       alignItems: 'center',
-    }
+    },
   },
   someButtons: {
     display: 'block',
@@ -39,7 +38,7 @@ const useStyles = theme => ({
   popup: {
     maxHeight: 500,
     overflow: 'auto',
-  }
+  },
 });
 
 class AcceptForms extends React.Component {
@@ -62,18 +61,17 @@ class AcceptForms extends React.Component {
     this.setState({open: false});
   }
 
-  getCurrentFormSchema = (templateID) => {
-    GetForm(templateID, `/api/forms/templates`)
-        .then(response => this.setState({formSchema: response.data}))
-  }
+  getCurrentFormSchema = templateID => {
+    GetForm(templateID, `/api/forms/templates`).then(response =>
+      this.setState({formSchema: response.data})
+    );
+  };
 
-  getCurrentFormData = (formID) => {
-    GetForm(formID, `/api/forms/filled-forms/single`)
-        .then(response => {
-          this.setState({filledForm: response.data})
-        })
-  }
-
+  getCurrentFormData = formID => {
+    GetForm(formID, `/api/forms/filled-forms/single`).then(response => {
+      this.setState({filledForm: response.data});
+    });
+  };
 
   handleDelete = id => {
     DeleteFilled(id)
@@ -83,34 +81,37 @@ class AcceptForms extends React.Component {
       );
   };
 
-
   _render(obj) {
     const {classes} = this.props;
     return (
-      <Box m={3} key={obj._id} display="flex" justifyContent="center" alignItems="center">
+      <Box
+        m={3}
+        key={obj._id}
+        display="flex"
+        justifyContent="center"
+        alignItems="center">
         {obj.filledFormNumberID}:&nbsp;
         <div className={classes.someButtons}>
-
           <Button
-              className={classes.button}
-              variant="contained"
-              color="default"
-              startIcon={<ChromeReaderModeIcon />}
-              onClick={() => {
-                this.getCurrentFormSchema(obj.templateID)
-                this.getCurrentFormData(obj._id)
-                this.openModal()}
-              }>
+            className={classes.button}
+            variant="contained"
+            color="default"
+            startIcon={<ChromeReaderModeIcon />}
+            onClick={() => {
+              this.getCurrentFormSchema(obj.templateID);
+              this.getCurrentFormData(obj._id);
+              this.openModal();
+            }}>
             Preview
           </Button>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="secondary"
-          onClick={() => this.handleDelete(obj._id)}
-          startIcon={<DeleteIcon />}>
-          Delete
-        </Button>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="secondary"
+            onClick={() => this.handleDelete(obj._id)}
+            startIcon={<DeleteIcon />}>
+            Delete
+          </Button>
         </div>
       </Box>
     );
@@ -121,21 +122,26 @@ class AcceptForms extends React.Component {
 
     return (
       <Box className={classes.root}>
-        <Box p={2} bgcolor="primary.main" color="primary.contrastText" marginTop={5} marginBottom={5}>
+        <Box
+          p={2}
+          bgcolor="primary.main"
+          color="primary.contrastText"
+          marginTop={5}
+          marginBottom={5}>
           <Typography variant="h6" gutterBottom>
             Approved:
           </Typography>
         </Box>
         {this.props.listOfForms.map(i => this._render(i))}
         <Popup
-            open={this.state.open}
-            closeOnDocumentClick
-            onClose={this.closeModal}>
+          open={this.state.open}
+          closeOnDocumentClick
+          onClose={this.closeModal}>
           <Container className={classes.popup}>
             <Form
-                formData={this.state.filledForm.dataForm}
-                disabled={true}
-                schema={this.state.formSchema}>
+              formData={this.state.filledForm.dataForm}
+              disabled={true}
+              schema={this.state.formSchema}>
               <Button display="none" />
             </Form>
           </Container>

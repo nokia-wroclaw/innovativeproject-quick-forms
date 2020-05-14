@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 }));
 
 export function EndStep(props) {
@@ -49,14 +49,14 @@ export function EndStep(props) {
         title="Accepted"
       />
       <Container className={classes.Container}>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            type="submit"
-            onClick={next}>
-            Navigate to homepage
-          </Button>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          type="submit"
+          onClick={next}>
+          Navigate to homepage
+        </Button>
       </Container>
     </React.Fragment>
   );

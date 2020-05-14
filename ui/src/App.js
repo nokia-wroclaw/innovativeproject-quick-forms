@@ -16,7 +16,11 @@ const App = () => (
       <Route exact path="/signup" component={SignUp} />
       <Route exact path="/userform/:formID" component={UserForm} />
       <PrivateRoute exact path="/dashboard" component={Dashboard} />
-      <PrivateRoute exact path="/filledforms/:templateID" component={FilledForms} />
+      <PrivateRoute
+        exact
+        path="/filledforms/:templateID"
+        component={FilledForms}
+      />
     </Switch>
   </div>
 );
