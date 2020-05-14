@@ -6,16 +6,15 @@ export default class TextBox extends Component {
         event.preventDefault();
         var name = event.target[0].value;
         var InputType = event.target[1].value
-        var friendlyName = name.replace(/\s+/g, '');
-        friendlyName = friendlyName.substring(0, Math.min(friendlyName.length, 10));
-        
+        var DisplayName = event.target[2].value
+
         var control = {
             id:0,
             isRequired: true,
-            propName: friendlyName, 
+            propName: name, 
             data: {
                 type: InputType,
-                title: name
+                title: DisplayName
             }
         };
 
@@ -32,6 +31,11 @@ export default class TextBox extends Component {
                     Typ pola:
                     <br/>
                     <input type="text" />
+                    <br/>
+                    Wyswietlana nazwa:
+                    <br/>
+                    <input type="text" />
+                    <br/>
                 </label>
                 <input type="submit" value="Dodaj" />
             </form>
