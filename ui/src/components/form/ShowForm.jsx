@@ -49,7 +49,6 @@ class ShowForm extends React.Component {
     return (
       <Popup
         open={this.state.open}
-
         closeOnDocumentClick
         onClose={this.closeModal}>
         <Container>

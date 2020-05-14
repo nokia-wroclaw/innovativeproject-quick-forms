@@ -20,7 +20,7 @@ const useStyles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 });
 
 class FilledForms extends React.Component {
@@ -54,10 +54,10 @@ class FilledForms extends React.Component {
   };
 
   render() {
-    const {classes} = this.props
+    const {classes} = this.props;
 
     return (
-      <Container maxWidth='lg' className={classes.root}>
+      <Container maxWidth="lg" className={classes.root}>
         <PendingForms
           className={classes.accepted}
           formID={this.state.templateid}
