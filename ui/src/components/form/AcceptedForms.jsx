@@ -5,7 +5,6 @@ import Box from '@material-ui/core/Box';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import {DeleteFilled, GetForm} from './FormsHandling';
 import Typography from '@material-ui/core/Typography';
-import ShowForm from './ShowForm';
 import {withStyles} from '@material-ui/core/styles';
 import {Container} from "@material-ui/core";
 import Popup from "reactjs-popup";

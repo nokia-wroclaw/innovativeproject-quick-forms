@@ -7,12 +7,9 @@ import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import Typography from '@material-ui/core/Typography';
 import ClearIcon from '@material-ui/icons/Clear';
 import {DeletePending, AcceptForm, RejectPending, GetForm} from './FormsHandling';
-
-import ShowForm from './ShowForm';
 import {withStyles} from '@material-ui/core/styles';
 import Popup from "reactjs-popup";
 import {Container} from "@material-ui/core";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import {withTheme} from "react-jsonschema-form";
 import {Theme as MuiTheme} from "rjsf-material-ui";
 

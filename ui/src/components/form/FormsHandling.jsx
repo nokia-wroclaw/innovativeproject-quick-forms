@@ -73,3 +73,9 @@ export const AcceptForm = (pendingFormNumberID, formID) => {
       });
   });
 };
+
+export const RemoveProp = (obj, prop) => {
+  let res = Object.assign({}, obj);
+  delete res[prop];
+  return res;
+};
