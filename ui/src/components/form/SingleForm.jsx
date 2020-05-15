@@ -38,7 +38,7 @@ function handleDelete(id, userID, reload) {
     .catch(error => console.log(`Nie udalo sie usunac formularza${error}`));
 }
 
-function SingleForm({formID, title, description, reload, userID}) {
+function SingleForm({formID, title, description, reload, userID, history}) {
   const [ifQR, showQR] = useState(false);
   const [dataToDownload, setDataToDownload] = useState([]);
   const classes = useStyles();
@@ -96,7 +96,7 @@ function SingleForm({formID, title, description, reload, userID}) {
             className={classes.buttons}
             size="small"
             color="primary"
-            onClick={() => window.location.replace(`/filledforms/${formID}`)}>
+            onClick={() => history.push(`/filledforms/${formID}`)}>
             Filled Forms
           </Button>
         </CardActions>
