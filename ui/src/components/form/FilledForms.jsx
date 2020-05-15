@@ -4,10 +4,12 @@ import AcceptedForms from './AcceptedForms';
 import {GetForm} from './FormsHandling';
 import Container from '@material-ui/core/Container';
 import {withStyles} from '@material-ui/core/styles';
+import NavBar from '../../pages/NavBar';
 
 const useStyles = theme => ({
   root: {
     margin: 'auto',
+    marginTop: 10,
   },
   pending: {
     margin: 'auto',
@@ -57,20 +59,23 @@ class FilledForms extends React.Component {
     const {classes} = this.props;
 
     return (
-      <Container maxWidth="lg" className={classes.root}>
-        <PendingForms
-          className={classes.accepted}
-          formID={this.state.templateid}
-          listOfForms={this.state.pendingForms}
-          reload={this.LoadSchema}
-        />
-        <AcceptedForms
-          className={classes.accepted}
-          formID={this.state.templateid}
-          listOfForms={this.state.acceptedForms}
-          reload={this.LoadSchema}
-        />
-      </Container>
+      <div>
+        <NavBar title="FORMS" />
+        <Container maxWidth="lg" className={classes.root}>
+          <PendingForms
+            className={classes.accepted}
+            formID={this.state.templateid}
+            listOfForms={this.state.pendingForms}
+            reload={this.LoadSchema}
+          />
+          <AcceptedForms
+            className={classes.accepted}
+            formID={this.state.templateid}
+            listOfForms={this.state.acceptedForms}
+            reload={this.LoadSchema}
+          />
+        </Container>
+      </div>
     );
   }
 }
