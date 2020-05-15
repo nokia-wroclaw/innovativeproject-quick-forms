@@ -4,11 +4,11 @@ export default class TextBox extends Component {
     
     handleSubmit = (event) => {
         event.preventDefault();
-        var name = event.target[0].value;
-        var InputType = event.target[1].value
-        var DisplayName = event.target[2].value
+        const name = event.target[0].value;
+        const InputType = event.target[1].value
+        const DisplayName = event.target[2].value
 
-        var control = {
+        const control = {
             id:0,
             isRequired: true,
             propName: name, 

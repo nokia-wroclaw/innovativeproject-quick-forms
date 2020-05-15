@@ -17,7 +17,7 @@ export default class FormCreator extends Component {
     }
 
     getRequired = () => {
-        var requiredNames = [];
+        const requiredNames = [];
         this.state.listOfControls.forEach(function (object) {
             if (object.isRequired) {
                 requiredNames.push(object.propName);
@@ -32,7 +32,7 @@ export default class FormCreator extends Component {
         this.setState({ listOfControls: [...this.state.listOfControls, object] })
     };
     namesOfControls = () => {
-        var names = [];
+        const names = [];
         this.state.listOfControls.forEach(function (object) {
             names.push({ index: object.id, name: object.data.title });
         });
@@ -40,24 +40,24 @@ export default class FormCreator extends Component {
     }
 
     removeControl(object) {
-        var array = this.state.listOfControls.filter(function( obj ) {
+        const array = this.state.listOfControls.filter(function( obj ) {
             return obj.id !== object.index;
         });
         this.setState({ listOfControls: array });
     }
 
     render() {
-        var props = this.state.listOfControls.sort(function (a, b) {
+        const props = this.state.listOfControls.sort(function (a, b) {
             return a.id - b.id || a.name.localeCompare(b.name);
         });
-        var formJson =
+        const formJson =
         {
             title: this.state.title,
             type: "object",
             required: this.getRequired(this.state.listOfControls),
             properties: props.length !== 0 ? props.reduce((acc, obj) => ({ ...acc, [obj.propName]: obj.data }), {}) : {}
         };
-        var listOfNames = this.namesOfControls();
+        const listOfNames = this.namesOfControls();
         return (
             <Grid container >
                 <Grid item xs={12} sm={5}>
