@@ -1,11 +1,8 @@
-import React, { Component, useState } from 'react'
-import { withTheme } from 'react-jsonschema-form';
-import { Theme as MuiTheme } from 'rjsf-material-ui';
+import React, { Component } from 'react'
 import TextBox from './TextBox';
 import Grid from '@material-ui/core/Grid';
 import ControlList from './ControlsList';
-
-const Form = withTheme(MuiTheme);
+import FormPreview from './FormPreview';
 
 export default class FormCreator extends Component {
     constructor(props) {
@@ -70,7 +67,7 @@ export default class FormCreator extends Component {
                     <ControlList controls={listOfNames} remove={this.removeControl} />
                 </Grid>
                 <Grid item xs={12} sm={5}>
-                    <Form schema={formJson} />
+                    <FormPreview formscheme={formJson}/>
                 </Grid>
             </Grid>
         )
