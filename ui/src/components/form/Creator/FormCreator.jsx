@@ -27,9 +27,21 @@ export default class FormCreator extends Component {
     };
 
     addControl = (object) => {
-        object.id = this.state.count;
-        this.setState({ count: this.state.count + 1 });
-        this.setState({ listOfControls: [...this.state.listOfControls, object] })
+        const duplicate = this.state.listOfControls.find(obj => {
+            return obj.propName === object.propName
+          })
+        if(duplicate !== undefined && duplicate.length !== 0){
+            this.setState({
+                listOfControls: this.state.listOfControls
+                .map(elem => ((elem.propName === object.propName) ? Object.assign({}, {id:elem.id, isRequired: elem.isRequired, propName: elem.propName}, {data: object.data} ) : elem))
+              });
+              
+        }
+        else{
+            object.id = this.state.count;
+            this.setState({ count: this.state.count + 1 });
+            this.setState({ listOfControls: [...this.state.listOfControls, object] });
+        }
     };
     namesOfControls = () => {
         const names = [];
@@ -39,9 +51,9 @@ export default class FormCreator extends Component {
         return names;
     }
 
-    removeControl(object) {
+    removeControl(removedObject) {
         const array = this.state.listOfControls.filter(function( obj ) {
-            return obj.id !== object.index;
+            return obj.id !== removedObject.index;
         });
         this.setState({ listOfControls: array });
     }
