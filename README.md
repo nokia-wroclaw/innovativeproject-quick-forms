@@ -14,7 +14,6 @@ Originally developed by [Dawid Motak](https://github.com/Motii1), [Krystian Sań
 ## Table of contents
 
 * [The idea](#the-idea)
-* [Features overview](#features-overview)
 * [Usage](#usage)
 
 ## The idea
