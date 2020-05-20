@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import ListOfForms from '../../components/form/ListOfForms';
 import NavBar from '../NavBar';
 import {Button, Container} from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = theme => ({
   root: {
@@ -31,7 +32,9 @@ class Dashboard extends React.Component {
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
-            fullWidth>
+            fullWidth
+            onClick={() => this.props.history.push('/creator')}
+            >
             Create a new form
           </Button>
         </Container>
@@ -44,4 +47,4 @@ class Dashboard extends React.Component {
   }
 }
 
-export default withStyles(useStyles)(Dashboard);
+export default withStyles(useStyles)(withRouter(Dashboard));

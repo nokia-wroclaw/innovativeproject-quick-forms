@@ -3,8 +3,17 @@ import TextBox from './TextBox';
 import Grid from '@material-ui/core/Grid';
 import ControlList from './ControlsList';
 import FormPreview from './FormPreview';
+import NavBar from './../../../pages/NavBar';
+import { Container } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
-export default class FormCreator extends Component {
+const useStyles = theme => ({
+  root: {
+    marginTop: 5,
+  },
+});
+
+class FormCreator extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -70,18 +79,28 @@ export default class FormCreator extends Component {
             properties: props.length !== 0 ? props.reduce((acc, obj) => ({ ...acc, [obj.propName]: obj.data }), {}) : {}
         };
         const listOfNames = this.namesOfControls();
+
+        const {classes} = this.props;
+
         return (
-            <Grid container >
-                <Grid item xs={12} sm={5}>
-                    <TextBox Add={this.addControl} />
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                    <ControlList controls={listOfNames} remove={this.removeControl} />
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                    <FormPreview formscheme={formJson}/>
-                </Grid>
-            </Grid>
+          <div>
+            <NavBar title="CREATOR" />
+            <Container className={classes.root} maxWidth="xl">
+              <Grid container>
+                  <Grid item xs={12} sm={5}>
+                      <TextBox Add={this.addControl} />
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                      <ControlList controls={listOfNames} remove={this.removeControl} />
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                      <FormPreview formscheme={formJson}/>
+                  </Grid>
+              </Grid>
+            </Container>
+          </div>
         )
     }
 }
+
+export default withStyles(useStyles)(FormCreator);
