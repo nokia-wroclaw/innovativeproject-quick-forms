@@ -6,7 +6,7 @@ import EndStep from './EndStep';
 import {LockStep} from './LockStep';
 
 let socketConnection;
-const ENDPOINT = process.env.REACT_APP_SERVER_API_URL
+const ENDPOINT = process.env.REACT_APP_SERVER_API_URL;
 
 const pendingFormIDGenerator = () => {
   const SEED = 1000000000;
