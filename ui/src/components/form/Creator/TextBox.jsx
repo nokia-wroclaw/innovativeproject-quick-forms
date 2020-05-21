@@ -1,40 +1,92 @@
-import React, { Component } from 'react'
-export default class TextBox extends Component {
+import React from 'react'
+import {makeStyles} from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
+const types = [
+  {
+    value: 'string',
+    label: 'text',
+  },
+
+  {
+    value: 'integer',
+    label: 'number',
+  }
+];
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'block',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
+  textfield: {
+    display: 'flex',
+    maxWidth: 400,
+  },
+  submit: {
+    width: 257,
+    borderRadius: 12,
+  },
+}));
+
+function TextBox(props) {   
+  const classes = useStyles();
+  const [typeValue, setTypeValue] = React.useState('string');
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    const displayName = event.target[0].value;
+    const inputType = typeValue;
+    const codeName = displayName.replace(/\s/g, '');
     
-    handleSubmit = (event) => {
-        event.preventDefault();
-        const displayName = event.target[0].value;
-        const inputType = event.target[1].value
-        const codeName = displayName.replace(/\s/g, '');
+    const control = {
+      id:0,
+      isRequired: true,
+      propName: codeName, 
+      data: {
+        type: inputType,
+        title: displayName
+      },
+    };
+    console.log(control);
+    props.Add(control);
+  };
 
-        const control = {
-            id:0,
-            isRequired: true,
-            propName: codeName, 
-            data: {
-                type: inputType,
-                title: displayName
-            }
-        };
-        console.log(control);
-        this.props.Add(control)
-    }
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Nazwa pola:
-                    <br/>
-                    <input type="text" />
-                    <br/>
-                    Typ pola:
-                    <br/>
-                    <input type="text" />
-                    <br/>
-                </label>
-                <input type="submit" value="Dodaj" />
-            </form>
-        )
-    }
+  const handleChange = event => {
+    setTypeValue(event.target.value);
+  };
+
+  return (
+    <form className={classes.root} onSubmit={handleSubmit} noValidate autoComplete="off">
+      <TextField className={classes.textfield} id="outlined-basic" label="Field name" variant="outlined" />
+      <TextField
+        className={classes.textfield}
+        id="type"
+        select
+        label="Type"
+        value={typeValue}
+        onChange={handleChange}
+        SelectProps={{
+          native: true,
+        }}
+        helperText="Please select the type of the field"
+        variant="outlined"
+      >
+        {types.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </TextField>
+      <Button className={classes.submit} type="submit" variant="contained" color="primary">
+        Add
+      </Button>
+    </form>
+  )
 }
+
+export default TextBox;
