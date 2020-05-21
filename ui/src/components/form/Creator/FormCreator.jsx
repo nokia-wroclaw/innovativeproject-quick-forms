@@ -11,6 +11,9 @@ const useStyles = theme => ({
   root: {
     marginTop: 5,
   },
+  textbox: {
+    maxWidth: 400,
+  },
 });
 
 class FormCreator extends Component {
@@ -88,7 +91,7 @@ class FormCreator extends Component {
             <Container className={classes.root} maxWidth="xl">
               <Grid container>
                   <Grid item xs={12} sm={5}>
-                      <TextBox Add={this.addControl} />
+                      <TextBox className={classes.textbox} Add={this.addControl} />
                   </Grid>
                   <Grid item xs={12} sm={2}>
                       <ControlList controls={listOfNames} remove={this.removeControl} />
