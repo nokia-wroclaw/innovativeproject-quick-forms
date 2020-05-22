@@ -4,13 +4,13 @@ import {GetForm} from '../FormsHandling';
 import FormStep from './FormStep';
 import EndStep from './EndStep';
 import {LockStep} from './LockStep';
+import { v4 as uuidv4 } from 'uuid';
 
 let socketConnection;
 const ENDPOINT = process.env.REACT_APP_SERVER_API_URL;
 
-const pendingFormIDGenerator = () => {
-  const SEED = 1000000000;
-  return Math.floor(Math.random() * SEED + SEED).toString();
+const generatePendingFormID = () => {
+  return uuidv4();
 };
 
 export class UserForms extends Component {
@@ -54,11 +54,16 @@ export class UserForms extends Component {
     })
     
     if (!window.localStorage.getItem('keyID')){
+      const UUID = generatePendingFormID();
       console.log('empty');
-      window.localStorage.setItem('keyID', pendingFormIDGenerator().toString());
+      window.localStorage.setItem('keyID', UUID);
+      this.setState({filledFormNumberID: UUID});
     }
-    else console.log('not empty');
-    console.log(pendingFormIDGenerator());
+    else {
+      this.setState({filledFormNumberID : window.localStorage.getItem('keyID')});
+    }
+
+
     socketConnection = io.connect(ENDPOINT);
     socketConnection.on('pendingFormID', data => {
       console.log(data);
@@ -69,7 +74,6 @@ export class UserForms extends Component {
 
     const id = this.props.match.params.formID;
     this.setState({formID: id});
-    this.setState({filledFormNumberID: pendingFormIDGenerator()});
     this.LoadSchema(id).then(r => console.log(r));
   }
 
