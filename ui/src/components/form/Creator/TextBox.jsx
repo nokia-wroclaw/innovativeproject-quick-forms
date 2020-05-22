@@ -52,7 +52,6 @@ function TextBox(props) {
         title: displayName
       },
     };
-    console.log(control);
     props.Add(control);
   };
 

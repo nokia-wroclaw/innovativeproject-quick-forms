@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import TextBox from './TextBox';
+import Titles from './Titles';
 import Grid from '@material-ui/core/Grid';
 import ControlList from './ControlsList';
 import FormPreview from './FormPreview';
@@ -23,7 +24,8 @@ class FormCreator extends Component {
             listOfControls: [],
             requiredProps: [],
             count: 0,
-            title: "ToDo"
+            title: "Form",
+            description: ""
         };
         this.removeControl=this.removeControl.bind(this);
     }
@@ -36,6 +38,11 @@ class FormCreator extends Component {
             };
         });
         return requiredNames;
+    };
+    
+    setTitles = (object) => {
+        this.setState({title: object.title});
+        this.setState({description: object.description});
     };
 
     addControl = (object) => {
@@ -77,6 +84,7 @@ class FormCreator extends Component {
         const formJson =
         {
             title: this.state.title,
+            description: this.state.description,
             type: "object",
             required: this.getRequired(this.state.listOfControls),
             properties: props.length !== 0 ? props.reduce((acc, obj) => ({ ...acc, [obj.propName]: obj.data }), {}) : {}
@@ -91,7 +99,8 @@ class FormCreator extends Component {
             <Container className={classes.root} maxWidth="xl">
               <Grid container>
                   <Grid item xs={12} sm={5}>
-                      <TextBox className={classes.textbox} Add={this.addControl} />
+                    <Titles TitleSet={this.setTitles}/>
+                    <TextBox className={classes.textbox} Add={this.addControl} />
                   </Grid>
                   <Grid item xs={12} sm={2}>
                       <ControlList controls={listOfNames} remove={this.removeControl} />
