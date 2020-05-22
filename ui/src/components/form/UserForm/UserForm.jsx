@@ -31,22 +31,34 @@ export class UserForms extends Component {
     this.setState({
       step: step + 1,
     });
+    window.localStorage.setItem('step', (step + 1).toString());
   };
 
   previousStep = () => {
     const {step} = this.state;
-    if (step > 0)
+    if (step > 0){
       this.setState({
         step: 1,
       });
-    else {
-      this.setState({
-        step: 1,
-      });
+      window.localStorage.setItem('step', (step - 1).toString());
     }
   };
 
   componentDidMount() {
+    const {step} = this.state;
+    if(!window.localStorage.getItem('step'))
+      window.localStorage.setItem('step', this.state.step.toString());
+
+    this.setState({
+      step : parseInt(window.localStorage.getItem('step'), 10)
+    })
+    
+    if (!window.localStorage.getItem('keyID')){
+      console.log('empty');
+      window.localStorage.setItem('keyID', pendingFormIDGenerator().toString());
+    }
+    else console.log('not empty');
+    console.log(pendingFormIDGenerator());
     socketConnection = io.connect(ENDPOINT);
     socketConnection.on('pendingFormID', data => {
       console.log(data);
@@ -126,7 +138,7 @@ export class UserForms extends Component {
       case 3:
         return <EndStep />;
       default:
-        return;
+        return <h1>error </h1>;
     }
   }
 }
