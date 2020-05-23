@@ -89,10 +89,10 @@ export default function ControlList(params) {
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
-          <Button className={classes.submit} type="submit" variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+          <Button className={classes.submit} type="submit" variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={() => params.reset()}>
             Reset form
           </Button>
-          <Button className={classes.submit} type="submit" variant="contained" color="primary" startIcon={<SaveIcon />}>
+          <Button className={classes.submit} type="submit" variant="contained" color="primary" startIcon={<SaveIcon />} onClick={() => params.save(params.formSchema)}>
             Save form
           </Button>
           <Typography variant="h4" component="h3">

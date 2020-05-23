@@ -7,6 +7,10 @@ import FormPreview from './FormPreview';
 import NavBar from './../../../pages/NavBar';
 import { Container } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Cookies from 'js-cookie';
+import { SubmitForm } from '../FormsHandling';
+
+const jwtDecode = require('jwt-decode');
 
 const useStyles = theme => ({
   root: {
@@ -20,15 +24,23 @@ const useStyles = theme => ({
 class FormCreator extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = this.initialState();
+        this.removeControl=this.removeControl.bind(this);
+        this.sumbitFormSchema= this.sumbitFormSchema.bind(this);
+    }
+
+    initialState = () => ({
             listOfControls: [],
             requiredProps: [],
             count: 0,
             title: "Form",
-            description: ""
-        };
-        this.removeControl=this.removeControl.bind(this);
-    }
+            description: "",     
+            userID: jwtDecode(Cookies.get('access_token')).user.id
+        });
+
+    resetState = () => {
+        this.setState(this.initialState());
+    };
 
     getRequired = () => {
         const requiredNames = [];
@@ -77,6 +89,13 @@ class FormCreator extends Component {
         this.setState({ listOfControls: array });
     }
 
+    sumbitFormSchema = (formSchema) => {
+        SubmitForm(formSchema, `/api/forms/templates`)
+        .then(() => this.props.history.push('/dashboard'))
+        .catch(error => {console.log(`Redirect sie nie udal ${error}`)})
+        .catch(error => console.log(`Nie udalo sie dodac schematu fromularza ${error}`));
+    };
+
     render() {
         const props = this.state.listOfControls.sort(function (a, b) {
             return a.id - b.id || a.name.localeCompare(b.name);
@@ -84,11 +103,13 @@ class FormCreator extends Component {
         const formJson =
         {
             title: this.state.title,
+            userID: this.state.userID,
             description: this.state.description,
             type: "object",
             required: this.getRequired(this.state.listOfControls),
             properties: props.length !== 0 ? props.reduce((acc, obj) => ({ ...acc, [obj.propName]: obj.data }), {}) : {}
         };
+
         const listOfNames = this.namesOfControls();
 
         const {classes} = this.props;
@@ -103,7 +124,7 @@ class FormCreator extends Component {
                     <TextBox className={classes.textbox} Add={this.addControl} />
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                      <ControlList controls={listOfNames} remove={this.removeControl} />
+                      <ControlList controls={listOfNames} remove={this.removeControl} reset={this.resetState} save={this.sumbitFormSchema} formSchema={formJson}/>
                   </Grid>
                   <Grid item xs={12} sm={5}>
                       <FormPreview formscheme={formJson}/>
