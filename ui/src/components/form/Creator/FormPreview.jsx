@@ -2,6 +2,7 @@ import React from 'react'
 import { withTheme } from 'react-jsonschema-form';
 import { Theme as MuiTheme } from 'rjsf-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -16,7 +17,9 @@ export default function FormPreview(params) {
 
     return (
       <div className={classes.root}>
-        <Form schema={params.formscheme} />
+        <Form schema={params.formscheme}>
+          <Button display="none" />
+        </Form>
       </div>
     );
 }
