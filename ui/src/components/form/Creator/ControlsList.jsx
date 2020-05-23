@@ -12,6 +12,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import LabelImportantTwoToneIcon from '@material-ui/icons/LabelImportantTwoTone';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 2,
     marginDown: 2,
   },
+  submit: {
+    width: 257,
+    borderRadius: 12,
+  }
 }));
 
 function SingleItem(params) {
@@ -82,6 +89,12 @@ export default function ControlList(params) {
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
+          <Button className={classes.submit} type="submit" variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+            Reset form
+          </Button>
+          <Button className={classes.submit} type="submit" variant="contained" color="primary" startIcon={<SaveIcon />}>
+            Save form
+          </Button>
           <Typography variant="h4" component="h3">
             Form items
           </Typography>
