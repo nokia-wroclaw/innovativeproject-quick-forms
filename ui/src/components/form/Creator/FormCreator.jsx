@@ -19,6 +19,10 @@ const useStyles = theme => ({
   textbox: {
     maxWidth: 400,
   },
+  grid: {
+    justifyContent: 'center',
+    alignContent: 'center',    
+  },
 });
 
 class FormCreator extends Component {
@@ -118,16 +122,16 @@ class FormCreator extends Component {
           <div>
             <NavBar title="CREATOR" />
             <Container className={classes.root} maxWidth="xl">
-              <Grid container>
-                  <Grid item xs={12} sm={5}>
+              <Grid container className={classes.grid}>
+                  <Grid item sm={6} md={4} lg={3}>
                     <Titles TitleSet={this.setTitles}/>
                     <TextBox className={classes.textbox} Add={this.addControl} />
                   </Grid>
-                  <Grid item xs={12} sm={2}>
-                      <ControlList controls={listOfNames} remove={this.removeControl} reset={this.resetState} save={this.sumbitFormSchema} formSchema={formJson}/>
+                  <Grid item sm={4} md={4} lg={3}>
+                      <ControlList controls={listOfNames} remove={this.removeControl} formSchema={formJson}/>
                   </Grid>
-                  <Grid item xs={12} sm={5}>
-                      <FormPreview formscheme={formJson}/>
+                  <Grid item sm={20} md={15} lg={5}>
+                      <FormPreview formSchema={formJson} reset={this.resetState} save={this.sumbitFormSchema} />
                   </Grid>
               </Grid>
             </Container>
