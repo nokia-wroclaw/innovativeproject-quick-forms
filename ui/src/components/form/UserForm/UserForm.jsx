@@ -44,18 +44,17 @@ export class UserForms extends Component {
     }
   };
 
-  componentDidMount() {
-    const {step} = this.state;
-    if(!window.localStorage.getItem('step'))
+   componentDidMount() {
+    if(!window.localStorage.getItem('step')){
       window.localStorage.setItem('step', this.state.step.toString());
-
+    }
     this.setState({
       step : parseInt(window.localStorage.getItem('step'), 10)
     })
+
     
     if (!window.localStorage.getItem('keyID')){
       const UUID = generatePendingFormID();
-      console.log('empty');
       window.localStorage.setItem('keyID', UUID);
       this.setState({filledFormNumberID: UUID});
     }
@@ -66,13 +65,12 @@ export class UserForms extends Component {
 
     socketConnection = io.connect(ENDPOINT);
     socketConnection.on('pendingFormID', data => {
-      console.log(data);
       this.setState({socketResponse: data});
     });
 
-    if (this.state.socketResponse.message === 'rejected') this.previousStep();
 
-    const id = this.props.match.params.formID;
+
+     const id = this.props.match.params.formID;
     this.setState({formID: id});
     this.LoadSchema(id).then(r => console.log(r));
   }
@@ -84,6 +82,8 @@ export class UserForms extends Component {
 
     if (this.state.socketResponse.message === 'accepted')
       this.setState({socketResponse: ''}, this.nextStep());
+
+
   }
 
   LoadSchema = formID =>
@@ -108,10 +108,12 @@ export class UserForms extends Component {
     };
     await this.promisedSetState({pendingFormData: pendingFormData});
     socketConnection.emit(`pendingFormID`, this.state.pendingFormData);
+    console.log(this.state.pendingFormData);
   };
 
   render() {
-    const {step} = this.state;
+    const step = parseInt(window.localStorage.getItem('step'), 10)
+    // doesn't work because of socket id change (different socket id gets rejected)
 
     const {
       formScheme,
