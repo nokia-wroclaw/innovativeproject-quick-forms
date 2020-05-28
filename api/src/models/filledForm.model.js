@@ -5,7 +5,8 @@ const filledFormSchema = new mongoose.Schema({
   dataForm: Object,
   templateID: String,
   userID: String,
-  filledFormNumberID: String
+  filledFormNumberID: String,
+  step:String
 });
 
 module.exports = filledFormSchema;

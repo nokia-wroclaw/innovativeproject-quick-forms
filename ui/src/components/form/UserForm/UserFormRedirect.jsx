@@ -1,21 +1,18 @@
-import React, {Component} from "react";
-import UserFormIDGenerator from "./UserFormIDGenerator";
-import {Redirect, withRouter} from "react-router-dom";
+import React, {Component} from 'react';
+import UserFormIDGenerator from './UserFormIDGenerator';
+import {Redirect, withRouter} from 'react-router-dom';
 
-class UserFormRedirect extends Component  {
-    constructor(props) {
-        super(props);
-    }
+class UserFormRedirect extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-    render(){
-        const userFormUUID = UserFormIDGenerator();
-        const formID =  this.props.match.params.formID
+  render() {
+    const userFormUUID = UserFormIDGenerator();
+    const formID = this.props.match.params.formID;
 
-        return(
-            <Redirect to={`${formID}/${userFormUUID}`}/>
-        )
-    }
+    return <Redirect to={`${formID}/${userFormUUID}`} />;
+  }
 }
-
 
 export default withRouter(UserFormRedirect);

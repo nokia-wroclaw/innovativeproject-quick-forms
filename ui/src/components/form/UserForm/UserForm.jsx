@@ -4,14 +4,9 @@ import {GetForm} from '../FormsHandling';
 import FormStep from './FormStep';
 import EndStep from './EndStep';
 import {LockStep} from './LockStep';
-import { v4 as uuidv4 } from 'uuid';
 
 let socketConnection;
 const ENDPOINT = process.env.REACT_APP_SERVER_API_URL;
-
-const generatePendingFormID = () => {
-  return uuidv4();
-};
 
 export class UserForms extends Component {
   constructor(props) {
@@ -31,47 +26,55 @@ export class UserForms extends Component {
     this.setState({
       step: step + 1,
     });
-    window.localStorage.setItem('step', (step + 1).toString());
+    if (step <= 3) window.localStorage.setItem('step', (step + 1).toString());
   };
 
   previousStep = () => {
     const {step} = this.state;
-    if (step > 0){
+    if (step > 0) {
       this.setState({
         step: 1,
       });
-      window.localStorage.setItem('step', (step - 1).toString());
+      if (step >= 1) window.localStorage.setItem('step', (step - 1).toString());
     }
   };
 
-   componentDidMount() {
-    if(!window.localStorage.getItem('step')){
-      window.localStorage.setItem('step', this.state.step.toString());
+  componentDidMount() {
+    const urlData = window.location.href.split('/');
+    const filledFormID = urlData[urlData.length - 1];
+    console.log(filledFormID);
+    if (!window.localStorage.getItem('step')) {
+      window.localStorage.setItem('step', this.state.step.toString()); // necessary?
     }
     this.setState({
-      step : parseInt(window.localStorage.getItem('step'), 10)
-    })
+      step: parseInt(window.localStorage.getItem('step'), 10),
+    });
 
-    
-    if (!window.localStorage.getItem('keyID')){
-      const UUID = generatePendingFormID();
-      window.localStorage.setItem('keyID', UUID);
-      this.setState({filledFormNumberID: UUID});
+    if (!window.localStorage.getItem('keyID')) {
+      window.localStorage.setItem('keyID', filledFormID);
+      this.setState({filledFormNumberID: filledFormID}); //is filledFormNumberID needed?
+    } else {
+      this.setState({filledFormNumberID: window.localStorage.getItem('keyID')});
     }
-    else {
-      this.setState({filledFormNumberID : window.localStorage.getItem('keyID')});
-    }
-
 
     socketConnection = io.connect(ENDPOINT);
     socketConnection.on('pendingFormID', data => {
       this.setState({socketResponse: data});
     });
 
+    if (
+      window.localStorage.getItem('data') &&
+      window.localStorage.getItem('step') < 3
+    ) {
+      socketConnection.emit(
+        `pendingFormID`,
+        JSON.parse(window.localStorage.getItem('data'))
+      );
+    }
 
-
-     const id = this.props.match.params.formID;
-    this.setState({formID: id});
+    const id = this.props.match.params.formID;
+    this.setState({formID: id}); //needed?
+    console.log('id: ' + id);
     this.LoadSchema(id).then(r => console.log(r));
   }
 
@@ -82,8 +85,6 @@ export class UserForms extends Component {
 
     if (this.state.socketResponse.message === 'accepted')
       this.setState({socketResponse: ''}, this.nextStep());
-
-
   }
 
   LoadSchema = formID =>
@@ -104,16 +105,20 @@ export class UserForms extends Component {
       dataForm: formData,
       templateID: this.state.formID,
       userID: this.state.formScheme.userID,
-      filledFormNumberID: this.state.filledFormNumberID,
+      filledFormNumberID: this.state.filledFormNumberID, // get this for localstorage?
+      step: window.localStorage.getItem('step')
     };
-    await this.promisedSetState({pendingFormData: pendingFormData});
-    socketConnection.emit(`pendingFormID`, this.state.pendingFormData);
+    await this.promisedSetState({pendingFormData: pendingFormData}); // necessary to set this? get from localstorage
+    window.localStorage.setItem('data', JSON.stringify(pendingFormData));
+    socketConnection.emit(
+      `pendingFormID`,
+      JSON.parse(window.localStorage.getItem('data'))
+    ); // emit on submit is fine
     console.log(this.state.pendingFormData);
   };
 
   render() {
-    const step = parseInt(window.localStorage.getItem('step'), 10)
-    // doesn't work because of socket id change (different socket id gets rejected)
+    const step = parseInt(window.localStorage.getItem('step'), 10);
 
     const {
       formScheme,
@@ -134,7 +139,6 @@ export class UserForms extends Component {
         return (
           <FormStep
             handleSubmitSocket={this.handleSubmitSocket}
-            handleSubmit={this.handleSubmit}
             nextStep={this.nextStep}
             values={values}
           />

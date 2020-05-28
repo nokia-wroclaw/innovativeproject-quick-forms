@@ -9,8 +9,16 @@ module.exports = {
       socket.on('pendingFormID', data => {
         const pendingFormNumberID = data.filledFormNumberID;
         socketDictionary[pendingFormNumberID] = socket.id;
-        console.log(`Added value ${socket.id} with key ${pendingFormNumberID}`);
-        const form = new pendingForm(data).save();
+        pendingForm.exists({ filledFormNumberID : pendingFormNumberID } )
+            .then(exists => {
+              if (!exists && data.dataForm != null){
+                 new pendingForm(data).save().then(r => console.log(r));
+              }
+            })
+            .catch(err => console.log(err))
+
+
+
       });
     });
   }
