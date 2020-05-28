@@ -33,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
     align: 'center',
     wordWrap: 'break-word',
   },
+  title: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
 }));
 
 function SingleItem(params) {
@@ -89,8 +94,8 @@ export default function ControlList(params) {
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          <Typography variant="h5" component="h3" color="textPrimary">
+        <ListSubheader component="div" id="nested-list-subheader" disableSticky>
+          <Typography className={classes.title} variant="h4" component="h3" color="textPrimary">
             Form items
           </Typography>
         </ListSubheader>
