@@ -9,6 +9,7 @@ import { Container } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import { SubmitForm } from '../FormsHandling';
+import ListBox from './ListBox';
 
 const jwtDecode = require('jwt-decode');
 
@@ -122,6 +123,7 @@ class FormCreator extends Component {
                   <Grid item xs={12} sm={5}>
                     <Titles TitleSet={this.setTitles}/>
                     <TextBox className={classes.textbox} Add={this.addControl} />
+                    <ListBox Add={this.addControl}/>
                   </Grid>
                   <Grid item xs={12} sm={2}>
                       <ControlList controls={listOfNames} remove={this.removeControl} reset={this.resetState} save={this.sumbitFormSchema} formSchema={formJson}/>
