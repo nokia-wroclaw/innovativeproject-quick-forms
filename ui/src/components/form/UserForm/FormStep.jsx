@@ -18,8 +18,8 @@ export function FormStep(props) {
   useEffect(() => {
       const data = JSON.parse(window.localStorage.getItem('data'));
       if (data != null) {
-        console.log(data.dataForm)
-        setFormData(data.dataForm)
+        console.log(data)
+        setFormData(data)
       }
   },[])
 
@@ -28,7 +28,8 @@ export function FormStep(props) {
         <Form
           schema={props.values.formScheme}
           formData={formData}
-          onSubmit={nextStep}>
+          onSubmit={nextStep}
+          onChange={e => {window.localStorage.setItem('data', JSON.stringify(e.formData))}}>
           <Button variant="contained" color="primary" type="submit">
             Submit
           </Button>

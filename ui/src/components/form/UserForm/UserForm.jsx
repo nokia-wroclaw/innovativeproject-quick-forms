@@ -42,9 +42,19 @@ export class UserForms extends Component {
         window.localStorage.getItem('data') &&
         window.localStorage.getItem('step') < 3
     ) {
+
+      const pendingFormData = {
+        dataForm:  JSON.parse(window.localStorage.getItem('data')),
+        templateID: this.state.formID,
+        userID: this.state.formScheme.userID,
+        filledFormNumberID: this.getPendingFormID(),
+      };
+
+      console.log(pendingFormData)
+
       socketConnection.emit(
           `pendingFormID`,
-          JSON.parse(window.localStorage.getItem('data'))
+           pendingFormData
       );
     }
   }
@@ -125,8 +135,8 @@ export class UserForms extends Component {
       userID: this.state.formScheme.userID,
       filledFormNumberID: this.getPendingFormID(),
     };
-    
-    this.setFormData(pendingFormData)
+
+    this.setFormData(pendingFormData.dataForm)
     this.socketEmitData();
   };
 
