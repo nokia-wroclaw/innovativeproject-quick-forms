@@ -14,13 +14,11 @@ export class UserForms extends Component {
     this.state = {
       step: 1,
       formScheme: {},
-      pendingFormData: {},
-      formID: '',
-      formDefault: '',
       filledFormNumberID: -1,
       socketResponse: '',
     };
   }
+
   nextStep = () => {
     const {step} = this.state;
     this.setState({
@@ -39,43 +37,75 @@ export class UserForms extends Component {
     }
   };
 
-  componentDidMount() {
-    const urlData = window.location.href.split('/');
-    const filledFormID = urlData[urlData.length - 1];
-    console.log(filledFormID);
-    if (!window.localStorage.getItem('step')) {
-      window.localStorage.setItem('step', this.state.step.toString()); // necessary?
+  socketEmitData = () => {
+    if (
+        window.localStorage.getItem('data') &&
+        window.localStorage.getItem('step') < 3
+    ) {
+      socketConnection.emit(
+          `pendingFormID`,
+          JSON.parse(window.localStorage.getItem('data'))
+      );
     }
-    this.setState({
-      step: parseInt(window.localStorage.getItem('step'), 10),
-    });
+  }
 
-    if (!window.localStorage.getItem('keyID')) {
-      window.localStorage.setItem('keyID', filledFormID);
-      this.setState({filledFormNumberID: filledFormID}); //is filledFormNumberID needed?
-    } else {
-      this.setState({filledFormNumberID: window.localStorage.getItem('keyID')});
-    }
-
-    socketConnection = io.connect(ENDPOINT);
+  socketListenToServer = () => {
     socketConnection.on('pendingFormID', data => {
       this.setState({socketResponse: data});
     });
+  }
 
-    if (
-      window.localStorage.getItem('data') &&
-      window.localStorage.getItem('step') < 3
-    ) {
-      socketConnection.emit(
-        `pendingFormID`,
-        JSON.parse(window.localStorage.getItem('data'))
-      );
+  socketConnect = () => {
+    socketConnection = io.connect(ENDPOINT);
+  }
+
+  getPendingFormID = () => {
+    const urlData = window.location.href.split('/');
+    return urlData[urlData.length - 1];
+  }
+
+  setCurrentStep = () => {
+    if (!window.localStorage.getItem('step')) {
+      window.localStorage.setItem('step', this.state.step.toString());
     }
 
+    this.setState({
+      step: parseInt(window.localStorage.getItem('step'), 10),
+    });
+  }
+
+  setFormData = (data) => {
+    window.localStorage.setItem('data', JSON.stringify(data));
+  }
+
+  setKeyID = (id) => {
+    if (!window.localStorage.getItem('keyID')) {
+      window.localStorage.setItem('keyID', id);
+      this.setState({filledFormNumberID: id}); //is filledFormNumberID needed?
+    } else {
+      this.setState({filledFormNumberID: window.localStorage.getItem('keyID')});
+    }
+  }
+
+  handleLoadSchema = () => {
     const id = this.props.match.params.formID;
-    this.setState({formID: id}); //needed?
-    console.log('id: ' + id);
+    this.setState({formID: id});
     this.LoadSchema(id).then(r => console.log(r));
+}
+
+  LoadSchema = formID =>
+      GetForm(formID, '/api/forms/templates/')
+          .then(response => this.setState({formScheme: response.data}))
+          .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
+
+
+  componentDidMount() {
+    this.setCurrentStep();
+    this.socketConnect();
+    this.socketListenToServer();
+    this.setKeyID(this.getPendingFormID());
+    this.socketEmitData();
+    this.handleLoadSchema();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -87,39 +117,21 @@ export class UserForms extends Component {
       this.setState({socketResponse: ''}, this.nextStep());
   }
 
-  LoadSchema = formID =>
-    GetForm(formID, '/api/forms/templates/')
-      .then(response => this.setState({formScheme: response.data}))
-      .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
-
-  promisedSetState = newState => {
-    return new Promise(resolve => {
-      this.setState(newState, () => {
-        resolve();
-      });
-    });
-  };
 
   handleSubmitSocket = async ({formData}) => {
     const pendingFormData = {
       dataForm: formData,
       templateID: this.state.formID,
       userID: this.state.formScheme.userID,
-      filledFormNumberID: this.state.filledFormNumberID, // get this for localstorage?
-      step: window.localStorage.getItem('step')
+      filledFormNumberID: this.getPendingFormID(),
     };
-    await this.promisedSetState({pendingFormData: pendingFormData}); // necessary to set this? get from localstorage
-    window.localStorage.setItem('data', JSON.stringify(pendingFormData));
-    socketConnection.emit(
-      `pendingFormID`,
-      JSON.parse(window.localStorage.getItem('data'))
-    ); // emit on submit is fine
-    console.log(this.state.pendingFormData);
+    
+    this.setFormData(pendingFormData)
+    this.socketEmitData();
   };
 
   render() {
     const step = parseInt(window.localStorage.getItem('step'), 10);
-
     const {
       formScheme,
       formID,

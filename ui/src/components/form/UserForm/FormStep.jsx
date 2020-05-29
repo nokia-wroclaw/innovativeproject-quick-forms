@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Container} from '@material-ui/core';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
+import {useInputChange} from "./UseInputChange";
 
 const Form = withTheme(MuiTheme);
 
@@ -13,22 +14,19 @@ export function FormStep(props) {
     props.nextStep();
     return false;
   };
-  const {values} = props;
 
   useEffect(() => {
       const data = JSON.parse(window.localStorage.getItem('data'));
-      console.log(formData);
       if (data != null) {
         console.log(data.dataForm)
         setFormData(data.dataForm)
       }
   },[])
 
-
     return (
       <Container ms={8}>
         <Form
-          schema={values.formScheme}
+          schema={props.values.formScheme}
           formData={formData}
           onSubmit={nextStep}>
           <Button variant="contained" color="primary" type="submit">

@@ -8,6 +8,7 @@ module.exports = {
     io.on('connection', socket => {
       socket.on('pendingFormID', data => {
         const pendingFormNumberID = data.filledFormNumberID;
+        console.log(data);
         socketDictionary[pendingFormNumberID] = socket.id;
         pendingForm.exists({ filledFormNumberID : pendingFormNumberID } )
             .then(exists => {
@@ -16,9 +17,6 @@ module.exports = {
               }
             })
             .catch(err => console.log(err))
-
-
-
       });
     });
   }
