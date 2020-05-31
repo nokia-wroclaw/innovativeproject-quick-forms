@@ -16,6 +16,7 @@ export class UserForms extends Component {
       formScheme: {},
       filledFormNumberID: -1,
       socketResponse: '',
+      formID: ''
     };
   }
 //`step_${this.getPendingFormID()}`
@@ -172,7 +173,7 @@ export class UserForms extends Component {
       case 2:
         return <LockStep filledFormNumberID={this.state.filledFormNumberID} />;
       case 3:
-        return <EndStep />;
+        return <EndStep templateID={this.state.formID} />;
       default:
         return <h1>error </h1>;
     }
