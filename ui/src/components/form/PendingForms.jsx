@@ -6,12 +6,17 @@ import Box from '@material-ui/core/Box';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import Typography from '@material-ui/core/Typography';
 import ClearIcon from '@material-ui/icons/Clear';
-import {DeletePending, AcceptForm, RejectPending, GetForm} from './FormsHandling';
+import {
+  DeletePending,
+  AcceptForm,
+  RejectPending,
+  GetForm,
+} from './FormsHandling';
 import {withStyles} from '@material-ui/core/styles';
-import Popup from "reactjs-popup";
-import {Container} from "@material-ui/core";
-import {withTheme} from "react-jsonschema-form";
-import {Theme as MuiTheme} from "rjsf-material-ui";
+import Popup from 'reactjs-popup';
+import {Container} from '@material-ui/core';
+import {withTheme} from 'react-jsonschema-form';
+import {Theme as MuiTheme} from 'rjsf-material-ui';
 
 const Form = withTheme(MuiTheme);
 
@@ -104,7 +109,7 @@ class PendingForms extends React.Component {
         display="flex"
         justifyContent="center"
         alignItems="center">
-        {obj.filledFormNumberID}:&nbsp;
+        {obj.filledFormNumberID.toString().slice(-4).toUpperCase()}:&nbsp;
         <div className={classes.someButtons}>
           <Button
             className={classes.button}

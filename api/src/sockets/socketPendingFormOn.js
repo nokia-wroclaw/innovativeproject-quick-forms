@@ -8,9 +8,15 @@ module.exports = {
     io.on('connection', socket => {
       socket.on('pendingFormID', data => {
         const pendingFormNumberID = data.filledFormNumberID;
+        console.log(data);
         socketDictionary[pendingFormNumberID] = socket.id;
-        console.log(`Added value ${socket.id} with key ${pendingFormNumberID}`);
-        const form = new pendingForm(data).save();
+        pendingForm.exists({ filledFormNumberID : pendingFormNumberID } )
+            .then(exists => {
+              if (!exists && data.dataForm != null && data.templateID != null && data.userID != null){
+                 new pendingForm(data).save().then(r => console.log(r));
+              }
+            })
+            .catch(err => console.log(err))
       });
     });
   }

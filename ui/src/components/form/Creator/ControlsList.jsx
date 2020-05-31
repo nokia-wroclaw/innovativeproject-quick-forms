@@ -1,5 +1,5 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,7 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import LabelImportantTwoToneIcon from '@material-ui/icons/LabelImportantTwoTone';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     maxWidth: 600,
@@ -62,7 +62,10 @@ function SingleItem(params) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested} onClick={() => params.remove(obj)}>
+          <ListItem
+            button
+            className={classes.nested}
+            onClick={() => params.remove(obj)}>
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
@@ -82,12 +85,12 @@ function SingleItem(params) {
 
 export default function ControlList(params) {
   const classes = useStyles();
-  
-  const controlsArray = params.controls
 
-  const items = controlsArray.map((obj, index) =>
+  const controlsArray = params.controls;
+
+  const items = controlsArray.map((obj, index) => (
     <SingleItem obj={obj} remove={params.remove} />
-  );
+  ));
 
   return (
     <List
@@ -100,8 +103,7 @@ export default function ControlList(params) {
           </Typography>
         </ListSubheader>
       }
-      className={classes.root}
-    >
+      className={classes.root}>
       {items}
     </List>
   );
