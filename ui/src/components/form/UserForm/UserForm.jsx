@@ -18,13 +18,13 @@ export class UserForms extends Component {
       socketResponse: '',
     };
   }
-
+//`step_${this.getPendingFormID()}`
   nextStep = () => {
     const {step} = this.state;
     this.setState({
       step: step + 1,
     });
-    if (step <= 3) window.localStorage.setItem('step', (step + 1).toString());
+    if (step <= 3) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step + 1).toString());
   };
 
   previousStep = () => {
@@ -33,18 +33,18 @@ export class UserForms extends Component {
       this.setState({
         step: 1,
       });
-      if (step >= 1) window.localStorage.setItem('step', (step - 1).toString());
     }
+    if (step >= 1) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step - 1).toString());
   };
 
   socketEmitData = () => {
     if (
-        window.localStorage.getItem('data') &&
-        window.localStorage.getItem('step') < 3
+        window.localStorage.getItem(`data_${this.getPendingFormID()}`) &&
+        window.localStorage.getItem(`step_${this.getPendingFormID()}`) < 3
     ) {
 
       const pendingFormData = {
-        dataForm:  JSON.parse(window.localStorage.getItem('data')),
+        dataForm:  JSON.parse(window.localStorage.getItem(`data_${this.getPendingFormID()}`)),
         templateID: this.state.formID,
         userID: this.state.formScheme.userID,
         filledFormNumberID: this.getPendingFormID(),
@@ -73,26 +73,22 @@ export class UserForms extends Component {
   }
 
   setCurrentStep = () => {
-    if (!window.localStorage.getItem('step')) {
-      window.localStorage.setItem('step', this.state.step.toString());
+    if (!window.localStorage.getItem(`step_${this.getPendingFormID()}`)) {
+      window.localStorage.setItem(`step_${this.getPendingFormID()}`, this.state.step.toString());
     }
 
+    //after removing page does't switch step immediately
     this.setState({
-      step: parseInt(window.localStorage.getItem('step'), 10),
+      step: parseInt(window.localStorage.getItem(`step_${this.getPendingFormID()}`), 10),
     });
   }
 
   setFormData = (data) => {
-    window.localStorage.setItem('data', JSON.stringify(data));
+    window.localStorage.setItem(`data_${this.getPendingFormID()}`, JSON.stringify(data));
   }
 
   setKeyID = (id) => {
-    if (!window.localStorage.getItem('keyID')) {
-      window.localStorage.setItem('keyID', id);
       this.setState({filledFormNumberID: id});
-    } else {
-      this.setState({filledFormNumberID: window.localStorage.getItem('keyID')});
-    }
   }
 
   handleLoadSchema = () => {
@@ -148,7 +144,7 @@ export class UserForms extends Component {
   };
 
   render() {
-    const step = parseInt(window.localStorage.getItem('step'), 10);
+    const step = parseInt(window.localStorage.getItem(`step_${this.getPendingFormID()}`), 10);
     const {
       formScheme,
       formID,
@@ -170,6 +166,7 @@ export class UserForms extends Component {
             handleSubmitSocket={this.handleSubmitSocket}
             nextStep={this.nextStep}
             values={values}
+            getPendingFormID={this.getPendingFormID}
           />
         );
       case 2:
