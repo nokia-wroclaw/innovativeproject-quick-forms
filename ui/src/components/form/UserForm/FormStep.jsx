@@ -2,41 +2,39 @@ import React, {useEffect, useState} from 'react';
 import {Button, Container} from '@material-ui/core';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
-import {useInputChange} from "./UseInputChange";
 
 const Form = withTheme(MuiTheme);
 
 export function FormStep(props) {
   const [formData, setFormData] = useState({});
 
- const nextStep  = formData => {
+  const nextStep = formData => {
+    console.log(formData);
     props.handleSubmitSocket(formData);
     props.nextStep();
     return false;
   };
 
   useEffect(() => {
-      const data = JSON.parse(window.localStorage.getItem('data'));
-      if (data != null) {
-        console.log(data)
-        setFormData(data)
-      }
-  },[])
+    const data = JSON.parse(window.localStorage.getItem('data'));
+    console.log(data);
+    if (data != null) {
+      setFormData(data);
+    }
+  }, []);
 
-    return (
-      <Container ms={8}>
-        <Form
-          schema={props.values.formScheme}
-          formData={formData}
-          onSubmit={nextStep}
-          onChange={e => {window.localStorage.setItem('data', JSON.stringify(e.formData))}}>
-          <Button variant="contained" color="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </Container>
-    );
-
+  return (
+    <Container ms={8}>
+      <Form
+        schema={props.values.formScheme}
+        formData={formData}
+        onSubmit={nextStep}>
+        <Button variant="contained" color="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
+    </Container>
+  );
 }
 
 export default FormStep;

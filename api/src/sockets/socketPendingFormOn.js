@@ -12,7 +12,7 @@ module.exports = {
         socketDictionary[pendingFormNumberID] = socket.id;
         pendingForm.exists({ filledFormNumberID : pendingFormNumberID } )
             .then(exists => {
-              if (!exists && data.dataForm != null){
+              if (!exists && data.dataForm != null && data.templateID != null && data.userID != null){
                  new pendingForm(data).save().then(r => console.log(r));
               }
             })

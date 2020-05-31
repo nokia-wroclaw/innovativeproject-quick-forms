@@ -50,8 +50,6 @@ export class UserForms extends Component {
         filledFormNumberID: this.getPendingFormID(),
       };
 
-      console.log(pendingFormData)
-
       socketConnection.emit(
           `pendingFormID`,
            pendingFormData
@@ -91,7 +89,7 @@ export class UserForms extends Component {
   setKeyID = (id) => {
     if (!window.localStorage.getItem('keyID')) {
       window.localStorage.setItem('keyID', id);
-      this.setState({filledFormNumberID: id}); //is filledFormNumberID needed?
+      this.setState({filledFormNumberID: id});
     } else {
       this.setState({filledFormNumberID: window.localStorage.getItem('keyID')});
     }
@@ -127,6 +125,14 @@ export class UserForms extends Component {
       this.setState({socketResponse: ''}, this.nextStep());
   }
 
+  promisedSetState = newState => {
+    return new Promise(resolve => {
+      this.setState(newState, () => {
+        resolve();
+      });
+    });
+  };
+
 
   handleSubmitSocket = async ({formData}) => {
     const pendingFormData = {
@@ -136,6 +142,7 @@ export class UserForms extends Component {
       filledFormNumberID: this.getPendingFormID(),
     };
 
+  //  await this.promisedSetState({pendingFormData: pendingFormData});
     this.setFormData(pendingFormData.dataForm)
     this.socketEmitData();
   };
