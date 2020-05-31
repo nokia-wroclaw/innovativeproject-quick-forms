@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     margin: '0px',
   },
+  appbar: {
+    zIndex: theme.zIndex.drawer + 1
+  },
   bar: {
     background: 'linear-gradient(to right, #2980b9, #6dd5fa)',
   },
@@ -50,7 +53,7 @@ const NavBar = ({ history, title }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appbar}>
         <Toolbar className={classes.bar}>
           <Typography className={classes.title}>{title}</Typography>
           <Button

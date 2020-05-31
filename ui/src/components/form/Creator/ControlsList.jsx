@@ -25,6 +25,19 @@ const useStyles = makeStyles(theme => ({
     marginTop: 2,
     marginDown: 2,
   },
+  submit: {
+    width: 257,
+    borderRadius: 12,
+  },
+  listItemText: {
+    align: 'center',
+    wordWrap: 'break-word',
+  },
+  title: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
 }));
 
 function SingleItem(params) {
@@ -44,7 +57,7 @@ function SingleItem(params) {
         <ListItemIcon>
           <LabelImportantTwoToneIcon />
         </ListItemIcon>
-        <ListItemText primary={obj.name} />
+        <ListItemText className={classes.listItemText} primary={obj.name} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
@@ -56,13 +69,13 @@ function SingleItem(params) {
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
-            <ListItemText primary="Delete" />
+            <ListItemText className={classes.listItemText} primary="Delete" />
           </ListItem>
           <ListItem button className={classes.nested}>
             <ListItemIcon>
               <EditIcon />
             </ListItemIcon>
-            <ListItemText primary="Edit" />
+            <ListItemText className={classes.listItemText} primary="Edit" />
           </ListItem>
         </List>
       </Collapse>
@@ -84,8 +97,8 @@ export default function ControlList(params) {
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          <Typography variant="h4" component="h3">
+        <ListSubheader component="div" id="nested-list-subheader" disableSticky>
+          <Typography className={classes.title} variant="h4" component="h3" color="textPrimary">
             Form items
           </Typography>
         </ListSubheader>
