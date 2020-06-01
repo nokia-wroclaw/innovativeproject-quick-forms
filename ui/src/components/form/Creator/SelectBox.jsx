@@ -6,13 +6,12 @@ import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 
 
-class ListBox extends Component {
+class SelectBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
             open: false,
             isRequired: false,
-            inputType: 'string'
         };
     }
 
@@ -50,21 +49,16 @@ class ListBox extends Component {
         this.handleClose()
         const arrayName = event.target[0].value;
         const recordName = event.target[2].value;
-        const requiredRecords = event.target[4].value;
+        const requiredRecords = event.target[3].value;
         const typeofInput = this.state.inputType;
         const ifRequired = this.state.isRequired;
-        const codeName = arrayName.replace(/\s/g, '');
-
-        console.log( requiredRecords);
 
         const object = {
-            propName: codeName,
+            propName: arrayName,
             id: 0,
             isRequired: ifRequired,
             data: {
                 type: "array",
-                title: arrayName,
-                minItems: requiredRecords,
                 items: {
                     type: typeofInput,
                     title: recordName,
@@ -127,7 +121,7 @@ class ListBox extends Component {
         return (
             <Container>
                 <Typography>
-                    List Box
+                    Select Box
                 </Typography>
                 <Button type="submit" variant="contained" color="primary" onClick={this.handleOpen}>
                     Add
@@ -143,4 +137,4 @@ class ListBox extends Component {
         )
     }
 }
-export default ListBox;
+export default SelectBox;

@@ -13,6 +13,7 @@ import ListBox from './ListBox';
 import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
+import SelectBox from './SelectBox';
 
 const jwtDecode = require('jwt-decode');
 
@@ -202,6 +203,7 @@ class FormCreator extends Component {
                 <Titles TitleSet={this.setTitles}/>
                 <TextBox className={classes.textbox} Add={this.addControl} />
                 <ListBox Add={this.addControl}/>
+                <SelectBox Add={this.addControl} />
                 <Divider />
               </Drawer>
               <Grid container className={classes.grid} alignContent="center">
