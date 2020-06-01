@@ -40,11 +40,13 @@ function Tiles(props) {
     return(
     <form className={classes.root} onSubmit={handleSubmit} noValidate autoComplete="off">
         <TextField
+        className={classes.textfield}
         label="Form Title"
         defaultValue="Form"
         variant="outlined"
         />
         <TextField
+        className={classes.textfield}
         label="Form description"
         defaultValue=""
         variant="outlined"

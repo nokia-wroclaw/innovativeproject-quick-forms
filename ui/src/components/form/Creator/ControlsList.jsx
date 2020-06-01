@@ -1,5 +1,5 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,11 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import LabelImportantTwoToneIcon from '@material-ui/icons/LabelImportantTwoTone';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     maxWidth: 600,
@@ -31,7 +28,16 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     width: 257,
     borderRadius: 12,
-  }
+  },
+  listItemText: {
+    align: 'center',
+    wordWrap: 'break-word',
+  },
+  title: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
 }));
 
 function SingleItem(params) {
@@ -51,22 +57,25 @@ function SingleItem(params) {
         <ListItemIcon>
           <LabelImportantTwoToneIcon />
         </ListItemIcon>
-        <ListItemText primary={obj.name} />
+        <ListItemText className={classes.listItemText} primary={obj.name} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested} onClick={() => params.remove(obj)}>
+          <ListItem
+            button
+            className={classes.nested}
+            onClick={() => params.remove(obj)}>
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
-            <ListItemText primary="Delete" />
+            <ListItemText className={classes.listItemText} primary="Delete" />
           </ListItem>
           <ListItem button className={classes.nested}>
             <ListItemIcon>
               <EditIcon />
             </ListItemIcon>
-            <ListItemText primary="Edit" />
+            <ListItemText className={classes.listItemText} primary="Edit" />
           </ListItem>
         </List>
       </Collapse>
@@ -76,32 +85,25 @@ function SingleItem(params) {
 
 export default function ControlList(params) {
   const classes = useStyles();
-  
-  const controlsArray = params.controls
 
-  const items = controlsArray.map((obj, index) =>
+  const controlsArray = params.controls;
+
+  const items = controlsArray.map((obj, index) => (
     <SingleItem obj={obj} remove={params.remove} />
-  );
+  ));
 
   return (
     <List
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          <Button className={classes.submit} type="submit" variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={() => params.reset()}>
-            Reset form
-          </Button>
-          <Button className={classes.submit} type="submit" variant="contained" color="primary" startIcon={<SaveIcon />} onClick={() => params.save(params.formSchema)}>
-            Save form
-          </Button>
-          <Typography variant="h4" component="h3">
+        <ListSubheader component="div" id="nested-list-subheader" disableSticky>
+          <Typography className={classes.title} variant="h4" component="h3" color="textPrimary">
             Form items
           </Typography>
         </ListSubheader>
       }
-      className={classes.root}
-    >
+      className={classes.root}>
       {items}
     </List>
   );

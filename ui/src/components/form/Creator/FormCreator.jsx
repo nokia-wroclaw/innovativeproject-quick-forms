@@ -10,15 +10,85 @@ import { withStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import { SubmitForm } from '../FormsHandling';
 import ListBox from './ListBox';
+import Typography from '@material-ui/core/Typography';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
 
 const jwtDecode = require('jwt-decode');
 
+const drawerWidth = 290;
+
 const useStyles = theme => ({
   root: {
-    marginTop: 5,
+    marginTop: 15,
   },
   textbox: {
-    maxWidth: 400,
+    maxWidth: drawerWidth,
+  },
+  grid: {
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    [theme.breakpoints.down('1302')]: {//17903
+      display: 'block',
+      justifyContent: 'right',
+      alignContent: 'right',
+      marginLeft: drawerWidth + 150,
+    },
+    [theme.breakpoints.down('1170')]: {//17903
+      marginLeft: drawerWidth + 75,
+    },
+    [theme.breakpoints.down('800')]: {//17903
+      marginLeft: drawerWidth,
+    },
+  },
+  formItems: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center,'
+  },
+  formPreview: {
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginLeft: 20,
+    [theme.breakpoints.down('1302')]: {
+      marginLeft: 0,
+    },
+  },
+  settingsTitle: {
+    marginLeft: 70,
+  },
+  previewTitle: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginBottom: 10,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    position: 'absolute',
+    paddingLeft: 15,
+    background: '#f5fdff',
+    marginTop: 105,
+    width: drawerWidth,
+    [theme.breakpoints.down('600')]: {
+      marginTop: 56,
+    },
+  },
+  drawerContainer: {
+    overflow: 'auto',
+  },
+  divider: {
+    height: window.screen.availHeight * 0.6,//1359
+    [theme.breakpoints.down('1302')]: {
+      display: 'none',
+    },
   },
 });
 
@@ -119,18 +189,35 @@ class FormCreator extends Component {
           <div>
             <NavBar title="CREATOR" />
             <Container className={classes.root} maxWidth="xl">
-              <Grid container>
-                  <Grid item xs={12} sm={5}>
-                    <Titles TitleSet={this.setTitles}/>
-                    <TextBox className={classes.textbox} Add={this.addControl} />
-                    <ListBox Add={this.addControl}/>
-                  </Grid>
-                  <Grid item xs={12} sm={2}>
-                      <ControlList controls={listOfNames} remove={this.removeControl} reset={this.resetState} save={this.sumbitFormSchema} formSchema={formJson}/>
-                  </Grid>
-                  <Grid item xs={12} sm={5}>
-                      <FormPreview formscheme={formJson}/>
-                  </Grid>
+              <Drawer
+                className={classes.drawer}
+                variant="permanent"
+                classes={{
+                  paper: classes.drawerPaper,
+                }}  
+              >
+                <Typography className={classes.settingsTitle} variant="h4" component="h3" color="textPrimary">
+                  Settings
+                </Typography>
+                <Titles TitleSet={this.setTitles}/>
+                <TextBox className={classes.textbox} Add={this.addControl} />
+                <ListBox Add={this.addControl}/>
+                <Divider />
+              </Drawer>
+              <Grid container className={classes.grid} alignContent="center">
+                <Grid item sm={1} md={1}></Grid>
+                <Grid className={classes.formItems} item sm={4} md={6} lg={4}>
+                  <ControlList controls={listOfNames} remove={this.removeControl} formSchema={formJson}/>
+                </Grid>
+                <Grid item>
+                  <Divider className={classes.divider} orientation="vertical" />
+                </Grid>
+                <Grid className={classes.formPreview} item sm={4} md={6} lg={4}>
+                  <Typography className={classes.previewTitle} variant="h4" component="h3" color="textPrimary">
+                    Preview
+                  </Typography>
+                  <FormPreview formSchema={formJson} reset={this.resetState} save={this.sumbitFormSchema} />
+                </Grid>
               </Grid>
             </Container>
           </div>
