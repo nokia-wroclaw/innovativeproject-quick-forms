@@ -4,7 +4,6 @@ import {useState} from 'react';
 import {Container} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import axios from 'axios'
-import * as classes from "react-dom/test-utils";
 
 function Finder()  {
   const [input, setInput] = useState("");
@@ -17,29 +16,59 @@ function Finder()  {
         axios.get(`/api/forms/pendingForms/key/${toSearch}`)
             .then(res => {
                 if (res !== null){
-                    setOutputStatus(2);
+                    setOutputStatus(status.PENDING);
                     if (res.data.templateID && res.data.filledFormNumberID)
                     redirect(res.data.templateID, res.data.filledFormNumberID);
-
                 }
+                console.log(res.status)
+            })
+            .catch(err => {
+                setOutputStatus(status.DOESNOTEXIST);
+                console.log(err)
             });
 
         axios.get(`/api/forms/filled-forms/key/${toSearch}`)
             .then(res => {
                 if (res !== null){
                     setOutput(res);
-                    setOutputStatus(3);
+                    setOutputStatus(status.ACCEPTED);
                     if (res.data.templateID && res.data.filledFormNumberID)
                         redirect(res.data.templateID, res.data.filledFormNumberID);
-
                 }
+                console.log(res.status)
+            })
+            .catch(err => {
+                setOutputStatus(status.DOESNOTEXIST);
+                console.log(err)
             });
-      console.log(output)
+      console.log(outputStatus)
 
     }
 
-    const getStatus = () => {
+    const status = {
+        TOBEFILLED: 1,
+        PENDING: 2,
+        ACCEPTED: 3,
+        DOESNOTEXIST: 4
+    }
 
+    const handleStatus = () => {
+        let message;
+        switch (outputStatus) {
+            case status.TOBEFILLED:
+                message = "Form is ready to be filled"
+                break;
+            case status.PENDING:
+                message = "Form is waiting to be accepted"
+                break;
+            case status.ACCEPTED:
+                message = "Form was accepted"
+                break;
+            case status.DOESNOTEXIST:
+                message = "Form does not exist"
+                break;
+        }
+       return message
     }
 
     const redirect = (templateID, formID) => {
@@ -62,7 +91,7 @@ function Finder()  {
         }}>
             Search
         </Button>
-            <h1>{outputStatus}</h1>
+            <h1>{handleStatus()}</h1>
         </Container>
     )
 }
