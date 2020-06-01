@@ -14,25 +14,28 @@ function Finder()  {
     const handleSubmit = (e) => {
       e.preventDefault();
       const toSearch = input.toLowerCase();
-      console.log(toSearch)
         axios.get(`/api/forms/pendingForms/key/${toSearch}`)
             .then(res => {
                 if (res !== null){
-                    setOutput(res);
-                    //res.data.status or similar
                     setOutputStatus(2);
+                    if (res.data.templateID && res.data.filledFormNumberID)
                     redirect(res.data.templateID, res.data.filledFormNumberID);
-                    console.log(res.data.filledFormNumberID)
-                }
 
-                //else return axios.get(`/api/forms/filledForms/key/${toSearch}`)
+                }
+            });
+
+        axios.get(`/api/forms/filled-forms/key/${toSearch}`)
+            .then(res => {
+                if (res !== null){
+                    setOutput(res);
+                    setOutputStatus(3);
+                    if (res.data.templateID && res.data.filledFormNumberID)
+                        redirect(res.data.templateID, res.data.filledFormNumberID);
+
+                }
             });
       console.log(output)
-        //axios get PF
-        //if found redirect
-        //else axios get FF
-        //if found redirect
-        //else not found
+
     }
 
     const getStatus = () => {

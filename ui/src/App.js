@@ -24,6 +24,7 @@ const App = () => (
         path="/userform/:formID/:pendingFormID"
         component={UserForm}
       />
+
       <PrivateRoute exact path="/dashboard" component={Dashboard} />
       <PrivateRoute
         exact

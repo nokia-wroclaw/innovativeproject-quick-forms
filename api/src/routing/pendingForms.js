@@ -39,17 +39,15 @@ router.get('/single/:id', async (req, res) => {
 router.get('/key/:id', async (req, res) => {
 
   const keyLength = 4
-  console.log(req.params.id.length)
   if (req.params.id.length !== keyLength){
     res.sendStatus(422);
   }
   try{
-    console.log(req.params);
     const forms = await pendingForm.findOne({filledFormNumberID :  { "$regex": `${req.params.id}$` },
       function (err, docs) {}})
-    res.status(200).json(forms);
+    if (forms !== null)
+      res.status(200).json(forms);
   } catch (err) {
-    console.log('hello');
     res.status(404).json({ message: err });
   }
 })
