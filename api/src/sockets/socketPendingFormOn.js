@@ -14,6 +14,7 @@ module.exports = {
             .then(exists => {
               if (!exists && data.dataForm != null && data.templateID != null && data.userID != null){
                  new pendingForm(data).save().then(r => console.log(r));
+                 console.log('saved');
               }
             })
             .catch(err => console.log(err))
