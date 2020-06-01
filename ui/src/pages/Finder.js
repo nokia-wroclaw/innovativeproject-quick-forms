@@ -21,6 +21,7 @@ function Finder()  {
                     setOutput(res);
                     //res.data.status or similar
                     setOutputStatus(2);
+                    redirect(res.data.templateID, res.data.filledFormNumberID);
                     console.log(res.data.filledFormNumberID)
                 }
 
@@ -39,7 +40,7 @@ function Finder()  {
     }
 
     const redirect = (templateID, formID) => {
-        window.open()
+        window.open(`userform/${templateID}/${formID}`)
     }
 
     return(
