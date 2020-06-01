@@ -2,6 +2,7 @@ import React from 'react'
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const types = [
   {
@@ -10,7 +11,7 @@ const types = [
   },
 
   {
-    value: 'integer',
+    value: 'number',
     label: 'number',
   }
 ];
@@ -76,9 +77,9 @@ function TextBox(props) {
         variant="outlined"
       >
         {types.map(option => (
-          <option key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.value}>
             {option.label}
-          </option>
+          </MenuItem>
         ))}
       </TextField>
       <Button className={classes.submit} type="submit" variant="contained" color="primary">
