@@ -8,18 +8,25 @@ module.exports = {
     io.on('connection', socket => {
       socket.on('pendingFormID', data => {
         const pendingFormNumberID = data.filledFormNumberID;
-        console.log("send:" + data);
+        console.log("send:" + data.dataForm);
 
         socketDictionary[pendingFormNumberID] = socket.id;
-        pendingForm.exists({ filledFormNumberID : pendingFormNumberID } )
-            .then(exists => {
-              if (!exists && data.dataForm != null && data.templateID != null
+        pendingForm.findOne({ filledFormNumberID : pendingFormNumberID } )
+            .then(existingForm => {
+                console.log(existingForm)
+              if (existingForm == null && data.dataForm != null && data.templateID != null
                   && data.userID != null && data.state != null){
                  new pendingForm(data).save().then(r => {
                      console.log(r)
                  });
                  console.log("to be saved: " + data.state);
                  console.log('saved');
+              }
+              else if (existingForm != null && data.state != null){
+                  existingForm.state = data.state;
+                  existingForm.save();
+                  console.log("updated");
+                  console.log(existingForm);
               }
             })
             .catch(err => console.log(err))

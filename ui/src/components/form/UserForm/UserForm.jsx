@@ -116,12 +116,12 @@ export class UserForms extends Component {
 
 
   componentDidMount() {
-    this.mountStep();
     this.setCurrentStep();
     this.socketConnect();
     this.socketListenToServer();
     this.setKeyID(this.getPendingFormID());
     this.socketEmitData();
+    this.mountStep();
     this.handleLoadSchema();
   }
 
