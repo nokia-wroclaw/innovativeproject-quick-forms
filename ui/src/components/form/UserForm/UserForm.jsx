@@ -12,7 +12,7 @@ export class UserForms extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 1,
+      step: 1, // get from db
       formScheme: {},
       filledFormNumberID: -1,
       socketResponse: '',
@@ -38,6 +38,16 @@ export class UserForms extends Component {
     if (step >= 1) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step - 1).toString());
   };
 
+  getStepFromDatabase = () => {
+    GetForm(this.getPendingFormID(), '/api/forms/pendingForms/whole-key').then(res => console.log(res));
+    GetForm(this.getPendingFormID(), '/api/forms/filled-forms/whole-key').then(res => console.log(res));
+  }
+
+  mountStep = () => {
+    this.getStepFromDatabase();
+  }
+
+
   socketEmitData = () => {
     if (
         window.localStorage.getItem(`data_${this.getPendingFormID()}`) &&
@@ -49,6 +59,7 @@ export class UserForms extends Component {
         templateID: this.state.formID,
         userID: this.state.formScheme.userID,
         filledFormNumberID: this.getPendingFormID(),
+        state: '2'
       };
 
       socketConnection.emit(
@@ -78,7 +89,7 @@ export class UserForms extends Component {
       window.localStorage.setItem(`step_${this.getPendingFormID()}`, this.state.step.toString());
     }
 
-    //after removing page does't switch step immediately
+    //after removing page doesn't switch step immediately
     this.setState({
       step: parseInt(window.localStorage.getItem(`step_${this.getPendingFormID()}`), 10),
     });
@@ -105,6 +116,7 @@ export class UserForms extends Component {
 
 
   componentDidMount() {
+    this.mountStep();
     this.setCurrentStep();
     this.socketConnect();
     this.socketListenToServer();
@@ -130,13 +142,13 @@ export class UserForms extends Component {
     });
   };
 
-
   handleSubmitSocket = async ({formData}) => {
-    const pendingFormData = {
+    const pendingFormData = { // this is unecessary?
       dataForm: formData,
       templateID: this.state.formID,
       userID: this.state.formScheme.userID,
       filledFormNumberID: this.getPendingFormID(),
+      state: '2'
     };
 
   //  await this.promisedSetState({pendingFormData: pendingFormData});

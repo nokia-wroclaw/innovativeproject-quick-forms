@@ -35,7 +35,7 @@ router.get('/single/:id', async (req, res) => {
     res.status(404).json({ message: err });
   }
 });
-
+//change to fragment-key
 router.get('/key/:id', async (req, res) => {
 
   const keyLength = 4
@@ -45,6 +45,16 @@ router.get('/key/:id', async (req, res) => {
   try{
     const forms = await pendingForm.findOne({filledFormNumberID :  { "$regex": `${req.params.id}$` },
       function (err, docs) {}})
+    if (forms !== null)
+      res.status(200).json(forms);
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+})
+
+router.get('/whole-key/:id', async (req, res) => {
+  try{
+    const forms = await pendingForm.findOne({filledFormNumberID :  req.params.id })
     if (forms !== null)
       res.status(200).json(forms);
   } catch (err) {
