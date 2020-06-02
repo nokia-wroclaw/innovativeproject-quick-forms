@@ -3,6 +3,8 @@ module.exports = {
     app.post('/api/sockets/formEmit', (req, res) => {
       const data = Object.values(req.body)[0];
       const status = Object.values(req.body)[1];
+      console.log(data)
+      console.log(status)
       const socketio = req.app.get('io');
       if (status === 'accepted') {
         socketio.to(socketDictionary[data]).emit('pendingFormID', { message: status });

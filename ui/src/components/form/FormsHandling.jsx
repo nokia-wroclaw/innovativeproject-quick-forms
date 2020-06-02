@@ -33,12 +33,10 @@ export const RejectPending = (pendingFormNumberID, formID) => {
     pendingFormNumberID: pendingFormNumberID,
     status: 'rejected',
   };
-  axios
+ return axios
     .post('/api/sockets/formEmit', message)
     .then(r => console.log(r))
     .catch(error => console.log(error));
-
-  return DeletePending(formID);
 };
 
 export const AcceptForm = (pendingFormNumberID, formID) => {
@@ -47,17 +45,30 @@ export const AcceptForm = (pendingFormNumberID, formID) => {
     status: 'accepted',
   };
 
+  const changeFormStatus = (obj) => {
+    let res = Object.assign({}, obj);
+    res.state = '3'
+    return res;
+  }
+
   const RemoveOldId = (obj, prop) => {
     let res = Object.assign({}, obj);
     delete res[prop];
     return res;
   };
 
+  const handleFormChange = (obj, prop) => {
+    let res = Object.assign({}, obj);
+    res = changeFormStatus(res);
+    res = RemoveOldId(res, prop);
+    return res;
+  }
+
   return new Promise((resolve, reject) => {
     GetForm(formID, '/api/forms/pendingforms/single')
       .then(formToSave =>
         SubmitForm(
-          RemoveOldId(formToSave.data, '_id'),
+          handleFormChange(formToSave.data, '_id'),
           '/api/forms/filled-forms/'
         )
       )

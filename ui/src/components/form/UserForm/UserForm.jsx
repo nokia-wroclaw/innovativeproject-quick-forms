@@ -26,6 +26,8 @@ export class UserForms extends Component {
       step: step + 1,
     });
     if (step <= 3) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step + 1).toString());
+    if (step >= 2)
+      this.socketEmitUpdate();
   };
 
   previousStep = () => {
@@ -36,6 +38,7 @@ export class UserForms extends Component {
       });
     }
     if (step >= 1) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step - 1).toString());
+    this.socketEmitUpdate();
   };
 
   getStepFromDatabase = () => {
@@ -47,12 +50,27 @@ export class UserForms extends Component {
     this.getStepFromDatabase();
   }
 
+  socketEmitUpdate = () => {
+    const command = 'update'
+    const stepToUpdate = window.localStorage.getItem(`step_${this.getPendingFormID()}`)
+    const pendingFormData = {
+      filledFormNumberID: this.getPendingFormID(),
+      state: stepToUpdate
+    }
+
+    socketConnection.emit(
+        `pendingFormID`,
+        pendingFormData
+    );
+  }
 
   socketEmitData = () => {
     if (
         window.localStorage.getItem(`data_${this.getPendingFormID()}`) &&
         window.localStorage.getItem(`step_${this.getPendingFormID()}`) < 3
     ) {
+
+      const command = 'create'
 
       const pendingFormData = {
         dataForm:  JSON.parse(window.localStorage.getItem(`data_${this.getPendingFormID()}`)),
@@ -121,7 +139,7 @@ export class UserForms extends Component {
     this.socketListenToServer();
     this.setKeyID(this.getPendingFormID());
     this.socketEmitData();
-    this.mountStep();
+    //this.mountStep();
     this.handleLoadSchema();
   }
 
