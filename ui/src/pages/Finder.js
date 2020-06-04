@@ -15,25 +15,27 @@ function Finder()  {
       const toSearch = input.toLowerCase();
         axios.get(`/api/forms/pendingForms/key/${toSearch}`)
             .then(res => {
+                console.log(res)
                 if (res !== null){
                     setOutputStatus(status.PENDING);
                     if (res.data.templateID && res.data.filledFormNumberID)
                     redirect(res.data.templateID, res.data.filledFormNumberID);
                 }
-                console.log(res.status)
-            })
-            .catch(err => {
-                setOutputStatus(status.DOESNOTEXIST);
-                console.log(err)
-            });
-
-        axios.get(`/api/forms/filled-forms/key/${toSearch}`)
-            .then(res => {
-                if (res !== null){
-                    setOutput(res);
-                    setOutputStatus(status.ACCEPTED);
-                    if (res.data.templateID && res.data.filledFormNumberID)
-                        redirect(res.data.templateID, res.data.filledFormNumberID);
+                else {
+                    axios.get(`/api/forms/filled-forms/key/${toSearch}`)
+                        .then(res => {
+                            if (res !== null){
+                                setOutput(res);
+                                setOutputStatus(status.ACCEPTED);
+                                if (res.data.templateID && res.data.filledFormNumberID)
+                                    redirect(res.data.templateID, res.data.filledFormNumberID);
+                            }
+                            console.log(res.status)
+                        })
+                        .catch(err => {
+                            setOutputStatus(status.DOESNOTEXIST);
+                            console.log(err)
+                        });
                 }
                 console.log(res.status)
             })

@@ -36,6 +36,7 @@ router.get('/key/:id', async (req, res) => {
       function (err, docs) {}})
     if (forms !== null)
       res.status(200).json(forms);
+    else res.sendStatus(404)
   } catch (err) {
     res.status(404).json({ message: err });
   }

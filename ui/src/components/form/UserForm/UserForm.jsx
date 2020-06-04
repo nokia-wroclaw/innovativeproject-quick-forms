@@ -26,8 +26,8 @@ export class UserForms extends Component {
       step: step + 1,
     });
     if (step <= 3) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step + 1).toString());
-    if (step >= 2)
-      this.socketEmitUpdate();
+     if (step >= 2)
+       this.socketEmitStatusUpdate();
   };
 
   previousStep = () => {
@@ -38,19 +38,44 @@ export class UserForms extends Component {
       });
     }
     if (step >= 1) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step - 1).toString());
-    this.socketEmitUpdate();
+    this.socketEmitStatusUpdate();
   };
 
-  getStepFromDatabase = () => {
-    GetForm(this.getPendingFormID(), '/api/forms/pendingForms/whole-key').then(res => console.log(res));
-    GetForm(this.getPendingFormID(), '/api/forms/filled-forms/whole-key').then(res => console.log(res));
+  getStepFromLocalstorage = () => {
+    const stepData = window.localStorage.getItem(`step_${this.getPendingFormID()}`);
+    if (stepData !== null)
+      this.setState({step: stepData});
+  }
+
+  setCurrentStepFromDatabase = () => {
+    GetForm(this.getPendingFormID(), '/api/forms/pendingForms/whole-key')
+        .then(res => {
+          console.log(res)
+          if (res.data.state !== null){
+            console.log(res.data.state)
+             window.localStorage.setItem(`step_${this.getPendingFormID()}`, res.data.state);
+             this.setState({step: parseInt(res.data.state)});
+          }
+
+          else {
+            GetForm(this.getPendingFormID(), '/api/forms/filled-forms/whole-key')
+                .then(res => {
+                  if (res.data.state !== null){
+                    console.log(res.data.state)
+                    window.localStorage.setItem(`step_${this.getPendingFormID()}`, res.data.state);
+                    this.setState({step: parseInt(res.data.state)});
+                  }
+                }).catch(e => console.log(e));
+          }
+        }).catch(e => console.log(e));
   }
 
   mountStep = () => {
-    this.getStepFromDatabase();
+    //this.setCurrentStepFromDatabase();
+    this.setCurrentStepFromLocalstorage();
   }
 
-  socketEmitUpdate = () => {
+  socketEmitStatusUpdate = () => {
     const command = 'update'
     const stepToUpdate = window.localStorage.getItem(`step_${this.getPendingFormID()}`)
     const pendingFormData = {
@@ -64,7 +89,7 @@ export class UserForms extends Component {
     );
   }
 
-  socketEmitData = () => {
+  socketEmitDataOnSubmit = () => {
     if (
         window.localStorage.getItem(`data_${this.getPendingFormID()}`) &&
         window.localStorage.getItem(`step_${this.getPendingFormID()}`) < 3
@@ -77,7 +102,7 @@ export class UserForms extends Component {
         templateID: this.state.formID,
         userID: this.state.formScheme.userID,
         filledFormNumberID: this.getPendingFormID(),
-        state: '2'
+        state: 2
       };
 
       socketConnection.emit(
@@ -102,7 +127,7 @@ export class UserForms extends Component {
     return urlData[urlData.length - 1];
   }
 
-  setCurrentStep = () => {
+  setCurrentStepFromLocalstorage = () => {
     if (!window.localStorage.getItem(`step_${this.getPendingFormID()}`)) {
       window.localStorage.setItem(`step_${this.getPendingFormID()}`, this.state.step.toString());
     }
@@ -134,12 +159,12 @@ export class UserForms extends Component {
 
 
   componentDidMount() {
-    this.setCurrentStep();
+    console.log("MOUNTED")
     this.socketConnect();
     this.socketListenToServer();
-    this.setKeyID(this.getPendingFormID());
-    this.socketEmitData();
-    //this.mountStep();
+    this.setState({filledFormNumberID: this.getPendingFormID()});
+    this.mountStep();
+    this.socketEmitStatusUpdate();
     this.handleLoadSchema();
   }
 
@@ -170,8 +195,8 @@ export class UserForms extends Component {
     };
 
   //  await this.promisedSetState({pendingFormData: pendingFormData});
-    this.setFormData(pendingFormData.dataForm)
-    this.socketEmitData();
+    this.setFormData(pendingFormData.dataForm) //formData?
+    this.socketEmitDataOnSubmit();
   };
 
   render() {
