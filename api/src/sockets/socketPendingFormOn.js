@@ -7,6 +7,59 @@ module.exports = {
   start: (io, socketDictionary) => {
     io.on('connection', socket => {
       socket.on('pendingFormID', data => {
+          const commands = {
+              CREATE: 'create',
+              UPDATE: 'update',
+              EDIT: 'edit',
+              REJECT: 'reject',
+              ACCEPT: 'accept'
+          }
+
+          const receivedCommand = data[0];
+          const receivedData = data[1];
+          const receivedID = data[1].filledFormNumberID;
+
+          switch(receivedCommand){
+              case commands.CREATE:
+                  //createForm()
+                  break;
+              case commands.UPDATE:
+                  //updateForm()
+                  break;
+              case commands.EDIT:
+                  //editForm()
+                  break;
+              case commands.REJECT:
+                  //rejectForm()
+                  break;
+              case commands.ACCEPT:
+                  //acceptForm()
+                  break;
+          }
+
+          const createForm = () => {
+                new pendingForm(receivedData).save().then(r => console.log(r))
+          }
+
+          const editForm = () => {
+              pendingForm.findOne({filledFormNumberID : receivedID})
+                  .then(foundForm => {
+                      foundForm.state = receivedData.state;
+                      foundForm.dataForm = receivedData.dataForm;
+                      foundForm.save();
+                  })
+          }
+
+          const updateForm = () => {
+              pendingForm.findOne({filledFormNumberID : receivedID})
+                  .then(foundForm => {
+                      foundForm.state = receivedData.state;
+                      foundForm.save();
+                  })
+          }
+
+
+
         const pendingFormNumberID = data.filledFormNumberID;
         socketDictionary[pendingFormNumberID] = socket.id;
 

@@ -18,7 +18,16 @@ export class UserForms extends Component {
       socketResponse: '',
       formID: ''
     };
+
+    const command = {
+      CREATE: 'create',
+      UPDATE: 'update',
+      SUBMIT: 'submit',
+      REJECT: 'reject',
+      ACCEPT: 'accept'
+    }
   }
+
 //`step_${this.getPendingFormID()}`
   nextStep = () => {
     const {step} = this.state;
@@ -111,6 +120,8 @@ export class UserForms extends Component {
       );
     }
   }
+
+
 
   socketListenToServer = () => {
     socketConnection.on('pendingFormID', data => {
