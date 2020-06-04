@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -12,7 +12,7 @@ const types = [
   {
     value: 'number',
     label: 'number',
-  }
+  },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function TextBox(props) {   
+function TextBox(props) {
   const classes = useStyles();
   const [typeValue, setTypeValue] = React.useState('string');
 
@@ -42,14 +42,14 @@ function TextBox(props) {
     const displayName = event.target[0].value;
     const inputType = typeValue;
     const codeName = displayName.replace(/\s/g, '');
-    
+
     const control = {
-      id:0,
+      id: 0,
       isRequired: true,
-      propName: codeName, 
+      propName: codeName,
       data: {
         type: inputType,
-        title: displayName
+        title: displayName,
       },
     };
     props.Add(control);
@@ -60,8 +60,17 @@ function TextBox(props) {
   };
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit} noValidate autoComplete="off">
-      <TextField className={classes.textfield} id="outlined-basic" label="Field name" variant="outlined" />
+    <form
+      className={classes.root}
+      onSubmit={handleSubmit}
+      noValidate
+      autoComplete="off">
+      <TextField
+        className={classes.textfield}
+        id="outlined-basic"
+        label="Field name"
+        variant="outlined"
+      />
       <TextField
         className={classes.textfield}
         id="type"
@@ -73,19 +82,22 @@ function TextBox(props) {
           native: true,
         }}
         helperText="Please select the type of the field"
-        variant="outlined"
-      >
+        variant="outlined">
         {types.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </TextField>
-      <Button className={classes.submit} type="submit" variant="contained" color="primary">
+      <Button
+        className={classes.submit}
+        type="submit"
+        variant="contained"
+        color="primary">
         Add
       </Button>
     </form>
-  )
+  );
 }
 
 export default TextBox;

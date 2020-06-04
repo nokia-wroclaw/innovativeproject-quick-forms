@@ -109,7 +109,11 @@ class PendingForms extends React.Component {
         display="flex"
         justifyContent="center"
         alignItems="center">
-        {obj.filledFormNumberID.toString().slice(-4).toUpperCase()}:&nbsp;
+        {obj.filledFormNumberID
+          .toString()
+          .slice(-4)
+          .toUpperCase()}
+        :&nbsp;
         <div className={classes.someButtons}>
           <Button
             className={classes.button}

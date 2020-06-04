@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Container} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import CardMedia from '@material-ui/core/CardMedia';
-import UserFormIDGenerator from "./UserFormIDGenerator";
+import UserFormIDGenerator from './UserFormIDGenerator';
 const useStyles = makeStyles(() => ({
   Container: {
     margin: 'auto',
@@ -42,8 +42,8 @@ export function EndStep(props) {
 
   const toNewForm = event => {
     event.preventDefault();
-    window.location.replace(`${UserFormIDGenerator()}`)
-  }
+    window.location.replace(`${UserFormIDGenerator()}`);
+  };
 
   return (
     <React.Fragment>
@@ -63,11 +63,11 @@ export function EndStep(props) {
           Navigate to homepage
         </Button>
         <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            type="submit"
-            onClick={toNewForm}>
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          type="submit"
+          onClick={toNewForm}>
           New Form
         </Button>
       </Container>

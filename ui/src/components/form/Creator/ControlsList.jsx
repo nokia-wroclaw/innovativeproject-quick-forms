@@ -98,7 +98,11 @@ export default function ControlList(params) {
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader component="div" id="nested-list-subheader" disableSticky>
-          <Typography className={classes.title} variant="h4" component="h3" color="textPrimary">
+          <Typography
+            className={classes.title}
+            variant="h4"
+            component="h3"
+            color="textPrimary">
             Form items
           </Typography>
         </ListSubheader>

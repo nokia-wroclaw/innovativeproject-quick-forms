@@ -16,16 +16,20 @@ export class UserForms extends Component {
       formScheme: {},
       filledFormNumberID: -1,
       socketResponse: '',
-      formID: ''
+      formID: '',
     };
   }
-//`step_${this.getPendingFormID()}`
+  //`step_${this.getPendingFormID()}`
   nextStep = () => {
     const {step} = this.state;
     this.setState({
       step: step + 1,
     });
-    if (step <= 3) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step + 1).toString());
+    if (step <= 3)
+      window.localStorage.setItem(
+        `step_${this.getPendingFormID()}`,
+        (step + 1).toString()
+      );
   };
 
   previousStep = () => {
@@ -35,74 +39,84 @@ export class UserForms extends Component {
         step: 1,
       });
     }
-    if (step >= 1) window.localStorage.setItem(`step_${this.getPendingFormID()}`, (step - 1).toString());
+    if (step >= 1)
+      window.localStorage.setItem(
+        `step_${this.getPendingFormID()}`,
+        (step - 1).toString()
+      );
   };
 
   socketEmitData = () => {
     if (
-        window.localStorage.getItem(`data_${this.getPendingFormID()}`) &&
-        window.localStorage.getItem(`step_${this.getPendingFormID()}`) < 3
+      window.localStorage.getItem(`data_${this.getPendingFormID()}`) &&
+      window.localStorage.getItem(`step_${this.getPendingFormID()}`) < 3
     ) {
-
       const pendingFormData = {
-        dataForm:  JSON.parse(window.localStorage.getItem(`data_${this.getPendingFormID()}`)),
+        dataForm: JSON.parse(
+          window.localStorage.getItem(`data_${this.getPendingFormID()}`)
+        ),
         templateID: this.state.formID,
         userID: this.state.formScheme.userID,
         filledFormNumberID: this.getPendingFormID(),
       };
 
-      socketConnection.emit(
-          `pendingFormID`,
-           pendingFormData
-      );
+      socketConnection.emit(`pendingFormID`, pendingFormData);
     }
-  }
+  };
 
   socketListenToServer = () => {
     socketConnection.on('pendingFormID', data => {
       this.setState({socketResponse: data});
     });
-  }
+  };
 
   socketConnect = () => {
     socketConnection = io.connect(ENDPOINT);
-  }
+  };
 
   getPendingFormID = () => {
     const urlData = window.location.href.split('/');
     return urlData[urlData.length - 1];
-  }
+  };
 
   setCurrentStep = () => {
     if (!window.localStorage.getItem(`step_${this.getPendingFormID()}`)) {
-      window.localStorage.setItem(`step_${this.getPendingFormID()}`, this.state.step.toString());
+      window.localStorage.setItem(
+        `step_${this.getPendingFormID()}`,
+        this.state.step.toString()
+      );
     }
 
     //after removing page does't switch step immediately
     this.setState({
-      step: parseInt(window.localStorage.getItem(`step_${this.getPendingFormID()}`), 10),
+      step: parseInt(
+        window.localStorage.getItem(`step_${this.getPendingFormID()}`),
+        10
+      ),
     });
-  }
+  };
 
-  setFormData = (data) => {
-    window.localStorage.setItem(`data_${this.getPendingFormID()}`, JSON.stringify(data));
-  }
+  setFormData = data => {
+    window.localStorage.setItem(
+      `data_${this.getPendingFormID()}`,
+      JSON.stringify(data)
+    );
+  };
 
-  setKeyID = (id) => {
-      this.setState({filledFormNumberID: id});
-  }
+  setKeyID = id => {
+    this.setState({filledFormNumberID: id});
+  };
 
   handleLoadSchema = () => {
     const id = this.props.match.params.formID;
     this.setState({formID: id});
     this.LoadSchema(id).then(r => console.log(r));
-}
+  };
 
   LoadSchema = formID =>
-      GetForm(formID, '/api/forms/templates/')
-          .then(response => this.setState({formScheme: response.data}))
-          .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
-
+    GetForm(formID, '/api/forms/templates/')
+      .then(response => this.setState({formScheme: response.data}))
+      .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
 
   componentDidMount() {
     this.setCurrentStep();
@@ -130,7 +144,6 @@ export class UserForms extends Component {
     });
   };
 
-
   handleSubmitSocket = async ({formData}) => {
     const pendingFormData = {
       dataForm: formData,
@@ -139,13 +152,16 @@ export class UserForms extends Component {
       filledFormNumberID: this.getPendingFormID(),
     };
 
-  //  await this.promisedSetState({pendingFormData: pendingFormData});
-    this.setFormData(pendingFormData.dataForm)
+    //  await this.promisedSetState({pendingFormData: pendingFormData});
+    this.setFormData(pendingFormData.dataForm);
     this.socketEmitData();
   };
 
   render() {
-    const step = parseInt(window.localStorage.getItem(`step_${this.getPendingFormID()}`), 10);
+    const step = parseInt(
+      window.localStorage.getItem(`step_${this.getPendingFormID()}`),
+      10
+    );
     const {
       formScheme,
       formID,

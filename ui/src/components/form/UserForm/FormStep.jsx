@@ -16,7 +16,9 @@ export function FormStep(props) {
   };
 
   useEffect(() => {
-    const data = JSON.parse(window.localStorage.getItem(`data_${props.getPendingFormID()}`));
+    const data = JSON.parse(
+      window.localStorage.getItem(`data_${props.getPendingFormID()}`)
+    );
     console.log(data);
     if (data != null) {
       setFormData(data);

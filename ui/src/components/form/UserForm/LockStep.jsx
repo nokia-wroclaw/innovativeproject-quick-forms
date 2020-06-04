@@ -7,7 +7,11 @@ export class LockStep extends Component {
     return (
       <Container ms={8}>
         <Typography variant={'h3'} align={'center'}>
-          Your submission number: {(this.props.filledFormNumberID).toString().slice(-4).toUpperCase()}
+          Your submission number:{' '}
+          {this.props.filledFormNumberID
+            .toString()
+            .slice(-4)
+            .toUpperCase()}
         </Typography>
         <LinearProgress color="secondary" />
       </Container>
