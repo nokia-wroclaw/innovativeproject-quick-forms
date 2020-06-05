@@ -62,7 +62,6 @@ module.exports = {
                   break;
           }
 
-
           const updateForm = () => {
               pendingForm.findOne({filledFormNumberID : receivedID})
                   .then(foundForm => {
@@ -72,23 +71,6 @@ module.exports = {
                   .catch(err => console.log(err))
           }
 
-        //const pendingFormNumberID = data.filledFormNumberID;
-       // socketDictionary[pendingFormNumberID] = socket.id;
-
-        // pendingForm.findOne({ filledFormNumberID : pendingFormNumberID } ) //in mount step
-        //     .then(existingForm => {
-        //       if (existingForm == null && data.dataForm != null && data.templateID != null
-        //           && data.userID != null && data.state != null){
-        //          new pendingForm(data).save().then(r => {
-        //          });
-        //          console.log('saved');
-        //       }
-        //        if (existingForm != null && data.state != null){
-        //           existingForm.state = data.state;
-        //           existingForm.save();
-        //       }
-        //     })
-        //     .catch(err => console.log(err))
       });
     });
   }

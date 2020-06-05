@@ -42,6 +42,15 @@ router.get('/key/:id', async (req, res) => {
   }
 })
 
+router.get('/whole-key/:id', async (req, res) => {
+  try{
+    const forms = await filledForm.findOne({filledFormNumberID :  req.params.id })
+    res.status(200).json(forms);
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+})
+
 router.get('/:id', async (req, res) => {
   try {
     const forms = await filledForm.find({ templateID: req.params.id });

@@ -6,9 +6,10 @@ import {Theme as MuiTheme} from 'rjsf-material-ui';
 const Form = withTheme(MuiTheme);
 
 export function FormStep(props) {
-  const [formData, setFormData] = useState({});
+  const [currentFormData, setCurrentFormData] = useState({});
 
   const nextStep = formData => {
+    setCurrentFormData(formData);
     console.log(formData);
     props.socketEmitStatusEditOnSubmit(formData);
     props.nextStep();
@@ -16,10 +17,10 @@ export function FormStep(props) {
   };
 
   useEffect(() => {
-    const data = JSON.parse(window.localStorage.getItem(`data_${props.getPendingFormID()}`));
+    const data = currentFormData
     console.log(data);
-    if (data != null) {
-      setFormData(data);
+    if (data !== null && data !== undefined) {
+      setCurrentFormData(data);
     }
   }, []);
 
@@ -27,7 +28,7 @@ export function FormStep(props) {
     <Container ms={8}>
       <Form
         schema={props.values.formScheme}
-        formData={formData}
+        formData={currentFormData}
         onSubmit={nextStep}>
         <Button variant="contained" color="primary" type="submit">
           Submit

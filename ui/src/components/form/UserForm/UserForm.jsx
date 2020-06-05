@@ -5,6 +5,8 @@ import FormStep from './FormStep';
 import EndStep from './EndStep';
 import {LockStep} from './LockStep';
 import {COMMAND_STATES, FORM_STATES} from './StatesEnum';
+import axios from 'axios'
+
 let socketConnection;
 const ENDPOINT = process.env.REACT_APP_SERVER_API_URL;
 
@@ -12,7 +14,7 @@ export class UserForms extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 1, // get from db
+      step: 1,
       formScheme: {},
       filledFormNumberID: -1,
       socketResponse: '',
@@ -31,18 +33,14 @@ export class UserForms extends Component {
 
   previousStep = () => {
     const {step} = this.state;
-    if (step > 0) {
       this.setState({
         step: 1,
       });
-    }
   };
-
 
   socketEmitStatusUpdate = () => {
     const {step} = this.state;
     const command = COMMAND_STATES.UPDATE;
-    console.log(command);
     const stepToUpdate = step + 1
 
     const pendingFormData = {
@@ -91,14 +89,6 @@ export class UserForms extends Component {
     )
   }
 
-  socketEmitStatusReject = () => {
-
-  }
-
-  socketEmitHandler = (command) => {
-    //switch here
-  }
-
   socketListenToServer = () => {
     socketConnection.on('pendingFormID', data => {
       this.setState({socketResponse: data});
@@ -121,8 +111,7 @@ export class UserForms extends Component {
 
   handleLoadSchema = () => {
     const id = this.props.match.params.formID;
-    console.log(id)
-    this.setState({formID: id});
+    this.setState({templateID: id});
     this.LoadSchema(id).then(r => console.log(r));
 }
 
@@ -133,8 +122,46 @@ export class UserForms extends Component {
           })
           .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
 
-  mountStep = () => {
-    this.socketEmitStatusCreate()
+  mountStep =  () => {
+    //checkIfFormIsInState
+    this.getFormFromDatabase(this.getPendingFormID())
+        .then(res => this.mountDataFromDatabase(res));
+    this.socketEmitStatusCreate();
+  }
+
+  getFormFromDatabase = async (filledFormID) => {
+    try{ //`api/forms/pendingforms/whole-key/${filledFormID}`
+      let response = await axios({
+        method:'get',
+        url:`api/forms/pendingforms/whole-key/${filledFormID}`,
+        baseURL:'/'
+      });
+
+      if (response.data === null){
+        response = await axios({
+          method:'get',
+          url:`api/forms/filled-forms/whole-key/${filledFormID}`,
+          baseURL:'/'
+        });
+      }
+
+      if (response.data !== null){
+        await this.mountDataFromDatabase(response)
+      }
+
+      return response;
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
+  mountDataFromDatabase = async (response) => {
+    if (response.data !== null){
+      if (response.data.state !== null)
+        await this.setState({step: response.data.state})
+      if (response.data.dataForm !== null)
+        await this.setState({formData: response.data.dataForm})
+    }
   }
 
   componentDidMount() {
@@ -161,8 +188,6 @@ export class UserForms extends Component {
       });
     });
   };
-
-
 
   render() {
     const step = this.state.step;

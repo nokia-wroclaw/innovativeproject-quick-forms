@@ -17,4 +17,6 @@ test('Form is edited on edit command only when it existed before', () => {
     //if foundForm === null here
 });
 
+test('Form executes only specified commands', () => {
 
+});
