@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Form = require('../models/filledForm.model');
 const pendingForm = mongoose.model('pendingforms', Form);
+const filledForm = mongoose.model('filledforms', Form);
 
 module.exports = {
   start: (io, socketDictionary) => {
@@ -26,8 +27,13 @@ module.exports = {
               pendingForm.findOne({filledFormNumberID: receivedID})
                   .then(foundForm => {
                       if (foundForm === null)
-                          new pendingForm(receivedData).save().then(r => console.log(r));
-                  })
+                          filledForm.findOne({filledFormNumberID: receivedID})
+                              .then(foundForm => {
+                                  if(foundForm === null){
+                                      new pendingForm(receivedData).save().then(r => console.log(r));
+                                  }
+                              }).catch(err => console.log(err))
+                  }).catch(err => console.log(err))
           }
 
           const editForm = () => {
@@ -44,33 +50,28 @@ module.exports = {
                   .catch(err => console.log(err));
           }
 
+          const updateFormStep = () => {
+              pendingForm.findOne({filledFormNumberID : receivedID})
+                  .then(foundForm => {
+                      if (foundForm !== null){
+                          foundForm.state = receivedData.state;
+                          foundForm.save();
+                      }
+                  })
+                  .catch(err => console.log(err))
+          }
+
           switch(receivedCommand){
               case commands.CREATE:
                   createForm()
                   break;
               case commands.UPDATE:
-                  //updateForm()
+                  updateFormStep()
                   break;
               case commands.EDIT:
                   editForm()
                   break;
-              case commands.REJECT:
-                  //rejectForm()
-                  break;
-              case commands.ACCEPT:
-                  //acceptForm()
-                  break;
           }
-
-          const updateForm = () => {
-              pendingForm.findOne({filledFormNumberID : receivedID})
-                  .then(foundForm => {
-                      foundForm.state = receivedData.state;
-                      foundForm.save();
-                  })
-                  .catch(err => console.log(err))
-          }
-
       });
     });
   }

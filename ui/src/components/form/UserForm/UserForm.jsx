@@ -29,23 +29,21 @@ export class UserForms extends Component {
     this.setState({
       step: step + 1,
     });
+    this.socketEmitStatusUpdate(step + 1)
   };
 
   previousStep = () => {
-    const {step} = this.state;
       this.setState({
         step: 1,
       });
+      this.socketEmitStatusUpdate(1)
   };
 
-  socketEmitStatusUpdate = () => {
-    const {step} = this.state;
+  socketEmitStatusUpdate = (step) => {
     const command = COMMAND_STATES.UPDATE;
-    const stepToUpdate = step + 1
-
     const pendingFormData = {
       filledFormNumberID: this.getPendingFormID(),
-      state: stepToUpdate
+      state: step
     }
 
     const dataToSend = [command, pendingFormData];
@@ -123,14 +121,13 @@ export class UserForms extends Component {
           .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
 
   mountStep =  () => {
-    //checkIfFormIsInState
     this.getFormFromDatabase(this.getPendingFormID())
-        .then(res => this.mountDataFromDatabase(res));
-    this.socketEmitStatusCreate();
+        .then(res => console.log(res));
+      this.socketEmitStatusCreate();
   }
 
   getFormFromDatabase = async (filledFormID) => {
-    try{ //`api/forms/pendingforms/whole-key/${filledFormID}`
+    try{
       let response = await axios({
         method:'get',
         url:`api/forms/pendingforms/whole-key/${filledFormID}`,
@@ -146,7 +143,7 @@ export class UserForms extends Component {
       }
 
       if (response.data !== null){
-        await this.mountDataFromDatabase(response)
+         this.mountDataFromDatabase(response)
       }
 
       return response;
@@ -155,21 +152,26 @@ export class UserForms extends Component {
     }
   }
 
-  mountDataFromDatabase = async (response) => {
+  mountDataFromDatabase =  (response) => {
     if (response.data !== null){
-      if (response.data.state !== null)
-        await this.setState({step: response.data.state})
-      if (response.data.dataForm !== null)
-        await this.setState({formData: response.data.dataForm})
+      if (response.data.state !== null) {
+        console.log(response.data.state)
+         this.setState({step: response.data.state})
+      }
+      if (response.data.dataForm !== null){
+         this.setState({formData: response.data.dataForm})
+      }
     }
   }
 
   componentDidMount() {
+    console.log(this.state.step);
     this.handleLoadSchema();
     this.socketConnect();
     this.socketListenToServer();
     this.setState({filledFormNumberID: this.getPendingFormID()});
     this.mountStep();
+    console.log(this.state.step);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

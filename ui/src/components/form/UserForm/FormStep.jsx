@@ -9,8 +9,8 @@ export function FormStep(props) {
   const [currentFormData, setCurrentFormData] = useState({});
 
   const nextStep = formData => {
-    setCurrentFormData(formData);
-    console.log(formData);
+    setCurrentFormData(formData.formData);
+    console.log(formData.formData);
     props.socketEmitStatusEditOnSubmit(formData);
     props.nextStep();
     return false;
