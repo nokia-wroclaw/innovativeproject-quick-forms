@@ -26,8 +26,22 @@ module.exports = {
               pendingForm.findOne({filledFormNumberID: receivedID})
                   .then(foundForm => {
                       if (foundForm === null)
-                          new pendingForm(receivedData).save().then(r => console.log(r))
+                          new pendingForm(receivedData).save().then(r => console.log(r));
                   })
+          }
+
+          const editForm = () => {
+              pendingForm.findOne({filledFormNumberID : receivedID})
+                  .then(foundForm => {
+                      if (foundForm !== null){
+                          foundForm.templateID = receivedData.templateID;
+                          foundForm.userID = receivedData.userID;
+                          foundForm.state = receivedData.state;
+                          foundForm.dataForm = receivedData.dataForm;
+                          foundForm.save();
+                      }
+                  })
+                  .catch(err => console.log(err));
           }
 
           switch(receivedCommand){
@@ -38,7 +52,7 @@ module.exports = {
                   //updateForm()
                   break;
               case commands.EDIT:
-                  //editForm()
+                  editForm()
                   break;
               case commands.REJECT:
                   //rejectForm()
@@ -48,17 +62,6 @@ module.exports = {
                   break;
           }
 
-
-
-          const editForm = () => {
-              pendingForm.findOne({filledFormNumberID : receivedID})
-                  .then(foundForm => {
-                      foundForm.state = receivedData.state;
-                      foundForm.dataForm = receivedData.dataForm;
-                      foundForm.save();
-                  })
-                  .catch(err => console.log(err))
-          }
 
           const updateForm = () => {
               pendingForm.findOne({filledFormNumberID : receivedID})
