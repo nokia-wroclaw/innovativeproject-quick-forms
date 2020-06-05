@@ -23,7 +23,6 @@ export class UserForms extends Component {
     };
   }
 
-//`step_${this.getPendingFormID()}`
   nextStep = () => {
     const {step} = this.state;
     this.setState({
@@ -155,7 +154,6 @@ export class UserForms extends Component {
   mountDataFromDatabase =  (response) => {
     if (response.data !== null){
       if (response.data.state !== null) {
-        console.log(response.data.state)
          this.setState({step: response.data.state})
       }
       if (response.data.dataForm !== null){
@@ -165,13 +163,11 @@ export class UserForms extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.step);
     this.handleLoadSchema();
     this.socketConnect();
     this.socketListenToServer();
     this.setState({filledFormNumberID: this.getPendingFormID()});
     this.mountStep();
-    console.log(this.state.step);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

@@ -10,9 +10,7 @@ module.exports = {
           const commands = {
               CREATE: 'create',
               UPDATE: 'update',
-              EDIT:   'edit',
-              REJECT: 'reject',
-              ACCEPT: 'accept'
+              EDIT:   'edit'
           }
 
           const receivedCommand = data[0];
@@ -23,26 +21,12 @@ module.exports = {
           console.log(receivedData);
           console.log(receivedID);
 
-          // const createForm = () => {
-          //     pendingForm.findOne({filledFormNumberID: receivedID})
-          //         .then(foundForm => {
-          //             if (foundForm === null)
-          //                 filledForm.findOne({filledFormNumberID: receivedID})
-          //                     .then(foundForm => {
-          //                         if(foundForm === null){
-          //                             new pendingForm(receivedData).save().then(r => console.log(r));
-          //                         }
-          //                     }).catch(err => console.log(err))
-          //         }).catch(err => console.log(err))
-          // }
-
           const createForm = async () => {
               try {
                   let foundForm = await pendingForm.findOne({filledFormNumberID: receivedID})
 
-                  if (foundForm === null){
+                  if (foundForm === null)
                       foundForm = await filledForm.findOne({filledFormNumberID: receivedID})
-                  }
 
                   if (foundForm === null)
                       await new pendingForm(receivedData).save();
