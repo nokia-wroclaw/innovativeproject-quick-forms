@@ -26,7 +26,6 @@ router.get('/single/:id', async (req, res) => {
 });
 //change to fragment-key
 router.get('/key/:id', async (req, res) => {
-  console.log('hello')
   const keyLength = 4
   if (req.params.id.length !== keyLength){
     res.sendStatus(422);
@@ -34,9 +33,7 @@ router.get('/key/:id', async (req, res) => {
   try{
     const forms = await filledForm.findOne({filledFormNumberID :  { "$regex": `${req.params.id}$` },
       function (err, docs) {}})
-    if (forms !== null)
       res.status(200).json(forms);
-    else res.sendStatus(404)
   } catch (err) {
     res.status(404).json({ message: err });
   }

@@ -12,38 +12,44 @@ function Finder()  {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      const toSearch = input.toLowerCase();
-        axios.get(`/api/forms/pendingForms/key/${toSearch}`)
-            .then(res => {
-                console.log(res)
-                if (res !== null){
-                    setOutputStatus(status.PENDING);
-                    if (res.data.templateID && res.data.filledFormNumberID)
-                    redirect(res.data.templateID, res.data.filledFormNumberID);
-                }
-                else {
-                    axios.get(`/api/forms/filled-forms/key/${toSearch}`)
-                        .then(res => {
-                            if (res !== null){
-                                setOutput(res);
-                                setOutputStatus(status.ACCEPTED);
-                                if (res.data.templateID && res.data.filledFormNumberID)
-                                    redirect(res.data.templateID, res.data.filledFormNumberID);
-                            }
-                            console.log(res.status)
-                        })
-                        .catch(err => {
-                            setOutputStatus(status.DOESNOTEXIST);
-                            console.log(err)
-                        });
-                }
-                console.log(res.status)
-            })
-            .catch(err => {
-                setOutputStatus(status.DOESNOTEXIST);
-                console.log(err)
+      const key = input.toLowerCase();
+      findFormInDatabase(key).then(response => {
+          console.log(response)
+          if (response.templateID !== undefined && response.filledFormNumberID !== undefined)
+            redirect(response.templateID, response.filledFormNumberID)
+      });
+    }
+
+    const redirect = (templateID, formID) => {
+        window.open(`userform/${templateID}/${formID}`)
+    }
+
+    const findFormInDatabase = async (key) => {
+        try{
+            let response = await axios({
+                method:'get',
+                url:`api/forms/pendingforms/key/${key}`,
+                baseURL:'/'
             });
-      console.log(outputStatus)
+
+            console.log(response.data);
+
+            if (response.data === null) {
+                response = await axios({
+                    method:'get',
+                    url:`api/forms/filled-forms/key/${key}`,
+                    baseURL:'/'
+                });
+            }
+
+            if (response.data !== null){
+                return response.data
+            }
+             console.log(response.data);
+
+        }catch (err) {
+            console.log(err)
+        }
 
     }
 
@@ -73,9 +79,6 @@ function Finder()  {
        return message
     }
 
-    const redirect = (templateID, formID) => {
-        window.open(`userform/${templateID}/${formID}`)
-    }
 
     return(
         <Container>
