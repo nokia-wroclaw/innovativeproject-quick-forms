@@ -23,17 +23,35 @@ module.exports = {
           console.log(receivedData);
           console.log(receivedID);
 
-          const createForm = () => {
-              pendingForm.findOne({filledFormNumberID: receivedID})
-                  .then(foundForm => {
-                      if (foundForm === null)
-                          filledForm.findOne({filledFormNumberID: receivedID})
-                              .then(foundForm => {
-                                  if(foundForm === null){
-                                      new pendingForm(receivedData).save().then(r => console.log(r));
-                                  }
-                              }).catch(err => console.log(err))
-                  }).catch(err => console.log(err))
+          // const createForm = () => {
+          //     pendingForm.findOne({filledFormNumberID: receivedID})
+          //         .then(foundForm => {
+          //             if (foundForm === null)
+          //                 filledForm.findOne({filledFormNumberID: receivedID})
+          //                     .then(foundForm => {
+          //                         if(foundForm === null){
+          //                             new pendingForm(receivedData).save().then(r => console.log(r));
+          //                         }
+          //                     }).catch(err => console.log(err))
+          //         }).catch(err => console.log(err))
+          // }
+
+          const createForm = async () => {
+              try {
+                  let foundForm = await pendingForm.findOne({filledFormNumberID: receivedID})
+
+                  if (foundForm === null){
+                      foundForm = await filledForm.findOne({filledFormNumberID: receivedID})
+                  }
+
+                  if (foundForm === null)
+                      await new pendingForm(receivedData).save();
+
+                  console.log(foundForm);
+              } catch (err) {
+                  console.log("error", err);
+              }
+
           }
 
           const editForm = () => {
