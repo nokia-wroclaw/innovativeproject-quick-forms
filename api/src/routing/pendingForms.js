@@ -56,9 +56,7 @@ router.get('/key/:id', async (req, res) => {
 router.get('/whole-key/:id', async (req, res) => {
   try{
     const forms = await pendingForm.findOne({filledFormNumberID :  req.params.id })
-    if (forms !== null)
       res.status(200).json(forms);
-    else res.sendStatus(404);
   } catch (err) {
     res.status(404).json({ message: err });
   }

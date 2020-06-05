@@ -4,7 +4,7 @@ import {GetForm} from '../FormsHandling';
 import FormStep from './FormStep';
 import EndStep from './EndStep';
 import {LockStep} from './LockStep';
-
+import {COMMAND_STATES, FORM_STATES} from './StatesEnum';
 let socketConnection;
 const ENDPOINT = process.env.REACT_APP_SERVER_API_URL;
 
@@ -16,16 +16,9 @@ export class UserForms extends Component {
       formScheme: {},
       filledFormNumberID: -1,
       socketResponse: '',
-      formID: ''
+      formID: '', //template ID
+      formData: {}
     };
-
-    const command = {
-      CREATE: 'create',
-      UPDATE: 'update',
-      SUBMIT: 'submit',
-      REJECT: 'reject',
-      ACCEPT: 'accept'
-    }
   }
 
 //`step_${this.getPendingFormID()}`
@@ -59,52 +52,76 @@ export class UserForms extends Component {
   setCurrentStepFromDatabase = () => {
     GetForm(this.getPendingFormID(), '/api/forms/pendingForms/whole-key')
         .then(res => {
-          console.log(res)
-          if (res.data.state !== null){
-            console.log(res.data.state)
-             window.localStorage.setItem(`step_${this.getPendingFormID()}`, res.data.state);
+          console.log("hiiiiiiiiiii")
+             //window.localStorage.setItem(`step_${this.getPendingFormID()}`, res.data.state);
              this.setState({step: parseInt(res.data.state)});
-          }
-
-          else {
-            GetForm(this.getPendingFormID(), '/api/forms/filled-forms/whole-key')
-                .then(res => {
-                  if (res.data.state !== null){
-                    console.log(res.data.state)
-                    window.localStorage.setItem(`step_${this.getPendingFormID()}`, res.data.state);
-                    this.setState({step: parseInt(res.data.state)});
-                  }
-                }).catch(e => console.log(e));
-          }
         }).catch(e => console.log(e));
   }
 
-  mountStep = () => {
-    //this.setCurrentStepFromDatabase();
-    this.setCurrentStepFromLocalstorage();
-  }
-
   socketEmitStatusUpdate = () => {
-    const command = 'update'
-    const stepToUpdate = window.localStorage.getItem(`step_${this.getPendingFormID()}`)
+    const command = COMMAND_STATES.UPDATE;
+    console.log(command);
+    const stepToUpdate = window.localStorage.getItem(`step_${this.getPendingFormID()}`) // change to react state
+
     const pendingFormData = {
       filledFormNumberID: this.getPendingFormID(),
       state: stepToUpdate
     }
 
+    const dataToSend = [command, pendingFormData];
+
     socketConnection.emit(
         `pendingFormID`,
-        pendingFormData
+        dataToSend
     );
   }
+
+  handleFormDataChange =  async ({formData}) => {
+    await this.promisedSetState({dataForm: formData});
+  }
+
+  socketEmitStatusEdit = ({formData}) => { // add async and await promised set state or do generic function on that
+    const command = COMMAND_STATES.EDIT;
+    const data = {
+      filledFormNumberID: this.state.filledFormNumberID,
+      state: this.state.step,
+      dataForm : formData
+    }
+    const dataToSend = [command, data]
+    socketConnection.emit(
+        'pendingFormID',
+        dataToSend
+    )
+  }
+
+  socketEmitStatusCreate = () => {
+    const command = COMMAND_STATES.CREATE;
+    const data = {
+      filledFormNumberID: this.getPendingFormID(),
+      state: FORM_STATES.TOBEFILLED
+    }
+
+    const dataToSend = [command, data]
+    socketConnection.emit(
+        'pendingFormID',
+        dataToSend
+    )
+  }
+
+  socketEmitStatusReject = () => {
+
+  }
+
+  socketEmitHandler = (command) => {
+    //switch here
+  }
+
 
   socketEmitDataOnSubmit = () => {
     if (
         window.localStorage.getItem(`data_${this.getPendingFormID()}`) &&
         window.localStorage.getItem(`step_${this.getPendingFormID()}`) < 3
     ) {
-
-      const command = 'create'
 
       const pendingFormData = {
         dataForm:  JSON.parse(window.localStorage.getItem(`data_${this.getPendingFormID()}`)),
@@ -121,8 +138,6 @@ export class UserForms extends Component {
     }
   }
 
-
-
   socketListenToServer = () => {
     socketConnection.on('pendingFormID', data => {
       this.setState({socketResponse: data});
@@ -136,6 +151,11 @@ export class UserForms extends Component {
   getPendingFormID = () => {
     const urlData = window.location.href.split('/');
     return urlData[urlData.length - 1];
+  }
+
+  getTemplateFormID = () => {
+    const urlData = window.location.href.split('/');
+    return urlData[urlData.length - 2];
   }
 
   setCurrentStepFromLocalstorage = () => {
@@ -159,24 +179,36 @@ export class UserForms extends Component {
 
   handleLoadSchema = () => {
     const id = this.props.match.params.formID;
+    console.log(id)
     this.setState({formID: id});
     this.LoadSchema(id).then(r => console.log(r));
 }
 
   LoadSchema = formID =>
       GetForm(formID, '/api/forms/templates/')
-          .then(response => this.setState({formScheme: response.data}))
+          .then(response => {
+            this.setState({userID: response.data.userID})
+            this.setState({formScheme: response.data})
+          })
           .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
 
+  mountStep = () => {
+    //1. check if data already exist in state if not => 2()
+    this.socketEmitStatusCreate()
+    //this.setCurrentStepFromLocalstorage();
+  }
 
   componentDidMount() {
     console.log("MOUNTED")
+    this.handleLoadSchema();
     this.socketConnect();
     this.socketListenToServer();
     this.setState({filledFormNumberID: this.getPendingFormID()});
     this.mountStep();
-    this.socketEmitStatusUpdate();
-    this.handleLoadSchema();
+    console.log(this.state.formScheme)
+    console.log(this.state.formScheme.userID)
+    // this.socketEmitStatusUpdate();
+
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -211,7 +243,7 @@ export class UserForms extends Component {
   };
 
   render() {
-    const step = parseInt(window.localStorage.getItem(`step_${this.getPendingFormID()}`), 10);
+    const step = this.state.step;
     const {
       formScheme,
       formID,
