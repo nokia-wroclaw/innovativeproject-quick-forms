@@ -167,8 +167,6 @@ export class UserForms extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    //COMMAND_STATES.ACCEPT
-    //COMMAND_STATES.REJECT
     if (this.state.socketResponse.message === COMMAND_STATES.REJECT) {
       this.setState({socketResponse: ''}, this.previousStep());
       this.getFormFromDatabase(this.getPendingFormID())
