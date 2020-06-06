@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {COMMAND_STATES} from "./UserForm/StatesEnum";
 
 export const GetForm = (formID, url) => {
   return axios.get(`${url}/${formID}`);
@@ -31,7 +32,7 @@ export const DeleteFilled = formID => {
 export const RejectPending = (pendingFormNumberID, formID) => {
   const message = {
     pendingFormNumberID: pendingFormNumberID,
-    status: 'rejected',
+    status: COMMAND_STATES.REJECT,
   };
  return axios
     .post('/api/sockets/formEmit', message)
@@ -42,7 +43,7 @@ export const RejectPending = (pendingFormNumberID, formID) => {
 export const AcceptForm = (pendingFormNumberID, formID) => {
   const message = {
     pendingFormNumberID: pendingFormNumberID,
-    status: 'accepted',
+    status: COMMAND_STATES.ACCEPT,
   };
 
   const changeFormStatus = (obj) => {

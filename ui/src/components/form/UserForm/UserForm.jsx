@@ -167,13 +167,15 @@ export class UserForms extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.socketResponse.message === 'rejected') {
+    //COMMAND_STATES.ACCEPT
+    //COMMAND_STATES.REJECT
+    if (this.state.socketResponse.message === COMMAND_STATES.REJECT) {
       this.setState({socketResponse: ''}, this.previousStep());
       this.getFormFromDatabase(this.getPendingFormID())
           .then(res => this.mountDataFromDatabase(res));
     }
 
-    if (this.state.socketResponse.message === 'accepted')
+    if (this.state.socketResponse.message === COMMAND_STATES.ACCEPT)
       this.setState({socketResponse: ''}, this.nextStep());
   }
 
