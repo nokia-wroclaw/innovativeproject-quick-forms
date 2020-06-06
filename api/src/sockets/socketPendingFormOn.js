@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Form = require('../models/filledForm.model');
+const createForm = require('./socketFormCommandCreate');
+const editForm = require('./socketFormCommandEdit');
+const updateFormStep = require('./socketFormCommandUpdate');
 const pendingForm = mongoose.model('pendingforms', Form);
 const filledForm = mongoose.model('filledforms', Form);
 
@@ -21,57 +24,15 @@ module.exports = {
           console.log(receivedData);
           console.log(receivedID);
 
-          const createForm = async () => {
-              try {
-                  let foundForm = await pendingForm.findOne({filledFormNumberID: receivedID})
-
-                  if (foundForm === null)
-                      foundForm = await filledForm.findOne({filledFormNumberID: receivedID})
-
-                  if (foundForm === null)
-                      await new pendingForm(receivedData).save();
-
-                  console.log(foundForm);
-              } catch (err) {
-                  console.log("error", err);
-              }
-
-          }
-
-          const editForm = () => {
-              pendingForm.findOne({filledFormNumberID : receivedID})
-                  .then(foundForm => {
-                      if (foundForm !== null){
-                          foundForm.templateID = receivedData.templateID;
-                          foundForm.userID = receivedData.userID;
-                          foundForm.state = receivedData.state;
-                          foundForm.dataForm = receivedData.dataForm;
-                          foundForm.save();
-                      }
-                  })
-                  .catch(err => console.log(err));
-          }
-
-          const updateFormStep = () => {
-              pendingForm.findOne({filledFormNumberID : receivedID})
-                  .then(foundForm => {
-                      if (foundForm !== null){
-                          foundForm.state = receivedData.state;
-                          foundForm.save();
-                      }
-                  })
-                  .catch(err => console.log(err))
-          }
-
           switch(receivedCommand){
               case commands.CREATE:
-                  createForm()
+                  createForm(receivedData, receivedID)
                   break;
               case commands.UPDATE:
-                  updateFormStep()
+                  updateFormStep(receivedData, receivedID)
                   break;
               case commands.EDIT:
-                  editForm()
+                  editForm(receivedData, receivedID)
                   break;
           }
       });
