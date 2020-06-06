@@ -39,13 +39,18 @@ router.get('/single/:id', async (req, res) => {
 router.get('/key/:id', async (req, res) => {
 
   const keyLength = 4
-  if (req.params.id.length !== keyLength){
-    res.sendStatus(422);
-  }
   try{
-    const forms = await pendingForm.findOne({filledFormNumberID :  { "$regex": `${req.params.id}$` },
-      function (err, docs) {}})
+    if (req.params.id.length !== keyLength){
+      const message = "invalid input"
+      res.status(200).json(message);
+    }
+
+    else {
+      const forms = await pendingForm.findOne({filledFormNumberID :  { "$regex": `${req.params.id}$` },
+        function (err, docs) {}})
       res.status(200).json(forms);
+    }
+
   } catch (err) {
     res.status(404).json({ message: err });
   }

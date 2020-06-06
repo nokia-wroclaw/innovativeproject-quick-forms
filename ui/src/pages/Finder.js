@@ -15,7 +15,17 @@ function Finder()  {
       findFormInDatabase(key).then(response => {
           console.log(response)
           console.log(response.state)
-          setOutputStatus(response.state);
+
+          if (response === 'invalid input'){
+              setOutputStatus(status.DOESNOTEXIST);
+          }
+
+          // temporary - it means that if form was not submitted it does not exist for us
+          else if (response.state === status.TOBEFILLED && response.templateID === undefined){
+              setOutputStatus(status.CREATEDNOTSUBMITTED);
+          }
+
+          else setOutputStatus(response.state);
 
           if (response.templateID !== undefined && response.filledFormNumberID !== undefined){
               redirect(response.templateID, response.filledFormNumberID)
@@ -23,6 +33,11 @@ function Finder()  {
 
       });
     }
+
+    const handleResponseState = () => {
+
+    }
+
     const redirect = (templateID, formID) => {
         window.open(`userform/${templateID}/${formID}`)
     }
@@ -60,7 +75,8 @@ function Finder()  {
         TOBEFILLED: 1,
         PENDING: 2,
         ACCEPTED: 3,
-        DOESNOTEXIST: 4
+        DOESNOTEXIST: 4,
+        CREATEDNOTSUBMITTED: 5
     }
 
     const handleStatus = () => {
@@ -77,6 +93,9 @@ function Finder()  {
                 break;
             case status.DOESNOTEXIST:
                 message = "Form does not exist"
+                break;
+            case status.CREATEDNOTSUBMITTED:
+                message = "Form was created but not submitted. Please submit or create another form"
                 break;
         }
         console.log(message)
