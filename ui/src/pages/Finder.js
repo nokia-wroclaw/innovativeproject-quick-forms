@@ -7,7 +7,6 @@ import axios from 'axios'
 
 function Finder()  {
   const [input, setInput] = useState("");
-    const [output, setOutput] = useState({});
   const [outputStatus, setOutputStatus] = useState(0);
 
     const handleSubmit = (e) => {
@@ -15,11 +14,15 @@ function Finder()  {
       const key = input.toLowerCase();
       findFormInDatabase(key).then(response => {
           console.log(response)
-          if (response.templateID !== undefined && response.filledFormNumberID !== undefined)
-            redirect(response.templateID, response.filledFormNumberID)
+          console.log(response.state)
+          setOutputStatus(response.state);
+
+          if (response.templateID !== undefined && response.filledFormNumberID !== undefined){
+              redirect(response.templateID, response.filledFormNumberID)
+          }
+
       });
     }
-
     const redirect = (templateID, formID) => {
         window.open(`userform/${templateID}/${formID}`)
     }
@@ -76,6 +79,7 @@ function Finder()  {
                 message = "Form does not exist"
                 break;
         }
+        console.log(message)
        return message
     }
 
