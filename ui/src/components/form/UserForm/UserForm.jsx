@@ -28,14 +28,14 @@ export class UserForms extends Component {
     this.setState({
       step: step + 1,
     });
-    this.socketEmitStatusUpdate(step + 1)
+    this.socketEmitStatusUpdate(step + 1);
   };
 
   previousStep = () => {
       this.setState({
         step: 1,
       });
-      this.socketEmitStatusUpdate(1)
+      this.socketEmitStatusUpdate(1);
   };
 
   socketEmitStatusUpdate = (step) => {
@@ -121,7 +121,10 @@ export class UserForms extends Component {
 
   mountStep =  () => {
     this.getFormFromDatabase(this.getPendingFormID())
-        .then(res => console.log(res));
+        .then(res => {
+          console.log(res.data.dataForm)
+          console.log(res)
+        });
       this.socketEmitStatusCreate();
   }
 
@@ -173,6 +176,7 @@ export class UserForms extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.socketResponse.message === 'rejected') {
       this.setState({socketResponse: ''}, this.previousStep());
+      this.getFormFromDatabase(this.getPendingFormID());
     }
 
     if (this.state.socketResponse.message === 'accepted')
@@ -191,22 +195,22 @@ export class UserForms extends Component {
     const step = this.state.step;
     const {
       formScheme,
-      formID,
-      formDefault,
+      templateID,
       filledFormNumberID,
-      pendingFormData,
+      formData,
     } = this.state;
     const values = {
       formScheme,
-      formID,
-      formDefault,
+      templateID,
       filledFormNumberID,
-      pendingFormData,
+      formData,
+      step
     };
     switch (step) {
       case 1:
         return (
           <FormStep
+              setFormState={formData => {this.setState(formData)}}
             socketEmitStatusEditOnSubmit={this.socketEmitStatusEditOnSubmit}
             nextStep={this.nextStep}
             values={values}
