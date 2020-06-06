@@ -121,10 +121,7 @@ export class UserForms extends Component {
 
   mountStep =  () => {
     this.getFormFromDatabase(this.getPendingFormID())
-        .then(res => {
-          console.log(res.data.dataForm)
-          console.log(res)
-        });
+        .then(res => this.mountDataFromDatabase(res));
       this.socketEmitStatusCreate();
   }
 
@@ -142,10 +139,6 @@ export class UserForms extends Component {
           url:`api/forms/filled-forms/whole-key/${filledFormID}`,
           baseURL:'/'
         });
-      }
-
-      if (response.data !== null){
-         this.mountDataFromDatabase(response)
       }
 
       return response;
@@ -176,7 +169,8 @@ export class UserForms extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.socketResponse.message === 'rejected') {
       this.setState({socketResponse: ''}, this.previousStep());
-      this.getFormFromDatabase(this.getPendingFormID());
+      this.getFormFromDatabase(this.getPendingFormID())
+          .then(res => this.mountDataFromDatabase(res));
     }
 
     if (this.state.socketResponse.message === 'accepted')
