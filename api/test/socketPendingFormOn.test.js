@@ -68,18 +68,9 @@ afterEach((done) => {
 
 
 
-test('Form is created on create command', () => {
-    const socketDictionary = {};
-    socketPendingFormOn.start(app, ioBack, socketDictionary)
-    const command = 'create'
-    const data = {
-        filledFormNumberID: 'aaa-bbb-ccc-ddd',
-        state: 1
-    }
-
-    const dataToSend = [command, data]
-    ioServer.emit('pendingFormID', dataToSend)
-})
+// test('Form is created on create command', () => {
+//
+// })
 //
 // test('Form is created on create command only when it did not exist before', () => {
 //    // expect(socketPendingFormOn.start());
