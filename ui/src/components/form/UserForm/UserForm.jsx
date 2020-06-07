@@ -212,7 +212,8 @@ export class UserForms extends Component {
           />
         );
       case 2:
-        return <LockStep filledFormNumberID={this.state.filledFormNumberID} />;
+        return <LockStep filledFormNumberID={this.state.filledFormNumberID}
+                         previousStep={this.previousStep}/>;
       case 3:
         return <EndStep templateID={this.state.formID} />;
       default:
