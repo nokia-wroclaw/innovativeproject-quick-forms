@@ -21,8 +21,6 @@ module.exports = {
           const receivedID = data[1].filledFormNumberID;
           socketDictionary[receivedID] = socket.id;
           console.log(receivedCommand);
-          console.log(receivedData);
-          console.log(receivedID);
 
           switch(receivedCommand){
               case commands.CREATE:

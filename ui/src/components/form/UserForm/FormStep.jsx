@@ -14,6 +14,7 @@ export function FormStep(props) {
 
   return (
     <Container ms={8}>
+      <h1>{props.feedbackOnReject}</h1>
       <Form
         schema={props.values.formScheme}
         formData={props.values.formData}

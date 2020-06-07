@@ -19,7 +19,8 @@ export class UserForms extends Component {
       filledFormNumberID: -1,
       socketResponse: '',
       templateID: '',
-      formData: {}
+      formData: {},
+      feedbackOnReject: ''
     };
   }
 
@@ -63,7 +64,7 @@ export class UserForms extends Component {
       state: FORM_STATES.PENDING
     };
 
-    await this.promisedSetState({pendingFormData: pendingFormData});
+    await this.promisedSetState({pendingFormData: pendingFormData}); //check if it's needed
     const dataToSend = [command, pendingFormData];
 
     socketConnection.emit(
@@ -146,7 +147,9 @@ export class UserForms extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.socketResponse.message === COMMAND_STATES.REJECT) {
+      this.setState({feedbackOnReject: this.state.socketResponse.feedbackMessage})
       this.setState({socketResponse: ''})
+
       this.previousStep();
       GetFormFromDatabase(this.getPendingFormID())
           .then(res => this.mountDataFromDatabase(res));
@@ -186,6 +189,7 @@ export class UserForms extends Component {
       case 1:
         return (
           <FormStep
+              feedbackOnReject={this.state.feedbackOnReject}
             socketEmitStatusEditOnSubmit={this.socketEmitStatusEditOnSubmit}
             nextStep={this.nextStep}
             values={values}

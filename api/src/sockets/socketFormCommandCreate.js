@@ -14,7 +14,6 @@ const createForm = async (receivedData, receivedID) => {
         if (foundForm === null)
             await new pendingForm(receivedData).save();
 
-        console.log(foundForm);
     } catch (err) {
         console.log("error", err);
     }
