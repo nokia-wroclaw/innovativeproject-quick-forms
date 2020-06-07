@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '0px',
   },
   appbar: {
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
   },
   bar: {
     background: 'linear-gradient(to right, #2980b9, #6dd5fa)',
