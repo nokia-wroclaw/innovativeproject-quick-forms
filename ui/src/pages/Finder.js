@@ -15,27 +15,25 @@ function Finder()  {
       findFormInDatabase(key).then(response => {
           console.log(response)
           console.log(response.state)
-
-          if (response === 'invalid input'){
-              setOutputStatus(status.DOESNOTEXIST);
-          }
-
-          // temporary - it means that if form was not submitted it does not exist for us
-          else if (response.state === status.TOBEFILLED && response.templateID === undefined){
-              setOutputStatus(status.CREATEDNOTSUBMITTED);
-          }
-
-          else setOutputStatus(response.state);
-
-          if (response.templateID !== undefined && response.filledFormNumberID !== undefined){
-              redirect(response.templateID, response.filledFormNumberID)
-          }
-
+          handleResponseState(response)
       });
     }
 
-    const handleResponseState = () => {
+    const handleResponseState = (response) => {
+        if (response === 'invalid input'){
+            setOutputStatus(status.DOESNOTEXIST);
+        }
 
+        // temporary - it means that if form was not submitted it does not exist for us
+        else if (response.state === status.TOBEFILLED && response.templateID === undefined){
+            setOutputStatus(status.CREATEDNOTSUBMITTED);
+        }
+
+        else setOutputStatus(response.state);
+
+        if (response.templateID !== undefined && response.filledFormNumberID !== undefined){
+            redirect(response.templateID, response.filledFormNumberID)
+        }
     }
 
     const redirect = (templateID, formID) => {
@@ -97,6 +95,8 @@ function Finder()  {
             case status.CREATEDNOTSUBMITTED:
                 message = "Form was created but not submitted. Please submit or create another form"
                 break;
+            default:
+                message = "Type your form key to find a form"
         }
         console.log(message)
        return message

@@ -3,9 +3,6 @@ import UserFormIDGenerator from './UserFormIDGenerator';
 import {Redirect, withRouter} from 'react-router-dom';
 
 class UserFormRedirect extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     const userFormUUID = UserFormIDGenerator();
