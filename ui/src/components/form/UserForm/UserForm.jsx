@@ -5,7 +5,7 @@ import FormStep from './FormStep';
 import EndStep from './EndStep';
 import {LockStep} from './LockStep';
 import {COMMAND_STATES, FORM_STATES} from './StatesEnum';
-import axios from 'axios'
+import {GetFormFromDatabase} from "./GetFormFromDatabase";
 
 let socketConnection;
 const ENDPOINT = process.env.REACT_APP_SERVER_API_URL;
@@ -120,31 +120,9 @@ export class UserForms extends Component {
           .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
 
   mountStep =  () => {
-    this.getFormFromDatabase(this.getPendingFormID())
+    GetFormFromDatabase(this.getPendingFormID())
         .then(res => this.mountDataFromDatabase(res));
       this.socketEmitStatusCreate();
-  }
-
-  getFormFromDatabase = async (filledFormID) => {
-    try{
-      let response = await axios({
-        method:'get',
-        url:`api/forms/pendingforms/whole-key/${filledFormID}`,
-        baseURL:'/'
-      });
-
-      if (response.data === null){
-        response = await axios({
-          method:'get',
-          url:`api/forms/filled-forms/whole-key/${filledFormID}`,
-          baseURL:'/'
-        });
-      }
-
-      return response;
-    } catch (err) {
-      console.log("error", err);
-    }
   }
 
   mountDataFromDatabase =  (response) => {
@@ -169,7 +147,7 @@ export class UserForms extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.socketResponse.message === COMMAND_STATES.REJECT) {
       this.setState({socketResponse: ''}, this.previousStep());
-      this.getFormFromDatabase(this.getPendingFormID())
+      GetFormFromDatabase(this.getPendingFormID())
           .then(res => this.mountDataFromDatabase(res));
     }
 
