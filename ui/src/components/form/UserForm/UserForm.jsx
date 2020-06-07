@@ -146,13 +146,17 @@ export class UserForms extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.socketResponse.message === COMMAND_STATES.REJECT) {
-      this.setState({socketResponse: ''}, this.previousStep());
+      this.setState({socketResponse: ''})
+      this.previousStep();
       GetFormFromDatabase(this.getPendingFormID())
           .then(res => this.mountDataFromDatabase(res));
     }
 
-    if (this.state.socketResponse.message === COMMAND_STATES.ACCEPT)
-      this.setState({socketResponse: ''}, this.nextStep());
+    if (this.state.socketResponse.message === COMMAND_STATES.ACCEPT){
+      this.setState({socketResponse: ''})
+      this.nextStep();
+    }
+
   }
 
   promisedSetState = newState => {
@@ -182,7 +186,6 @@ export class UserForms extends Component {
       case 1:
         return (
           <FormStep
-              setFormState={formData => {this.setState(formData)}}
             socketEmitStatusEditOnSubmit={this.socketEmitStatusEditOnSubmit}
             nextStep={this.nextStep}
             values={values}
