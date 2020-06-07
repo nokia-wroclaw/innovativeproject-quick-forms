@@ -1,8 +1,6 @@
 const  {beforeAll, afterAll, afterEach, beforeEach} = require( "@jest/globals");
 const express = require('express');
 
-const socketPendingFormOn = require('../src/sockets/socketPendingFormOn');
-
 const io = require('socket.io-client');
 const http = require('http');
 const ioBack = require('socket.io');
