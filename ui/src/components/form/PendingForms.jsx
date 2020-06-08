@@ -17,6 +17,7 @@ import Popup from 'reactjs-popup';
 import {Container} from '@material-ui/core';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
+import RejectFormDialog from "./RejectFormDialog";
 
 const Form = withTheme(MuiTheme);
 
@@ -55,7 +56,8 @@ class PendingForms extends React.Component {
       filledForm: {},
       formSchema: {},
       isLoading: true,
-      open: false,
+      open: false, //change to preview open
+      rejectFormDialogOpen:false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -86,6 +88,14 @@ class PendingForms extends React.Component {
   }
   closeModal() {
     this.setState({open: false});
+  }
+
+  openRejectFormDialog = () => {
+    this.setState({rejectFormDialogOpen:true});
+  }
+
+  closeRejectFormDialog = () => {
+    this.setState({rejectFormDialogOpen:false});
   }
 
   getCurrentFormSchema = templateID => {
@@ -132,12 +142,14 @@ class PendingForms extends React.Component {
             onClick={() => this.handleAccept(obj.filledFormNumberID, obj._id)}>
             Accept
           </Button>
-          <Button
+          <Button // onClick gets obj.filledFormNu RejectFormDialog
             className={classes.button}
             variant="contained"
             color="primary"
             startIcon={<ClearIcon />}
-            onClick={() => this.handleReject(obj.filledFormNumberID, obj._id)}
+            onClick={() => {
+              this.openRejectFormDialog()
+            }}
             content={'More'}>
             Reject
           </Button>
@@ -182,6 +194,13 @@ class PendingForms extends React.Component {
             </Form>
           </Container>
         </Popup>
+
+        <RejectFormDialog
+                          rejectFormDialogOpen={this.state.rejectFormDialogOpen}
+                          openRejectFormDialog={this.openRejectFormDialog}
+                          closeRejectFormDialog={this.closeRejectFormDialog}
+                          handleReject={this.handleReject}
+        />
 
         <Button
           variant="contained"
