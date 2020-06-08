@@ -201,6 +201,7 @@ class PendingForms extends React.Component {
           </Container>
         </Popup>
 
+
         <RejectFormDialog
                           rejectFormDialogOpen={this.state.rejectFormDialogOpen}
                           openRejectFormDialog={this.openRejectFormDialog}

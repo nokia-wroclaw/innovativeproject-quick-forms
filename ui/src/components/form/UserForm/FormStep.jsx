@@ -10,6 +10,8 @@ export function FormStep(props) {
   const nextStep = (formData) => {
     props.socketEmitStatusEditOnSubmit(formData);
     props.nextStep();
+    console.log(props.values.formScheme)
+      console.log(props.values.formData)
   };
 
   return (

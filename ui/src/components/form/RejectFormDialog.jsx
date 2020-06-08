@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,10 +10,6 @@ import {RejectPending} from './FormsHandling'
 
 function RejectFormDialog(props) {
     const [inputData, setInputData] = useState("rejected");
-
-    const handleClickOpen = () => {
-        props.openRejectFormDialog()
-    };
 
     const handleClose = () => {
         props.closeRejectFormDialog();

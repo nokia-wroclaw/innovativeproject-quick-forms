@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Button, Container, Typography} from '@material-ui/core';
+import PendingFormPreview from "./PendingFormPreview";
 
 export class LockStep extends Component {
     previousStep = () => {
@@ -19,9 +20,11 @@ export class LockStep extends Component {
                   onClick={this.previousStep}>
               Back to edition
           </Button>
-          <Button variant="contained" color="primary" type="submit">
-              Preview
-          </Button>
+
+          <PendingFormPreview
+              formSchema={this.props.values.formScheme}
+            formData={this.props.values.formData}
+          />
       </Container>
     );
   }
