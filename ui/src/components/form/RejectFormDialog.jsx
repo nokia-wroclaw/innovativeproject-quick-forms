@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {RejectPending} from './FormsHandling'
 
 function RejectFormDialog(props) {
+    const [inputData, setInputData] = useState("rejected");
 
     const handleClickOpen = () => {
         props.openRejectFormDialog()
@@ -20,7 +21,7 @@ function RejectFormDialog(props) {
 
 
     const handleReject = () => {
-        RejectPending(props.pendingFormNumberID).then(r => console.log(r));
+        RejectPending(props.pendingFormNumberID, inputData).then(r => console.log(r));
     }
 
     return (
@@ -38,6 +39,7 @@ function RejectFormDialog(props) {
                         label="feedback"
                         type="text"
                         variant="outlined"
+                        onChange={e => setInputData(e.target.value)}
                         multiline
                         rows={3}
                         rowsMax={6}
