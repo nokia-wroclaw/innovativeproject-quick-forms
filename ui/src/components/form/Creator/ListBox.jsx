@@ -53,8 +53,6 @@ class ListBox extends Component {
     const ifRequired = this.state.isRequired;
     const codeName = arrayName.replace(/\s/g, '');
 
-    console.log(requiredRecords);
-
     const object = {
       propName: codeName,
       id: 0,

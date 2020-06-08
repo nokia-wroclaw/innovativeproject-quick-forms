@@ -158,17 +158,10 @@ class FormCreator extends Component {
       this.setState({listOfControls: [...this.state.listOfControls, object]});
     }
   };
-  namesOfControls = () => {
-    const names = [];
-    this.state.listOfControls.forEach(function(object) {
-      names.push({index: object.id, name: object.data.title});
-    });
-    return names;
-  };
 
-  removeControl(removedObject) {
+  removeControl(removedId) {
     const array = this.state.listOfControls.filter(function(obj) {
-      return obj.id !== removedObject.index;
+      return obj.id !== removedId;
     });
     this.setState({listOfControls: array});
   }
@@ -183,27 +176,30 @@ class FormCreator extends Component {
         console.log(`Nie udalo sie dodac schematu fromularza ${error}`)
       );
   };
+  reorderControls = newState => {
+    this.setState({listOfControls: newState});
+  };
+
+  parseToJson = (array) => {
+    const target = {};
+    array.forEach(function(object) {
+        target[object.propName] = object.data;
+    });
+    return target;
+  };
 
   render() {
-    const props = this.state.listOfControls.sort(function(a, b) {
-      return a.id - b.id || a.name.localeCompare(b.name);
-    });
+
     const formJson = {
       title: this.state.title,
       userID: this.state.userID,
       description: this.state.description,
       type: 'object',
       required: this.getRequired(this.state.listOfControls),
-      properties:
-        props.length !== 0
-          ? props.reduce((acc, obj) => ({...acc, [obj.propName]: obj.data}), {})
-          : {},
+      properties: this.parseToJson(this.state.listOfControls)
     };
 
-    const listOfNames = this.namesOfControls();
-
     const {classes} = this.props;
-
     return (
       <div>
         <NavBar title="CREATOR" />
@@ -231,9 +227,10 @@ class FormCreator extends Component {
             <Grid item sm={1} md={1}></Grid>
             <Grid className={classes.formItems} item sm={4} md={6} lg={4}>
               <ControlList
-                controls={listOfNames}
+                controls={this.state.listOfControls}
                 remove={this.removeControl}
                 formSchema={formJson}
+                reorder={this.reorderControls}
               />
             </Grid>
             <Grid item>

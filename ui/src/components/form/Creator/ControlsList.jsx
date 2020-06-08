@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
@@ -12,6 +12,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import LabelImportantTwoToneIcon from '@material-ui/icons/LabelImportantTwoTone';
 import Typography from '@material-ui/core/Typography';
+import {ReactSortable} from 'react-sortablejs';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,14 +51,14 @@ function SingleItem(params) {
   const classes = useStyles();
 
   const obj = params.obj;
-
+  
   return (
     <div>
       <ListItem key={obj.index} button onClick={handleClick}>
         <ListItemIcon>
           <LabelImportantTwoToneIcon />
         </ListItemIcon>
-        <ListItemText className={classes.listItemText} primary={obj.name} />
+        <ListItemText className={classes.listItemText} primary={obj.propName} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
@@ -65,7 +66,7 @@ function SingleItem(params) {
           <ListItem
             button
             className={classes.nested}
-            onClick={() => params.remove(obj)}>
+            onClick={() => params.remove(obj.id)}>
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
@@ -85,13 +86,8 @@ function SingleItem(params) {
 
 export default function ControlList(params) {
   const classes = useStyles();
-
-  const controlsArray = params.controls;
-
-  const items = controlsArray.map((obj, index) => (
-    <SingleItem obj={obj} remove={params.remove} />
-  ));
-
+  const controlsArray = params.controls
+  
   return (
     <List
       component="nav"
@@ -108,7 +104,13 @@ export default function ControlList(params) {
         </ListSubheader>
       }
       className={classes.root}>
-      {items}
+        <ReactSortable
+            list={controlsArray}
+            setList={newState => params.reorder(newState)}>
+          {controlsArray.map(object => (
+            <SingleItem key={object.id} obj={object} remove={params.remove} />
+          ))}
+        </ReactSortable>
     </List>
   );
 }

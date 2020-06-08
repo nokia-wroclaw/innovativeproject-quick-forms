@@ -26,7 +26,6 @@ const Form = withTheme(MuiTheme);
 
 export default function FormPreview(params) {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <Grid container className={classes.buttons} spacing={2}>
