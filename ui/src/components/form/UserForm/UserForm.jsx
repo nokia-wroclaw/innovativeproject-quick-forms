@@ -201,7 +201,8 @@ export class UserForms extends Component {
                          previousStep={this.previousStep}
                           values={values}/>;
       case 3:
-        return <EndStep templateID={this.state.formID} />;
+        return <EndStep templateID={this.state.formID}
+                        values={values}/>;
       default:
         return <h1>error </h1>;
     }

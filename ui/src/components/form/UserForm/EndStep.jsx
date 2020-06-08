@@ -3,6 +3,7 @@ import {Button, Container} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import CardMedia from '@material-ui/core/CardMedia';
 import UserFormIDGenerator from "./UserFormIDGenerator";
+import PendingFormPreview from "./PendingFormPreview";
 const useStyles = makeStyles(() => ({
   Container: {
     margin: 'auto',
@@ -70,6 +71,10 @@ export function EndStep(props) {
             onClick={toNewForm}>
           New Form
         </Button>
+        <PendingFormPreview
+            formSchema={props.values.formScheme}
+            formData={props.values.formData}
+        />
       </Container>
     </React.Fragment>
   );
