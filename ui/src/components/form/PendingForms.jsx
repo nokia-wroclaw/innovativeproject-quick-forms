@@ -57,7 +57,8 @@ class PendingForms extends React.Component {
       formSchema: {},
       isLoading: true,
       open: false, //change to preview open
-      rejectFormDialogOpen:false
+      rejectFormDialogOpen:false,
+      currentFormID:''
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -77,8 +78,8 @@ class PendingForms extends React.Component {
       );
   };
 
-  handleReject = (pendingFormNumberID, id) => {
-    RejectPending(pendingFormNumberID, id).then(res =>
+  handleReject = (pendingFormNumberID, message) => {
+    RejectPending(pendingFormNumberID, message).then(res =>
       this.props.reload(this.props.formID)
     );
   };
@@ -92,6 +93,10 @@ class PendingForms extends React.Component {
 
   openRejectFormDialog = () => {
     this.setState({rejectFormDialogOpen:true});
+  }
+
+  setCurrentFormID = (filledFormNumberID) => {
+    this.setState({currentFormID : filledFormNumberID})
   }
 
   closeRejectFormDialog = () => {
@@ -148,6 +153,7 @@ class PendingForms extends React.Component {
             color="primary"
             startIcon={<ClearIcon />}
             onClick={() => {
+              this.setCurrentFormID(obj.filledFormNumberID)
               this.openRejectFormDialog()
             }}
             content={'More'}>
@@ -199,7 +205,8 @@ class PendingForms extends React.Component {
                           rejectFormDialogOpen={this.state.rejectFormDialogOpen}
                           openRejectFormDialog={this.openRejectFormDialog}
                           closeRejectFormDialog={this.closeRejectFormDialog}
-                          handleReject={this.handleReject}
+                          RejectPending={this.handleReject}
+                          pendingFormNumberID={this.state.currentFormID}
         />
 
         <Button

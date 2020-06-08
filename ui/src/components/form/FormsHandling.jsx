@@ -33,7 +33,7 @@ export const RejectPending = (pendingFormNumberID, message) => {
   const data = {
     pendingFormNumberID: pendingFormNumberID,
     status: COMMAND_STATES.REJECT,
-    feedbackOnReject: 'hiiii'
+    feedbackOnReject: message
   };
 
 

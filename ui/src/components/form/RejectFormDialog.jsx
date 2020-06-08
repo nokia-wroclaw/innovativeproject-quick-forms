@@ -6,9 +6,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {RejectPending} from './FormsHandling'
 
 function RejectFormDialog(props) {
-    const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
         props.openRejectFormDialog()
@@ -18,12 +18,9 @@ function RejectFormDialog(props) {
         props.closeRejectFormDialog();
     };
 
-    useEffect(() => {
-        setOpen(props.open);
-    })
 
     const handleReject = () => {
-        props.handleReject()
+        RejectPending(props.pendingFormNumberID).then(r => console.log(r));
     }
 
     return (
@@ -51,7 +48,10 @@ function RejectFormDialog(props) {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={() => {
+                        handleClose()
+                        handleReject()
+                    }} color="primary">
                         Send
                     </Button>
                 </DialogActions>
