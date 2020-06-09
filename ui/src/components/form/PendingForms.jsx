@@ -172,6 +172,59 @@ class PendingForms extends React.Component {
     );
   }
 
+  _renderWithRejectAcceptBlocked(obj) {
+    const {classes} = this.props;
+    return (
+        <Box
+            m={3}
+            key={obj._id}
+            display="flex"
+            justifyContent="center"
+            alignItems="center">
+          {obj.filledFormNumberID.toString().slice(-4).toUpperCase()}:&nbsp;
+          <div className={classes.someButtons}>
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="default"
+                startIcon={<ChromeReaderModeIcon />}
+                onClick={() => {
+                  this.getCurrentFormSchema(obj.templateID);
+                  this.getCurrentFormData(obj._id);
+                  this.openModal();
+                }}>
+              Preview
+            </Button>
+
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                startIcon={<CheckIcon />}>
+              Accept
+            </Button>
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                startIcon={<ClearIcon />}
+                content={'More'}>
+              Reject
+            </Button>
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="secondary"
+                onClick={() => this.handleDelete(obj._id)}
+                startIcon={<DeleteIcon />}>
+              Delete
+            </Button>
+            <h1>User is editing</h1>
+          </div>
+        </Box>
+    );
+  }
+
   render() {
     const {classes} = this.props;
     return (
@@ -185,7 +238,8 @@ class PendingForms extends React.Component {
             For Approval:
           </Typography>
         </Box>
-        {this.props.listOfForms.map(i => this._render(i))}
+        {this.props.listOfForms.filter(i => i.state === 2).map(i => this._render(i))}
+        {this.props.listOfForms.filter(i => i.state === 1).map(i => this._renderWithRejectAcceptBlocked(i))}
 
         <Popup
           open={this.state.open}
