@@ -1,17 +1,19 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react';
 import TextBox from './TextBox';
 import Titles from './Titles';
 import Grid from '@material-ui/core/Grid';
 import ControlList from './ControlsList';
 import FormPreview from './FormPreview';
 import NavBar from './../../../pages/NavBar';
-import { Container } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import {Container} from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
-import { SubmitForm } from '../FormsHandling';
+import {SubmitForm} from '../FormsHandling';
+import ListBox from './ListBox';
 import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
+import SelectBox from './SelectBox';
 
 const jwtDecode = require('jwt-decode');
 
@@ -29,16 +31,19 @@ const useStyles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
-    [theme.breakpoints.down('1302')]: {//17903
+    [theme.breakpoints.down('1302')]: {
+      //17903
       display: 'block',
       justifyContent: 'right',
       alignContent: 'right',
       marginLeft: drawerWidth + 150,
     },
-    [theme.breakpoints.down('1170')]: {//17903
+    [theme.breakpoints.down('1170')]: {
+      //17903
       marginLeft: drawerWidth + 75,
     },
-    [theme.breakpoints.down('800')]: {//17903
+    [theme.breakpoints.down('800')]: {
+      //17903
       marginLeft: drawerWidth,
     },
   },
@@ -46,7 +51,7 @@ const useStyles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
-    alignItems: 'center,'
+    alignItems: 'center,',
   },
   formPreview: {
     justifyContent: 'center',
@@ -84,143 +89,175 @@ const useStyles = theme => ({
     overflow: 'auto',
   },
   divider: {
-    height: window.screen.availHeight * 0.6,//1359
+    height: window.screen.availHeight * 0.6, //1359
     [theme.breakpoints.down('1302')]: {
       display: 'none',
     },
   },
+  previewDivider: {
+    marginBottom: 15,
+  },
 });
 
 class FormCreator extends Component {
-    constructor(props) {
-        super(props);
-        this.state = this.initialState();
-        this.removeControl=this.removeControl.bind(this);
-        this.sumbitFormSchema= this.sumbitFormSchema.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = this.initialState();
+    this.removeControl = this.removeControl.bind(this);
+    this.sumbitFormSchema = this.sumbitFormSchema.bind(this);
+  }
+
+  initialState = () => ({
+    listOfControls: [],
+    requiredProps: [],
+    count: 0,
+    title: 'Form',
+    description: '',
+    userID: jwtDecode(Cookies.get('access_token')).user.id,
+  });
+
+  resetState = () => {
+    this.setState(this.initialState());
+  };
+
+  getRequired = () => {
+    const requiredNames = [];
+    this.state.listOfControls.forEach(function(object) {
+      if (object.isRequired) {
+        requiredNames.push(object.propName);
+      }
+    });
+    return requiredNames;
+  };
+
+  setTitles = object => {
+    this.setState({title: object.title});
+    this.setState({description: object.description});
+  };
+
+  addControl = object => {
+    const duplicate = this.state.listOfControls.find(obj => {
+      return obj.propName === object.propName;
+    });
+    if (duplicate !== undefined && duplicate.length !== 0) {
+      this.setState({
+        listOfControls: this.state.listOfControls.map(elem =>
+          elem.propName === object.propName
+            ? Object.assign(
+                {},
+                {
+                  id: elem.id,
+                  isRequired: elem.isRequired,
+                  propName: elem.propName,
+                },
+                {data: object.data}
+              )
+            : elem
+        ),
+      });
+    } else {
+      object.id = this.state.count;
+      this.setState({count: this.state.count + 1});
+      this.setState({listOfControls: [...this.state.listOfControls, object]});
     }
+  };
 
-    initialState = () => ({
-            listOfControls: [],
-            requiredProps: [],
-            count: 0,
-            title: "Form",
-            description: "",     
-            userID: jwtDecode(Cookies.get('access_token')).user.id
-        });
+  removeControl(removedId) {
+    const array = this.state.listOfControls.filter(function(obj) {
+      return obj.id !== removedId;
+    });
+    this.setState({listOfControls: array});
+  }
 
-    resetState = () => {
-        this.setState(this.initialState());
+  sumbitFormSchema = formSchema => {
+    SubmitForm(formSchema, `/api/forms/templates`)
+      .then(() => this.props.history.push('/dashboard'))
+      .catch(error => {
+        console.log(`Redirect sie nie udal ${error}`);
+      })
+      .catch(error =>
+        console.log(`Nie udalo sie dodac schematu fromularza ${error}`)
+      );
+  };
+  reorderControls = newState => {
+    this.setState({listOfControls: newState});
+  };
+
+  parseToJson = (array) => {
+    const target = {};
+    array.forEach(function(object) {
+        target[object.propName] = object.data;
+    });
+    return target;
+  };
+
+  render() {
+
+    const formJson = {
+      title: this.state.title,
+      userID: this.state.userID,
+      description: this.state.description,
+      type: 'object',
+      required: this.getRequired(this.state.listOfControls),
+      properties: this.parseToJson(this.state.listOfControls)
     };
 
-    getRequired = () => {
-        const requiredNames = [];
-        this.state.listOfControls.forEach(function (object) {
-            if (object.isRequired) {
-                requiredNames.push(object.propName);
-            };
-        });
-        return requiredNames;
-    };
-    
-    setTitles = (object) => {
-        this.setState({title: object.title});
-        this.setState({description: object.description});
-    };
-
-    addControl = (object) => {
-        const duplicate = this.state.listOfControls.find(obj => {
-            return obj.propName === object.propName
-          })
-        if(duplicate !== undefined && duplicate.length !== 0){
-            this.setState({
-                listOfControls: this.state.listOfControls
-                .map(elem => ((elem.propName === object.propName) ? Object.assign({}, {id:elem.id, isRequired: elem.isRequired, propName: elem.propName}, {data: object.data} ) : elem))
-              });
-              
-        }
-        else{
-            object.id = this.state.count;
-            this.setState({ count: this.state.count + 1 });
-            this.setState({ listOfControls: [...this.state.listOfControls, object] });
-        }
-    };
-    namesOfControls = () => {
-        const names = [];
-        this.state.listOfControls.forEach(function (object) {
-            names.push({ index: object.id, name: object.data.title });
-        });
-        return names;
-    }
-
-    removeControl(removedObject) {
-        const array = this.state.listOfControls.filter(function( obj ) {
-            return obj.id !== removedObject.index;
-        });
-        this.setState({ listOfControls: array });
-    }
-
-    sumbitFormSchema = (formSchema) => {
-        SubmitForm(formSchema, `/api/forms/templates`)
-        .then(() => this.props.history.push('/dashboard'))
-        .catch(error => {console.log(`Redirect sie nie udal ${error}`)})
-        .catch(error => console.log(`Nie udalo sie dodac schematu fromularza ${error}`));
-    };
-
-    render() {
-        const props = this.state.listOfControls.sort(function (a, b) {
-            return a.id - b.id || a.name.localeCompare(b.name);
-        });
-        const formJson =
-        {
-            title: this.state.title,
-            userID: this.state.userID,
-            description: this.state.description,
-            type: "object",
-            required: this.getRequired(this.state.listOfControls),
-            properties: props.length !== 0 ? props.reduce((acc, obj) => ({ ...acc, [obj.propName]: obj.data }), {}) : {}
-        };
-
-        const listOfNames = this.namesOfControls();
-
-        const {classes} = this.props;
-
-        return (
-          <div>
-            <NavBar title="CREATOR" />
-            <Container className={classes.root} maxWidth="xl">
-              <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                  paper: classes.drawerPaper,
-                }}  
-              >
-                <Typography className={classes.settingsTitle} variant="h4" component="h3" color="textPrimary">
-                  Settings
-                </Typography>
-                <Titles TitleSet={this.setTitles}/>
-                <TextBox className={classes.textbox} Add={this.addControl} />
-                <Divider />
-              </Drawer>
-              <Grid container className={classes.grid} alignContent="center">
-                <Grid item sm={1} md={1}></Grid>
-                <Grid className={classes.formItems} item sm={4} md={6} lg={4}>
-                  <ControlList controls={listOfNames} remove={this.removeControl} formSchema={formJson}/>
-                </Grid>
-                <Grid item>
-                  <Divider className={classes.divider} orientation="vertical" />
-                </Grid>
-                <Grid className={classes.formPreview} item sm={4} md={6} lg={4}>
-                  <Typography className={classes.previewTitle} variant="h4" component="h3" color="textPrimary">
-                    Preview
-                  </Typography>
-                  <FormPreview formSchema={formJson} reset={this.resetState} save={this.sumbitFormSchema} />
-                </Grid>
-              </Grid>
-            </Container>
-          </div>
-        )
-    }
+    const {classes} = this.props;
+    return (
+      <div>
+        <NavBar title="CREATOR" />
+        <Container className={classes.root} maxWidth="xl">
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}>
+            <Typography
+              className={classes.settingsTitle}
+              variant="h4"
+              component="h3"
+              color="textPrimary">
+              Settings
+            </Typography>
+            <Titles TitleSet={this.setTitles} />
+            <TextBox className={classes.textbox} Add={this.addControl} />
+            <ListBox Add={this.addControl} />
+            <SelectBox Add={this.addControl} />
+          </Drawer>
+          <Grid container className={classes.grid} alignContent="center">
+            <Grid item sm={1} md={1}></Grid>
+            <Grid className={classes.formItems} item sm={4} md={6} lg={4}>
+              <ControlList
+                controls={this.state.listOfControls}
+                remove={this.removeControl}
+                formSchema={formJson}
+                reorder={this.reorderControls}
+              />
+            </Grid>
+            <Grid item>
+              <Divider className={classes.divider} orientation="vertical" />
+            </Grid>
+            <Grid className={classes.formPreview} item sm={4} md={6} lg={4}>
+              <Typography
+                className={classes.previewTitle}
+                variant="h4"
+                component="h3"
+                color="textPrimary">
+                Preview
+              </Typography>
+              <Divider className={classes.previewDivider}/>
+              <FormPreview
+                formSchema={formJson}
+                reset={this.resetState}
+                save={this.sumbitFormSchema}
+              />
+            </Grid>
+          </Grid>
+        </Container>
+      </div>
+    );
+  }
 }
 
 export default withStyles(useStyles)(FormCreator);

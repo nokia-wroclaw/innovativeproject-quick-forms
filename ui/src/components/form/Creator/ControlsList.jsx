@@ -12,6 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import LabelImportantTwoToneIcon from '@material-ui/icons/LabelImportantTwoTone';
 import Typography from '@material-ui/core/Typography';
+import {ReactSortable} from 'react-sortablejs';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,6 +40,11 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignContent: 'center',
   },
+  divider: {
+    marginTop: 5,
+    marginBottom: 15,
+    marginRight: 20,
+  },
 }));
 
 function SingleItem(params) {
@@ -50,14 +57,14 @@ function SingleItem(params) {
   const classes = useStyles();
 
   const obj = params.obj;
-
+  
   return (
     <div>
       <ListItem key={obj.index} button onClick={handleClick}>
         <ListItemIcon>
           <LabelImportantTwoToneIcon />
         </ListItemIcon>
-        <ListItemText className={classes.listItemText} primary={obj.name} />
+        <ListItemText className={classes.listItemText} primary={obj.propName} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
@@ -65,7 +72,7 @@ function SingleItem(params) {
           <ListItem
             button
             className={classes.nested}
-            onClick={() => params.remove(obj)}>
+            onClick={() => params.remove(obj.id)}>
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
@@ -85,26 +92,32 @@ function SingleItem(params) {
 
 export default function ControlList(params) {
   const classes = useStyles();
-
-  const controlsArray = params.controls;
-
-  const items = controlsArray.map((obj, index) => (
-    <SingleItem obj={obj} remove={params.remove} />
-  ));
-
+  const controlsArray = params.controls
+  
   return (
     <List
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader component="div" id="nested-list-subheader" disableSticky>
-          <Typography className={classes.title} variant="h4" component="h3" color="textPrimary">
+          <Typography
+            className={classes.title}
+            variant="h4"
+            component="h3"
+            color="textPrimary">
             Form items
           </Typography>
         </ListSubheader>
       }
       className={classes.root}>
-      {items}
+        <Divider className={classes.divider} />
+        <ReactSortable
+            list={controlsArray}
+            setList={newState => params.reorder(newState)}>
+          {controlsArray.map(object => (
+            <SingleItem key={object.id} obj={object} remove={params.remove} />
+          ))}
+        </ReactSortable>
     </List>
   );
 }
