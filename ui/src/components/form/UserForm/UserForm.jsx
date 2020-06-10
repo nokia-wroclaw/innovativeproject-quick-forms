@@ -24,7 +24,7 @@ export class UserForms extends Component {
     };
   }
 
-  nextStep = () => {
+   nextStep = () => {
     const {step} = this.state;
     this.setState({
       step: step + 1,
@@ -121,9 +121,11 @@ export class UserForms extends Component {
           .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
 
   mountStep =  () => {
-    GetFormFromDatabase(this.getPendingFormID())
-        .then(res => this.mountDataFromDatabase(res));
+    if (this.state.step === 1){
+      GetFormFromDatabase(this.getPendingFormID())
+          .then(res => this.mountDataFromDatabase(res));
       this.socketEmitStatusCreate();
+    }
   }
 
   mountDataFromDatabase =  (response) => {
@@ -149,10 +151,8 @@ export class UserForms extends Component {
     if (this.state.socketResponse.message === COMMAND_STATES.REJECT) {
       this.setState({feedbackOnReject: this.state.socketResponse.feedbackMessage})
       this.setState({socketResponse: ''})
-
       this.previousStep();
-      GetFormFromDatabase(this.getPendingFormID())
-          .then(res => this.mountDataFromDatabase(res));
+
     }
 
     if (this.state.socketResponse.message === COMMAND_STATES.ACCEPT){
