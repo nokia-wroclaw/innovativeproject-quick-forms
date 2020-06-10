@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Button, Container} from '@material-ui/core';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
@@ -6,30 +6,23 @@ import {Theme as MuiTheme} from 'rjsf-material-ui';
 const Form = withTheme(MuiTheme);
 
 export function FormStep(props) {
-  const [formData, setFormData] = useState({});
 
-  const nextStep = formData => {
-    console.log(formData);
-    props.handleSubmitSocket(formData);
+  const nextStep = (formData) => {
+    updateData(formData)
     props.nextStep();
-    return false;
   };
 
-  useEffect(() => {
-    const data = JSON.parse(
-      window.localStorage.getItem(`data_${props.getPendingFormID()}`)
-    );
-    console.log(data);
-    if (data != null) {
-      setFormData(data);
-    }
-  }, []);
+  const updateData = (formData) => {
+      props.socketEmitStatusEditOnSubmit(formData);
+      props.setFormDataState(formData)
+  }
 
   return (
     <Container ms={8}>
+      <h1>{props.feedbackOnReject}</h1>
       <Form
         schema={props.values.formScheme}
-        formData={formData}
+        formData={props.values.formData}
         onSubmit={nextStep}>
         <Button variant="contained" color="primary" type="submit">
           Submit

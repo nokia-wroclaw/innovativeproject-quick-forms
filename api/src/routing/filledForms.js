@@ -24,6 +24,34 @@ router.get('/single/:id', async (req, res) => {
     res.status(404).json({ message: err });
   }
 });
+//change to fragment-key
+router.get('/key/:id', async (req, res) => {
+  const keyLength = 4
+  try{
+    if (req.params.id.length !== keyLength){
+      const message = "invalid input"
+      res.status(200).json(message);
+    }
+
+    else {
+      const forms = await filledForm.findOne({filledFormNumberID :  { "$regex": `${req.params.id}$` },
+        function (err, docs) {}})
+      res.status(200).json(forms);
+    }
+
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+})
+
+router.get('/whole-key/:id', async (req, res) => {
+  try{
+    const forms = await filledForm.findOne({filledFormNumberID :  req.params.id })
+    res.status(200).json(forms);
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+})
 
 router.get('/:id', async (req, res) => {
   try {

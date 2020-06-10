@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {Container, Typography} from '@material-ui/core';
+import {Button, Container, Typography} from '@material-ui/core';
+import PendingFormPreview from "./PendingFormPreview";
 
 export class LockStep extends Component {
+    previousStep = () => {
+        this.props.previousStep()
+    }
+
+
   render() {
     return (
       <Container ms={8}>
@@ -14,6 +20,15 @@ export class LockStep extends Component {
             .toUpperCase()}
         </Typography>
         <LinearProgress color="secondary" />
+          <Button variant="contained" color="primary" type="submit"
+                  onClick={this.previousStep}>
+              Back to edition
+          </Button>
+
+          <PendingFormPreview
+              formSchema={this.props.values.formScheme}
+            formData={this.props.values.formData}
+          />
       </Container>
     );
   }

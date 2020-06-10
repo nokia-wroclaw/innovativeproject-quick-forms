@@ -17,6 +17,7 @@ import Popup from 'reactjs-popup';
 import {Container} from '@material-ui/core';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
+import RejectFormDialog from "./RejectFormDialog";
 
 const Form = withTheme(MuiTheme);
 
@@ -55,7 +56,9 @@ class PendingForms extends React.Component {
       filledForm: {},
       formSchema: {},
       isLoading: true,
-      open: false,
+      open: false, //change to preview open
+      rejectFormDialogOpen:false,
+      currentFormID:''
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -75,8 +78,8 @@ class PendingForms extends React.Component {
       );
   };
 
-  handleReject = (pendingFormNumberID, id) => {
-    RejectPending(pendingFormNumberID, id).then(res =>
+  handleReject = (pendingFormNumberID, message) => {
+    RejectPending(pendingFormNumberID, message).then(res =>
       this.props.reload(this.props.formID)
     );
   };
@@ -86,6 +89,18 @@ class PendingForms extends React.Component {
   }
   closeModal() {
     this.setState({open: false});
+  }
+
+  openRejectFormDialog = () => {
+    this.setState({rejectFormDialogOpen:true});
+  }
+
+  setCurrentFormID = (filledFormNumberID) => {
+    this.setState({currentFormID : filledFormNumberID})
+  }
+
+  closeRejectFormDialog = () => {
+    this.setState({rejectFormDialogOpen:false});
   }
 
   getCurrentFormSchema = templateID => {
@@ -136,12 +151,15 @@ class PendingForms extends React.Component {
             onClick={() => this.handleAccept(obj.filledFormNumberID, obj._id)}>
             Accept
           </Button>
-          <Button
+          <Button // onClick gets obj.filledFormNu RejectFormDialog
             className={classes.button}
             variant="contained"
             color="primary"
             startIcon={<ClearIcon />}
-            onClick={() => this.handleReject(obj.filledFormNumberID, obj._id)}
+            onClick={() => {
+              this.setCurrentFormID(obj.filledFormNumberID)
+              this.openRejectFormDialog()
+            }}
             content={'More'}>
             Reject
           </Button>
@@ -158,6 +176,59 @@ class PendingForms extends React.Component {
     );
   }
 
+  _renderWithRejectAcceptBlocked(obj) {
+    const {classes} = this.props;
+    return (
+        <Box
+            m={3}
+            key={obj._id}
+            display="flex"
+            justifyContent="center"
+            alignItems="center">
+          {obj.filledFormNumberID.toString().slice(-4).toUpperCase()}:&nbsp;
+          <div className={classes.someButtons}>
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="default"
+                startIcon={<ChromeReaderModeIcon />}
+                onClick={() => {
+                  this.getCurrentFormSchema(obj.templateID);
+                  this.getCurrentFormData(obj._id);
+                  this.openModal();
+                }}>
+              Preview
+            </Button>
+
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                startIcon={<CheckIcon />}>
+              Accept
+            </Button>
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                startIcon={<ClearIcon />}
+                content={'More'}>
+              Reject
+            </Button>
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="secondary"
+                onClick={() => this.handleDelete(obj._id)}
+                startIcon={<DeleteIcon />}>
+              Delete
+            </Button>
+            <h1>User is editing</h1>
+          </div>
+        </Box>
+    );
+  }
+
   render() {
     const {classes} = this.props;
     return (
@@ -171,7 +242,8 @@ class PendingForms extends React.Component {
             For Approval:
           </Typography>
         </Box>
-        {this.props.listOfForms.map(i => this._render(i))}
+        {this.props.listOfForms.filter(i => i.state === 2).map(i => this._render(i))}
+        {this.props.listOfForms.filter(i => i.state === 1).map(i => this._renderWithRejectAcceptBlocked(i))}
 
         <Popup
           open={this.state.open}
@@ -186,6 +258,15 @@ class PendingForms extends React.Component {
             </Form>
           </Container>
         </Popup>
+
+
+        <RejectFormDialog
+                          rejectFormDialogOpen={this.state.rejectFormDialogOpen}
+                          openRejectFormDialog={this.openRejectFormDialog}
+                          closeRejectFormDialog={this.closeRejectFormDialog}
+                          RejectPending={this.handleReject}
+                          pendingFormNumberID={this.state.currentFormID}
+        />
 
         <Button
           variant="contained"

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage/HomePage';
@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import FilledForms from './components/form/FilledForms';
 import PrivateRoute from './components/PrivateRoute';
 import FormCreator from './components/form/Creator/FormCreator';
+import Finder from './pages/Finder';
 
 const App = () => (
   <div className="App">
@@ -17,11 +18,13 @@ const App = () => (
       <Route exact path="/signin" component={SignIn} />
       <Route exact path="/signup" component={SignUp} />
       <Route exact path="/userform/:formID" component={UserFormRedirect} />
+      <Route exact path="/finder" component={Finder} />
       <Route
         exact
         path="/userform/:formID/:pendingFormID"
         component={UserForm}
       />
+
       <PrivateRoute exact path="/dashboard" component={Dashboard} />
       <PrivateRoute
         exact

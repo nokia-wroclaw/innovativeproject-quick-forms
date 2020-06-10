@@ -4,6 +4,10 @@ import {GetForm} from '../FormsHandling';
 import FormStep from './FormStep';
 import EndStep from './EndStep';
 import {LockStep} from './LockStep';
+import {COMMAND_STATES, FORM_STATES} from './StatesEnum';
+import {GetFormFromDatabase} from "./GetFormFromDatabase";
+import GetPendingFormID from './GetPendingFormID';
+import GetTemplateFormID from './GetTemplateFormID';
 
 let socketConnection;
 const ENDPOINT = process.env.REACT_APP_SERVER_API_URL;
@@ -16,124 +20,138 @@ export class UserForms extends Component {
       formScheme: {},
       filledFormNumberID: -1,
       socketResponse: '',
-      formID: '',
+      templateID: '',
+      formData: {},
+      feedbackOnReject: ''
     };
   }
-  //`step_${this.getPendingFormID()}`
-  nextStep = () => {
+
+   nextStep = () => {
     const {step} = this.state;
     this.setState({
       step: step + 1,
     });
-    if (step <= 3)
-      window.localStorage.setItem(
-        `step_${this.getPendingFormID()}`,
-        (step + 1).toString()
-      );
-  };
+    this.socketEmitStatusUpdate(step + 1);
+   };
 
   previousStep = () => {
-    const {step} = this.state;
-    if (step > 0) {
       this.setState({
         step: 1,
       });
-    }
-    if (step >= 1)
-      window.localStorage.setItem(
-        `step_${this.getPendingFormID()}`,
-        (step - 1).toString()
-      );
+      this.socketEmitStatusUpdate(1);
   };
 
-  socketEmitData = () => {
-    if (
-      window.localStorage.getItem(`data_${this.getPendingFormID()}`) &&
-      window.localStorage.getItem(`step_${this.getPendingFormID()}`) < 3
-    ) {
-      const pendingFormData = {
-        dataForm: JSON.parse(
-          window.localStorage.getItem(`data_${this.getPendingFormID()}`)
-        ),
-        templateID: this.state.formID,
-        userID: this.state.formScheme.userID,
-        filledFormNumberID: this.getPendingFormID(),
-      };
-
-      socketConnection.emit(`pendingFormID`, pendingFormData);
+  socketEmitStatusUpdate = (step) => {
+    const command = COMMAND_STATES.UPDATE;
+    const pendingFormData = {
+      filledFormNumberID: GetPendingFormID(),
+      state: step
     }
-  };
+
+    const dataToSend = [command, pendingFormData];
+
+    socketConnection.emit(
+        `pendingFormID`,
+        dataToSend
+    );
+  }
+
+  socketEmitStatusEditOnSubmit = async ({formData}) => {
+    const command = COMMAND_STATES.EDIT;
+    const pendingFormData = {
+      dataForm:  formData,
+      templateID: GetTemplateFormID(),
+      userID: this.state.formScheme.userID,
+      filledFormNumberID: GetPendingFormID(),
+      state: FORM_STATES.PENDING
+    };
+
+    await this.promisedSetState({pendingFormData: pendingFormData}); //check if it's needed
+    const dataToSend = [command, pendingFormData];
+
+    socketConnection.emit(
+        `pendingFormID`,
+        dataToSend
+    );
+  }
+
+  socketEmitStatusCreate = () => {
+    const command = COMMAND_STATES.CREATE;
+    const data = {
+      filledFormNumberID: GetPendingFormID(),
+      state: FORM_STATES.TOBEFILLED
+    }
+
+    const dataToSend = [command, data]
+    socketConnection.emit(
+        'pendingFormID',
+        dataToSend
+    )
+  }
 
   socketListenToServer = () => {
     socketConnection.on('pendingFormID', data => {
       this.setState({socketResponse: data});
     });
-  };
+  }
 
   socketConnect = () => {
     socketConnection = io.connect(ENDPOINT);
-  };
-
-  getPendingFormID = () => {
-    const urlData = window.location.href.split('/');
-    return urlData[urlData.length - 1];
-  };
-
-  setCurrentStep = () => {
-    if (!window.localStorage.getItem(`step_${this.getPendingFormID()}`)) {
-      window.localStorage.setItem(
-        `step_${this.getPendingFormID()}`,
-        this.state.step.toString()
-      );
-    }
-
-    //after removing page does't switch step immediately
-    this.setState({
-      step: parseInt(
-        window.localStorage.getItem(`step_${this.getPendingFormID()}`),
-        10
-      ),
-    });
-  };
-
-  setFormData = data => {
-    window.localStorage.setItem(
-      `data_${this.getPendingFormID()}`,
-      JSON.stringify(data)
-    );
-  };
-
-  setKeyID = id => {
-    this.setState({filledFormNumberID: id});
-  };
+  }
 
   handleLoadSchema = () => {
     const id = this.props.match.params.formID;
-    this.setState({formID: id});
+    this.setState({templateID: id});
     this.LoadSchema(id).then(r => console.log(r));
-  };
+}
 
   LoadSchema = formID =>
-    GetForm(formID, '/api/forms/templates/')
-      .then(response => this.setState({formScheme: response.data}))
-      .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
+      GetForm(formID, '/api/forms/templates/')
+          .then(response => {
+            this.setState({formScheme: response.data})
+          })
+          .catch(error => console.error(`Błąd pobierania schematu: ${error}`));
+
+  mountStep =  () => {
+    if (this.state.step === 1){
+      GetFormFromDatabase(GetPendingFormID())
+          .then(res => this.mountDataFromDatabase(res));
+      this.socketEmitStatusCreate();
+    }
+  }
+
+  mountDataFromDatabase =  (response) => {
+    if (response.data !== null){
+      if (response.data.state !== null) {
+         this.setState({step: response.data.state})
+      }
+      if (response.data.dataForm !== null){
+         this.setState({formData: response.data.dataForm})
+      }
+    }
+  }
 
   componentDidMount() {
-    this.setCurrentStep();
+    this.handleLoadSchema();
     this.socketConnect();
     this.socketListenToServer();
-    this.setKeyID(this.getPendingFormID());
-    this.socketEmitData();
-    this.handleLoadSchema();
+    this.setState({filledFormNumberID: GetPendingFormID()});
+    this.mountStep();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.socketResponse.message === 'rejected') {
-      this.setState({socketResponse: ''}, this.previousStep());
+    if (this.state.socketResponse.message === COMMAND_STATES.REJECT) {
+      this.setState({feedbackOnReject: this.state.socketResponse.feedbackMessage})
+      this.setState({socketResponse: ''})
+      this.previousStep();
+
     }
 
-    if (this.state.socketResponse.message === 'accepted')
-      this.setState({socketResponse: ''}, this.nextStep());
+    if (this.state.socketResponse.message === COMMAND_STATES.ACCEPT){
+      this.setState({socketResponse: ''})
+      this.nextStep();
+    }
+
   }
 
   promisedSetState = newState => {
@@ -144,52 +162,39 @@ export class UserForms extends Component {
     });
   };
 
-  handleSubmitSocket = async ({formData}) => {
-    const pendingFormData = {
-      dataForm: formData,
-      templateID: this.state.formID,
-      userID: this.state.formScheme.userID,
-      filledFormNumberID: this.getPendingFormID(),
-    };
-
-    //  await this.promisedSetState({pendingFormData: pendingFormData});
-    this.setFormData(pendingFormData.dataForm);
-    this.socketEmitData();
-  };
-
   render() {
-    const step = parseInt(
-      window.localStorage.getItem(`step_${this.getPendingFormID()}`),
-      10
-    );
+    const step = this.state.step;
     const {
       formScheme,
-      formID,
-      formDefault,
+      templateID,
       filledFormNumberID,
-      pendingFormData,
+      formData,
     } = this.state;
     const values = {
       formScheme,
-      formID,
-      formDefault,
+      templateID,
       filledFormNumberID,
-      pendingFormData,
+      formData,
+      step
     };
     switch (step) {
       case 1:
         return (
           <FormStep
-            handleSubmitSocket={this.handleSubmitSocket}
+              setFormDataState={formData=>{this.setState(formData)}}
+              feedbackOnReject={this.state.feedbackOnReject}
+            socketEmitStatusEditOnSubmit={this.socketEmitStatusEditOnSubmit}
             nextStep={this.nextStep}
             values={values}
-            getPendingFormID={this.getPendingFormID}
           />
         );
       case 2:
-        return <LockStep filledFormNumberID={this.state.filledFormNumberID} />;
+        return <LockStep filledFormNumberID={this.state.filledFormNumberID}
+                         previousStep={this.previousStep}
+                          values={values}/>;
       case 3:
-        return <EndStep templateID={this.state.formID} />;
+        return <EndStep templateID={this.state.formID}
+                        values={values}/>;
       default:
         return <h1>error </h1>;
     }
