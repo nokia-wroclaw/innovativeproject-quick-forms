@@ -30,7 +30,7 @@ export class UserForms extends Component {
       step: step + 1,
     });
     this.socketEmitStatusUpdate(step + 1);
-  };
+   };
 
   previousStep = () => {
       this.setState({
@@ -152,12 +152,14 @@ export class UserForms extends Component {
       this.setState({feedbackOnReject: this.state.socketResponse.feedbackMessage})
       this.setState({socketResponse: ''})
       this.previousStep();
+      console.log(this.state.formData);
 
     }
 
     if (this.state.socketResponse.message === COMMAND_STATES.ACCEPT){
       this.setState({socketResponse: ''})
       this.nextStep();
+      console.log(this.state.formData);
     }
 
   }
@@ -189,6 +191,7 @@ export class UserForms extends Component {
       case 1:
         return (
           <FormStep
+              setFormDataState={formData=>{this.setState(formData)}}
               feedbackOnReject={this.state.feedbackOnReject}
             socketEmitStatusEditOnSubmit={this.socketEmitStatusEditOnSubmit}
             nextStep={this.nextStep}
