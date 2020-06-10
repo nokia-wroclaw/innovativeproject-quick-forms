@@ -13,13 +13,13 @@ function Finder()  {
       e.preventDefault();
       const key = input.toLowerCase();
       findFormInDatabase(key).then(response => {
-          console.log(response)
-          console.log(response.state)
-          handleResponseState(response)
+          if (response !== undefined)
+             handleResponseState(response)
       });
     }
 
     const handleResponseState = (response) => {
+
         if (response === 'invalid input'){
             setOutputStatus(status.DOESNOTEXIST);
         }
@@ -74,7 +74,7 @@ function Finder()  {
         PENDING: 2,
         ACCEPTED: 3,
         DOESNOTEXIST: 4,
-        CREATEDNOTSUBMITTED: 5
+        CREATEDNOTSUBMITTED: 5,
     }
 
     const handleStatus = () => {
