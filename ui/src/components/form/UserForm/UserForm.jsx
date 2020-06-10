@@ -6,6 +6,8 @@ import EndStep from './EndStep';
 import {LockStep} from './LockStep';
 import {COMMAND_STATES, FORM_STATES} from './StatesEnum';
 import {GetFormFromDatabase} from "./GetFormFromDatabase";
+import GetPendingFormID from './GetPendingFormID';
+import GetTemplateFormID from './GetTemplateFormID';
 
 let socketConnection;
 const ENDPOINT = process.env.REACT_APP_SERVER_API_URL;
@@ -42,7 +44,7 @@ export class UserForms extends Component {
   socketEmitStatusUpdate = (step) => {
     const command = COMMAND_STATES.UPDATE;
     const pendingFormData = {
-      filledFormNumberID: this.getPendingFormID(),
+      filledFormNumberID: GetPendingFormID(),
       state: step
     }
 
@@ -58,9 +60,9 @@ export class UserForms extends Component {
     const command = COMMAND_STATES.EDIT;
     const pendingFormData = {
       dataForm:  formData,
-      templateID: this.getTemplateFormID(),
+      templateID: GetTemplateFormID(),
       userID: this.state.formScheme.userID,
-      filledFormNumberID: this.getPendingFormID(),
+      filledFormNumberID: GetPendingFormID(),
       state: FORM_STATES.PENDING
     };
 
@@ -76,7 +78,7 @@ export class UserForms extends Component {
   socketEmitStatusCreate = () => {
     const command = COMMAND_STATES.CREATE;
     const data = {
-      filledFormNumberID: this.getPendingFormID(),
+      filledFormNumberID: GetPendingFormID(),
       state: FORM_STATES.TOBEFILLED
     }
 
@@ -97,16 +99,6 @@ export class UserForms extends Component {
     socketConnection = io.connect(ENDPOINT);
   }
 
-  getPendingFormID = () => {
-    const urlData = window.location.href.split('/');
-    return urlData[urlData.length - 1];
-  }
-
-  getTemplateFormID = () => {
-    const urlData = window.location.href.split('/');
-    return urlData[urlData.length - 2];
-  }
-
   handleLoadSchema = () => {
     const id = this.props.match.params.formID;
     this.setState({templateID: id});
@@ -122,7 +114,7 @@ export class UserForms extends Component {
 
   mountStep =  () => {
     if (this.state.step === 1){
-      GetFormFromDatabase(this.getPendingFormID())
+      GetFormFromDatabase(GetPendingFormID())
           .then(res => this.mountDataFromDatabase(res));
       this.socketEmitStatusCreate();
     }
@@ -143,7 +135,7 @@ export class UserForms extends Component {
     this.handleLoadSchema();
     this.socketConnect();
     this.socketListenToServer();
-    this.setState({filledFormNumberID: this.getPendingFormID()});
+    this.setState({filledFormNumberID: GetPendingFormID()});
     this.mountStep();
   }
 
@@ -152,14 +144,12 @@ export class UserForms extends Component {
       this.setState({feedbackOnReject: this.state.socketResponse.feedbackMessage})
       this.setState({socketResponse: ''})
       this.previousStep();
-      console.log(this.state.formData);
 
     }
 
     if (this.state.socketResponse.message === COMMAND_STATES.ACCEPT){
       this.setState({socketResponse: ''})
       this.nextStep();
-      console.log(this.state.formData);
     }
 
   }
@@ -196,7 +186,6 @@ export class UserForms extends Component {
             socketEmitStatusEditOnSubmit={this.socketEmitStatusEditOnSubmit}
             nextStep={this.nextStep}
             values={values}
-            getPendingFormID={this.getPendingFormID}
           />
         );
       case 2:
