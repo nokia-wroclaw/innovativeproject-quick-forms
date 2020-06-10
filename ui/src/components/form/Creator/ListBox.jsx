@@ -1,10 +1,26 @@
 import React, {Component} from 'react';
-import {Container, Typography, Paper} from '@material-ui/core';
+import {Container, Paper} from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
+import {withStyles} from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+const useStyles = theme => ({
+  buttons: {
+    width: 257,
+    borderRadius: 12,
+    marginLeft: -17,
+    marginTop: 15,
+    [theme.breakpoints.down('600')]: {
+      marginLeft: -9,
+    },
+  },
+  field: {
+    margin: 20,
+  },
+});
 class ListBox extends Component {
   constructor(props) {
     super(props);
@@ -70,23 +86,27 @@ class ListBox extends Component {
     this.props.Add(object);
   };
   _render = () => {
+    const {classes} = this.props;
     return (
       <Container ms={8}>
         <Paper>
           <form onSubmit={this.handleControlAdd}>
-            <TextField label="Field name" defaultValue="" variant="outlined" />
+            <TextField className={classes.field} label="Field name" defaultValue="" variant="outlined" />
             <TextField
+              className={classes.field}
               label="Records names"
               defaultValue=""
               variant="outlined"
             />
             <TextField
+              className={classes.field}
               label="Minimal records"
               defaultValue="0"
               variant="outlined"
               type="numbersfafs"
             />
             <TextField
+              className={classes.field}
               id="type"
               select
               label="Type"
@@ -101,11 +121,17 @@ class ListBox extends Component {
                 </option>
               ))}
             </TextField>
-            <Checkbox
-              checked={this.state.isRequired}
-              onChange={this.handleRequired}
+            <FormControlLabel
+              className={classes.field}
+              control={<Checkbox
+                checked={this.state.isRequired}
+                onChange={this.handleRequired}
+                />
+              }
+              label="Required?"
+              labelPlacement="top"
             />
-            <Button type="submit" variant="contained" color="primary">
+            <Button className={classes.field} type="submit" variant="contained" color="primary">
               Add
             </Button>
           </form>
@@ -114,15 +140,16 @@ class ListBox extends Component {
     );
   };
   render() {
+    const {classes} = this.props;
     return (
       <Container>
-        <Typography>List Box</Typography>
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          onClick={this.handleOpen}>
-          Add
+          onClick={this.handleOpen}
+          className={classes.buttons}>
+          Add a List Box
         </Button>
         <Modal
           style={{
@@ -138,4 +165,4 @@ class ListBox extends Component {
     );
   }
 }
-export default ListBox;
+export default withStyles(useStyles)(ListBox);

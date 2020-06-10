@@ -94,6 +94,9 @@ const useStyles = theme => ({
       display: 'none',
     },
   },
+  previewDivider: {
+    marginBottom: 15,
+  },
 });
 
 class FormCreator extends Component {
@@ -221,7 +224,6 @@ class FormCreator extends Component {
             <TextBox className={classes.textbox} Add={this.addControl} />
             <ListBox Add={this.addControl} />
             <SelectBox Add={this.addControl} />
-            <Divider />
           </Drawer>
           <Grid container className={classes.grid} alignContent="center">
             <Grid item sm={1} md={1}></Grid>
@@ -244,6 +246,7 @@ class FormCreator extends Component {
                 color="textPrimary">
                 Preview
               </Typography>
+              <Divider className={classes.previewDivider}/>
               <FormPreview
                 formSchema={formJson}
                 reset={this.resetState}

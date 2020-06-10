@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Typography, Paper} from '@material-ui/core';
+import {Container, Paper} from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -8,6 +8,58 @@ import {ReactSortable} from 'react-sortablejs';
 import ListItem from '@material-ui/core/ListItem';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import {withStyles} from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+const useStyles = theme => ({
+  buttons: {
+    width: 257,
+    borderRadius: 12,
+    marginLeft: -17,
+    marginTop: 20,
+    [theme.breakpoints.down('600')]: {
+      marginLeft: -9,
+    },
+  },
+  field: {
+    margin: 15,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  optionsList: {
+    marginLeft: 15,
+  },
+  addButton: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    width: 226,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  listLabel: {
+    '&:hover': {
+      background: "#f2f2f2",
+   },
+  },
+});
 
 class SelectBox extends Component {
   constructor(props) {
@@ -78,33 +130,42 @@ class SelectBox extends Component {
     this.props.Add(object);
   };
   _render = () => {
+    const {classes} = this.props;
     return (
-      <Container ms={8}>
         <Paper>
           <form onSubmit={this.handleControlAdd}>
-            <TextField label="Field name" defaultValue="" variant="outlined" />
-            <Button variant="contained" color="primary" type="submit">
-              Add
+          <Button className={classes.addButton} variant="contained" color="primary" type="submit">
+              Add to preview
             </Button>
-            <Checkbox
-              checked={this.state.isRequired}
-              onChange={this.handleRequired}
+            <TextField className={classes.field} label="Field name" defaultValue="" variant="outlined" />
+            <FormControlLabel
+              className={classes.field}
+              control={<Checkbox
+                checked={this.state.isRequired}
+                onChange={this.handleRequired}
+              />
+              }
+              label="Required?"
+              labelPlacement="top"
             />
           </form>
           <form
             onSubmit={this.handleOptionAdd}
             ref={el => (this.myFormOption = el)}>
-            <TextField label="Option name" defaultValue="" variant="outlined" />
-            <Button type="submit" variant="contained">
+            <TextField className={classes.field} label="Option name" defaultValue="" variant="outlined" />
+            <Button className={classes.addButton} type="submit" variant="contained">
               Add option
             </Button>
           </form>
           <ReactSortable
+            className={classes.optionsList}
             list={this.state.options}
             setList={newState => this.setState({options: newState})}>
             {this.state.options.map(item => (
               <ListItem key={item.id}>
-                {item.name}
+                <div className={classes.listLabel}>
+                  {item.name}
+                </div>
                 <IconButton
                   edge="end"
                   aria-label="comments"
@@ -115,26 +176,22 @@ class SelectBox extends Component {
             ))}
           </ReactSortable>
         </Paper>
-      </Container>
     );
   };
   render() {
+    const {classes} = this.props;
     return (
       <Container>
-        <Typography>Select Box</Typography>
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          onClick={this.handleOpen}>
-          Add
+          onClick={this.handleOpen}
+          className={classes.buttons}>
+          Add a Select Box
         </Button>
         <Modal
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          className={classes.modal}
           open={this.state.open}
           onClose={this.handleClose}>
           {this._render()}
@@ -143,4 +200,4 @@ class SelectBox extends Component {
     );
   }
 }
-export default SelectBox;
+export default withStyles(useStyles)(SelectBox);
