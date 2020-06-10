@@ -8,10 +8,14 @@ const Form = withTheme(MuiTheme);
 export function FormStep(props) {
 
   const nextStep = (formData) => {
-    props.socketEmitStatusEditOnSubmit(formData);
-    props.setFormDataState(formData)
+    updateData(formData)
     props.nextStep();
   };
+
+  const updateData = (formData) => {
+      props.socketEmitStatusEditOnSubmit(formData);
+      props.setFormDataState(formData)
+  }
 
   return (
     <Container ms={8}>
