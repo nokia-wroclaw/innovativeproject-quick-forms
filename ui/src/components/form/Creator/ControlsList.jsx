@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
@@ -13,6 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import LabelImportantTwoToneIcon from '@material-ui/icons/LabelImportantTwoTone';
 import Typography from '@material-ui/core/Typography';
 import {ReactSortable} from 'react-sortablejs';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,6 +39,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
+  },
+  divider: {
+    marginTop: 5,
+    marginBottom: 15,
+    marginRight: 20,
   },
 }));
 
@@ -104,6 +110,7 @@ export default function ControlList(params) {
         </ListSubheader>
       }
       className={classes.root}>
+        <Divider className={classes.divider} />
         <ReactSortable
             list={controlsArray}
             setList={newState => params.reorder(newState)}>
