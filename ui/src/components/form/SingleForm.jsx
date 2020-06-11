@@ -53,7 +53,7 @@ function SingleForm({formID, title, description, reload, userID, history}) {
 
   useEffect(() => {
     getDataToDownload(formID);
-  }, []);
+  });
 
   return (
     <Container>

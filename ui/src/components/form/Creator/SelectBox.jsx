@@ -109,13 +109,13 @@ class SelectBox extends Component {
   handleControlAdd = event => {
     event.preventDefault();
     this.handleClose();
-    const selectName = event.target[0].value;
+    const selectName = event.target[1].value;
     const codeName = selectName.replace(/\s/g, '');
 
     const selectOptions = this.state.options.map(function(obj) {
       return obj.name;
     });
-
+    
     const object = {
       propName: codeName,
       id: 0,
@@ -126,7 +126,8 @@ class SelectBox extends Component {
         enum: selectOptions,
       },
     };
-
+    this.setState({options : []});
+    this.setState({numberOfOptions : 0});
     this.props.Add(object);
   };
   _render = () => {
