@@ -4,6 +4,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import CardMedia from '@material-ui/core/CardMedia';
 import UserFormIDGenerator from "./UserFormIDGenerator";
 import PendingFormPreview from "./PendingFormPreview";
+import Grid from '@material-ui/core/Grid';
+
 const useStyles = makeStyles(() => ({
   Container: {
     margin: 'auto',
@@ -27,6 +29,13 @@ const useStyles = makeStyles(() => ({
   },
   button: {
     marginTop: 30,
+    marginLeft: 3,
+    marginRight: 3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  grid: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -55,26 +64,34 @@ export function EndStep(props) {
         title="Accepted"
       />
       <Container className={classes.Container}>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          type="submit"
-          onClick={toHomepage}>
-          Navigate to homepage
-        </Button>
-        <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            type="submit"
-            onClick={toNewForm}>
-          New Form
-        </Button>
-        <PendingFormPreview
-            formSchema={props.values.formScheme}
-            formData={props.values.formData}
-        />
+        <Grid container className={classes.grid}>
+          <Grid item>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              type="submit"
+              onClick={toHomepage}>
+              Navigate to homepage
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                type="submit"
+                onClick={toNewForm}>
+              New Form
+            </Button>
+          </Grid>
+          <Grid item>
+            <PendingFormPreview
+                formSchema={props.values.formScheme}
+                formData={props.values.formData}
+            />
+          </Grid>
+        </Grid>
       </Container>
     </React.Fragment>
   );
