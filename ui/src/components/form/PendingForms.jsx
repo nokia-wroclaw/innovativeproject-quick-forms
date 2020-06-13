@@ -18,6 +18,7 @@ import {Container} from '@material-ui/core';
 import {withTheme} from 'react-jsonschema-form';
 import {Theme as MuiTheme} from 'rjsf-material-ui';
 import RejectFormDialog from "./RejectFormDialog";
+import AcceptRejectSnackbar from './AcceptRejectSnackbar';
 
 const Form = withTheme(MuiTheme);
 
@@ -199,22 +200,7 @@ class PendingForms extends React.Component {
                 }}>
               Preview
             </Button>
-
-            <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                startIcon={<CheckIcon />}>
-              Accept
-            </Button>
-            <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                startIcon={<ClearIcon />}
-                content={'More'}>
-              Reject
-            </Button>
+            <AcceptRejectSnackbar />
             <Button
                 className={classes.button}
                 variant="contained"
@@ -223,7 +209,6 @@ class PendingForms extends React.Component {
                 startIcon={<DeleteIcon />}>
               Delete
             </Button>
-            <h1>User is editing</h1>
           </div>
         </Box>
     );
