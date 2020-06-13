@@ -14,9 +14,17 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(1),
         backgroundColor: theme.palette.background.paper,
         maxHeight: "600px",
-        overflowY: "scroll"
+        overflowY: "scroll",
 
     },
+    button: {
+        marginTop: 30,
+        marginLeft: 3,
+        marginRight: 3,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
 }));
 
 export default function PendingFormPreview(props) {
@@ -32,7 +40,7 @@ export default function PendingFormPreview(props) {
 
     return (
         <div>
-            <Button aria-describedby={id} type="submit" color="primary"
+            <Button className={classes.button} aria-describedby={id} type="submit" color="primary"
                     variant="contained" onClick={handleClick}>
                 Preview
             </Button>

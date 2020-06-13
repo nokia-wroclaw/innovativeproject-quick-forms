@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {GetForm} from '../FormsHandling';
 import FormStep from './FormStep';
 import EndStep from './EndStep';
-import {LockStep} from './LockStep';
+import LockStep from './LockStep';
 import {COMMAND_STATES, FORM_STATES} from './StatesEnum';
 import {GetFormFromDatabase} from "./GetFormFromDatabase";
 import GetPendingFormID from './GetPendingFormID';
