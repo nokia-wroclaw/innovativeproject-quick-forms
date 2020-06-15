@@ -27,7 +27,6 @@ export function FormStep(props) {
       props.socketEmitStatusEditOnSubmit(formData);
       props.setFormDataState(formData)
   }
-
   return (
     <Container ms={8}>
       {props.feedbackOnReject &&

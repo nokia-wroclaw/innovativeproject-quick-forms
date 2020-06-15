@@ -76,7 +76,7 @@ class ListBox extends Component {
       data: {
         type: 'array',
         title: arrayName,
-        minItems: requiredRecords,
+        minItems: parseInt(requiredRecords,10),
         items: {
           type: typeofInput,
           title: recordName,
@@ -101,7 +101,7 @@ class ListBox extends Component {
             <TextField
               className={classes.field}
               label="Minimal records"
-              defaultValue="0"
+              defaultValue={0}
               variant="outlined"
               type="numbersfafs"
             />

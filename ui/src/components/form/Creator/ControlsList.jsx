@@ -9,7 +9,6 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import LabelImportantTwoToneIcon from '@material-ui/icons/LabelImportantTwoTone';
 import Typography from '@material-ui/core/Typography';
 import {ReactSortable} from 'react-sortablejs';
@@ -77,12 +76,6 @@ function SingleItem(params) {
               <DeleteIcon />
             </ListItemIcon>
             <ListItemText className={classes.listItemText} primary="Delete" />
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemIcon>
-              <EditIcon />
-            </ListItemIcon>
-            <ListItemText className={classes.listItemText} primary="Edit" />
           </ListItem>
         </List>
       </Collapse>
