@@ -1,30 +1,69 @@
 import React from 'react';
-import GetForm from './GetForm';
-import {Container} from '@material-ui/core';
+import {GetForm} from './FormsHandling';
+import {withTheme} from 'react-jsonschema-form';
+import {Theme as MuiTheme} from 'rjsf-material-ui';
+import {Button, Container} from '@material-ui/core';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Popup from 'reactjs-popup';
+
+const Form = withTheme(MuiTheme);
 
 class ShowForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      filledForm: {},
       formSchema: {},
+      isLoading: true,
+      open: false,
     };
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({open: true});
+  }
+  closeModal() {
+    this.setState({open: false});
   }
 
   componentDidMount() {
-    const {formID} = this.props.match.params;
-    this.LoadSchema(formID);
+    this.LoadData(this.props.idOfForm, this.props.path, this.props.template);
   }
 
-  LoadSchema = formID =>
-    GetForm(formID, '/api/forms/templates/').then(response =>
-      this.setState({formSchema: response.data})
-    );
+  LoadData = (formID, path, templateID) => {
+    GetForm(formID, `/api/forms/${path}`)
+      .then(response => this.setState({filledForm: response.data}))
+      .catch(error =>
+        console.error(`Bląd pobierania wypelnionych danych: ${error}`)
+      )
+      .then(response => GetForm(templateID, '/api/forms/templates'))
+      .then(response => this.setState({formSchema: response.data}))
+      .then(() => this.setState({isLoading: false}))
+      .catch(error => console.error(`Bląd pobierania template: ${error}`));
+  };
 
   render() {
+    let {isLoading} = this.state;
     return (
-      <Container ms={8}>
-        <div>{JSON.stringify(this.state.formSchema, null, 2)}</div>
-      </Container>
+      <Popup
+        open={this.state.open}
+        closeOnDocumentClick
+        onClose={this.closeModal}>
+        <Container>
+          {!isLoading ? (
+            <Form
+              formData={this.state.filledForm.dataForm}
+              disabled={true}
+              schema={this.state.formSchema}>
+              <Button display="none" />
+            </Form>
+          ) : (
+            <LinearProgress variant="query" />
+          )}
+        </Container>
+      </Popup>
     );
   }
 }

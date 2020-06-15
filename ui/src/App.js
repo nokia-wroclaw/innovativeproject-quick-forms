@@ -1,14 +1,15 @@
 import React from 'react';
-// import axios from 'axios';
-import {Route, Switch} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage/HomePage';
-import UserForm from './components/form/UserForm';
-import ShowForm from './components/form/ShowForm';
+import UserForm from './components/form/UserForm/UserForm';
+import UserFormRedirect from './components/form/UserForm/UserFormRedirect';
 import Dashboard from './pages/Dashboard/Dashboard';
-import ListOfForms from './components/form/ListOfForms';
 import FilledForms from './components/form/FilledForms';
+import PrivateRoute from './components/PrivateRoute';
+import FormCreator from './components/form/Creator/FormCreator';
+import Finder from './pages/Finder';
 
 const App = () => (
   <div className="App">
@@ -16,11 +17,21 @@ const App = () => (
       <Route exact path="/" component={HomePage} />
       <Route exact path="/signin" component={SignIn} />
       <Route exact path="/signup" component={SignUp} />
-      <Route exact path="/userform/:formID" component={UserForm} />
-      <Route exact path="/showform/:formID" component={ShowForm} />
-      <Route exact path="/dashboard" component={Dashboard} />
-      <Route exact path="/formslist" component={ListOfForms} />
-      <Route exact path="/filledforms/:templateID" component={FilledForms} />
+      <Route exact path="/userform/:formID" component={UserFormRedirect} />
+      <Route exact path="/finder" component={Finder} />
+      <Route
+        exact
+        path="/userform/:formID/:pendingFormID"
+        component={UserForm}
+      />
+
+      <PrivateRoute exact path="/dashboard" component={Dashboard} />
+      <PrivateRoute
+        exact
+        path="/filledforms/:templateID"
+        component={FilledForms}
+      />
+      <PrivateRoute exact path="/creator" component={FormCreator} />
     </Switch>
   </div>
 );

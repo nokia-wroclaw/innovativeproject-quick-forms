@@ -15,7 +15,7 @@ import Container from '@material-ui/core/Container';
 import axios from 'axios';
 
 require('dotenv').config();
-
+// eslint-disable-next-line
 const {SERVER_API_URL} = process.env;
 
 const {useState} = require('react');
@@ -142,8 +142,7 @@ const SignIn = () => {
             className={classes.submit}
             onClick={e => {
               handleSubmit(e);
-            }}
-          >
+            }}>
             Sign In
           </Button>
           <Button
@@ -153,8 +152,7 @@ const SignIn = () => {
             className={classes.submit}
             onClick={() => {
               window.open('/api/auth/google', '_parent', 'location=no');
-            }}
-          >
+            }}>
             Sign in with google
           </Button>
           <Grid container>
@@ -164,7 +162,7 @@ const SignIn = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/signup" variant="body2">
                 Don&apos;t have an account? Sign Up
               </Link>
             </Grid>

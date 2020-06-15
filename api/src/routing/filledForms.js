@@ -1,30 +1,64 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Form = require('../models/filledForm.model');
+
 const filledForm = mongoose.model('filledForm', Form);
 const router = express.Router();
 
 router.use(express.json());
-router.use(express.urlencoded({extended: true}));
+router.use(express.urlencoded({ extended: true }));
 
 router.get('/', async (req, res) => {
   try {
     const forms = await filledForm.find();
     res.status(200).json(forms);
   } catch (err) {
-    res.status(404).json({message: err});
+    res.status(404).json({ message: err });
   }
 });
+router.get('/single/:id', async (req, res) => {
+  try {
+    const forms = await filledForm.findById(req.params.id)
+    res.status(200).json(forms);
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+});
+//change to fragment-key
+router.get('/key/:id', async (req, res) => {
+  const keyLength = 4
+  try{
+    if (req.params.id.length !== keyLength){
+      const message = "invalid input"
+      res.status(200).json(message);
+    }
+
+    else {
+      const forms = await filledForm.findOne({filledFormNumberID :  { "$regex": `${req.params.id}$` },
+        function (err, docs) {}})
+      res.status(200).json(forms);
+    }
+
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+})
+
+router.get('/whole-key/:id', async (req, res) => {
+  try{
+    const forms = await filledForm.findOne({filledFormNumberID :  req.params.id })
+    res.status(200).json(forms);
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+})
 
 router.get('/:id', async (req, res) => {
   try {
-    const forms = await filledForm.find({templateID: req.params.id});
+    const forms = await filledForm.find({ templateID: req.params.id });
     res.status(200).json(forms);
   } catch (err) {
-    res.status(404).json({
-      message: `id: ${req.params.id} not found`,
-      status: err,
-    });
+    res.status(404).json({ message: err });
   }
 });
 
@@ -34,15 +68,26 @@ router.post('/', async (req, res) => {
     const savedForm = await form.save();
     res.status(201).json(savedForm);
   } catch (err) {
-    res.status(400).json({message: err});
+    res.status(400).json({ message: err });
   }
 });
 
 router.delete('/:id', async (req, res) => {
-  await filledForm.remove({templateID: req.params.id}, function(error) {
-    if (error) res.status(404).json({message: error});
-    else res.status(200);
-  });
+  try {
+    const form = await filledForm.remove({ templateID: req.params.id });
+    res.status(200).json(form);
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
+});
+
+router.delete('/single/:id', async (req, res) => {
+  try {
+    const form = await filledForm.findByIdAndDelete(req.params.id);
+    res.status(200).json(form);
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
 });
 
 module.exports = router;

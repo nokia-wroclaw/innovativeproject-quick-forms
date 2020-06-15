@@ -1,31 +1,83 @@
 import React from 'react';
-import GetForm from './GetForm';
+import PendingForms from './PendingForms';
+import AcceptedForms from './AcceptedForms';
+import {GetForm} from './FormsHandling';
+import Container from '@material-ui/core/Container';
+import {withStyles} from '@material-ui/core/styles';
+import NavBar from '../../pages/NavBar';
 
-class ListOfFilledForms extends React.Component {
+const useStyles = theme => ({
+  root: {
+    margin: 'auto',
+    marginTop: 10,
+  },
+  pending: {
+    margin: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  accepted: {
+    margin: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+class FilledForms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filledForms: [],
+      acceptedForms: [],
+      pendingForms: [],
+      templateid: '',
     };
   }
 
   componentDidMount() {
-    const {templateID} = this.props.match.params;
+    const templateID = this.props.match.params.templateID;
+    this.setState({templateid: templateID});
     this.LoadSchema(templateID);
   }
 
-  LoadSchema = templateID =>
-    GetForm(templateID, '/api/forms/filled-forms').then(response => {
-      this.setState({filledForms: response.data});
-    });
+  LoadSchema = templateID => {
+    GetForm(templateID, '/api/forms/pendingforms')
+      .then(response => this.setState({pendingForms: response.data}))
+      .catch(error =>
+        console.error(`Błąd pobierania danego pending formsow:${error}`)
+      );
 
-  _render(obj) {
-    return <code>{JSON.stringify(obj, null, 2)}</code>;
-  }
+    GetForm(templateID, '/api/forms/filled-forms')
+      .then(response => this.setState({acceptedForms: response.data}))
+      .catch(error =>
+        console.error(`Błąd pobierania danego pending formsow:${error}`)
+      );
+  };
 
   render() {
-    return this.state.filledForms.map(i => this._render(i.dataForm));
+    const {classes} = this.props;
+
+    return (
+      <div>
+        <NavBar title="FORMS" />
+        <Container maxWidth="lg" className={classes.root}>
+          <PendingForms
+            className={classes.accepted}
+            formID={this.state.templateid}
+            listOfForms={this.state.pendingForms}
+            reload={this.LoadSchema}
+          />
+          <AcceptedForms
+            className={classes.accepted}
+            formID={this.state.templateid}
+            listOfForms={this.state.acceptedForms}
+            reload={this.LoadSchema}
+          />
+        </Container>
+      </div>
+    );
   }
 }
 
-export default ListOfFilledForms;
+export default withStyles(useStyles)(FilledForms);

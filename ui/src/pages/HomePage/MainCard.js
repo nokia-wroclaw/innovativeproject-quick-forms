@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   mainCard: {
     position: 'relative',
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.common.white,
     marginTop: 10,
     marginBottom: theme.spacing(4),
-    backgroundImage: `url(${require("../../images/pen.jpg")})`,
+    backgroundImage: `url(${require('../../images/pen.jpg')})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -37,16 +37,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainCard(props) {
   const classes = useStyles();
-  const { card } = props;
+  const {card} = props;
 
   return (
     <Paper className={classes.mainCard}>
-      
       <div className={classes.overlay} />
       <Grid container>
         <Grid item md={6}>
           <div className={classes.mainCardContent}>
-            <Typography component="h1" variant="h3" color="inherit" gutterBottom>
+            <Typography
+              component="h1"
+              variant="h3"
+              color="inherit"
+              gutterBottom>
               {card.title}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>

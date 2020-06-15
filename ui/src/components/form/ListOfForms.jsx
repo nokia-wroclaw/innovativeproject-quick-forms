@@ -1,5 +1,5 @@
 import React from 'react';
-import GetForm from './GetForm';
+import {GetForm} from './FormsHandling';
 import SingleForm from './SingleForm';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -31,14 +31,15 @@ class ListOfForms extends React.Component {
 
   componentDidMount() {
     const token = Cookies.get('access_token');
-    this.setState({userID: jwtDecode(token).user.id});
-    this.LoadSchema(jwtDecode(token).user.id);
+    const loggedID = jwtDecode(token).user.id;
+    this.setState({userID: loggedID});
+    this.LoadForms(loggedID);
   }
 
-  LoadSchema = userID => {
-    GetForm(userID, `/api/forms/templates/user`).then(response => {
-      this.setState({listOfForms: response.data});
-    });
+  LoadForms = userID => {
+    GetForm(userID, `/api/forms/templates/user`)
+      .then(response => this.setState({listOfForms: response.data}))
+      .catch(error => console.error(`Blad pobierania template usera:${error}`));
   };
 
   render() {
@@ -55,6 +56,8 @@ class ListOfForms extends React.Component {
                   formID={index._id}
                   title={index.title}
                   description={index.description}
+                  reload={this.LoadForms}
+                  userID={this.state.userID}
                 />
               </Grid>
             ))}
