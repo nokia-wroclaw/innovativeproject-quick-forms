@@ -82,7 +82,7 @@ const useStyles = theme => ({
     marginTop: 105,
     width: drawerWidth,
     [theme.breakpoints.down('600')]: {
-      marginTop: 56,
+      marginTop: 66,
     },
   },
   drawerContainer: {

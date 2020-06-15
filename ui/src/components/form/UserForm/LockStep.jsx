@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Button, Container, Typography} from '@material-ui/core';
-import PendingFormPreview from "./PendingFormPreview";
+// import PendingFormPreview from "./PendingFormPreview";
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -46,12 +46,12 @@ class LockStep extends Component {
                 Back to edition
             </Button>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <PendingFormPreview
               formSchema={this.props.values.formScheme}
               formData={this.props.values.formData}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     );

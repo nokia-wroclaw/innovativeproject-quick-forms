@@ -3,7 +3,7 @@ import {Button, Container} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import CardMedia from '@material-ui/core/CardMedia';
 import UserFormIDGenerator from "./UserFormIDGenerator";
-import PendingFormPreview from "./PendingFormPreview";
+// import PendingFormPreview from "./PendingFormPreview";
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(() => ({
@@ -85,12 +85,12 @@ export function EndStep(props) {
               New Form
             </Button>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <PendingFormPreview
                 formSchema={props.values.formScheme}
                 formData={props.values.formData}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </React.Fragment>

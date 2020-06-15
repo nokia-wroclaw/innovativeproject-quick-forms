@@ -9,6 +9,7 @@ import {isAuth, logout} from '../components/PrivateRoute';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    zIndex: theme.zIndex.drawer + 1,
     flexGrow: 1,
     margin: '0px',
   },
